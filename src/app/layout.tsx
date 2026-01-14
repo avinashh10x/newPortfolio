@@ -12,8 +12,6 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-import type { Metadata } from "next";
-
 export const metadata: Metadata = {
   metadataBase: new URL("https://byavi.in"),
 
@@ -50,6 +48,12 @@ export const metadata: Metadata = {
     siteName: "byAvi",
     locale: "en_US",
     type: "website",
+    images: [
+      {
+        url: "https://byavi.in/og.png",
+        alt: "Avi — Full-Stack Developer",
+      },
+    ],
   },
 
   twitter: {
@@ -58,6 +62,7 @@ export const metadata: Metadata = {
     description:
       "I build and ship products on the internet. Full-Stack Developer focused on turning ideas into working software.",
     creator: "@avinash10x",
+    images: ["https://byavi.in/og.png"],
   },
 
   robots: {
@@ -77,20 +82,41 @@ export const metadata: Metadata = {
   },
 };
 
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const ldJson = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: "Avi",
+    url: "https://byavi.in",
+    sameAs: [
+      "https://twitter.com/avinash10x",
+      "https://github.com/avinashh10x",
+      "https://www.linkedin.com/in/avinash-kumar-%F0%9F%8C%9F-519616249/",
+    ],
+  });
+
   return (
     <html lang="en" className="dark">
       <head>
+        <link
+          rel="preconnect"
+          href="https://api.fontshare.com"
+          crossOrigin=""
+        />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link
           href="https://api.fontshare.com/v2/css?f[]=recia@400&f[]=erode@600&display=swap"
           rel="stylesheet"
         />
         <meta name="apple-mobile-web-app-title" content="byAvi" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: ldJson }}
+        />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased font-recia`}
