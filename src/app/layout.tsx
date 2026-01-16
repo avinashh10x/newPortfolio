@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { gsap } from "gsap";
+    
+import { TextPlugin } from "gsap/TextPlugin";
+import Navbar from "@/components/shared/navbar";
+
+gsap.registerPlugin(TextPlugin);
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,9 +37,10 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased font-recia select-none`}
       >
         {children}
+        <Navbar/>
       </body>
     </html>
   );
