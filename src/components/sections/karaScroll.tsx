@@ -2,14 +2,17 @@
 
 import { useEffect, useRef } from "react";
 
-import { gsap } from "gsap";
-import { SplitText } from "gsap/all";
-import { Observer } from "gsap/Observer";
+import gsap from "gsap";
+import { Observer } from "gsap/dist/Observer";
+
 import Image from "next/image";
 import { PROJECTS } from "@/data/projects";
-import { div } from "motion/react-client";
+import Link from "next/link";
 
-gsap.registerPlugin(Observer);
+// Register GSAP plugins
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(Observer);
+}
 
 export default function KaraScroll() {
   const contentRef = useRef<HTMLDivElement | null>(null);
@@ -76,26 +79,25 @@ export default function KaraScroll() {
     };
   }, []);
 
-
-  
   useEffect(() => {
-    const splitText = SplitText.create(".projectTxt", { type: "lines" }) ?? null;
+    // const splitText =
+    //   SplitText.create(".projectTxt", { type: "lines" }) ?? null;
 
-    if (splitText) {
-      gsap.from(splitText.lines, {
-        duration: .5,
-        y: 15,
-        opacity: 0,
-        filter: "blur(3px)",
-        stagger: 0.1,
-        ease: "power2.out",
-      });
-    }
+    // if (splitText) {
+    //   gsap.from(splitText.lines, {
+    //     duration: 0.5,
+    //     y: 15,
+    //     opacity: 0,
+    //     filter: "blur(3px)",
+    //     stagger: 0.1,
+    //     ease: "power2.out",
+    //   });
+    // }
 
     return () => {
-      if (splitText) {
-        splitText.revert();
-      }
+      // if (splitText) {
+      //   splitText.revert();
+      // }
     };
   }, []);
 
@@ -103,16 +105,19 @@ export default function KaraScroll() {
     <section className="relative flex items-center bg-background md:px-[9vw] text-foreground h-screen overflow-hidden ">
       {/* Texts */}
       <div className="flex-1 font-medium  tracking-[-0.05em] px-20 space-y-10 max-md:hidden">
-        <div className="flex  font-medium leading-[0.8] tracking-[-0.05em] text-[5vw] items-center gap-5 justify-start">
+        <div className="flex  font-medium leading-[0.8] tracking-[-0.05em] text-[5vw] items-center gap-5 px-2 justify-start">
           <p className="">Work</p>
           <span className="w-[60%] h-px bg-foreground/10 " />
-          <p>{PROJECTS.length}</p>
+          {/* <p>{PROJECTS.length}</p> */}
+          <p>3</p>
         </div>
-        <div>
-          {PROJECTS.map((project, i) => (
-            <div
+        <div className="flex flex-col space-y-2">
+          {PROJECTS.slice(0, 3).map((project, i) => (
+            <Link
               key={i}
-              className=" flex  items-center gap-2 leading-loose justify-between"
+              className="flex items-center gap-2 leading-loose px-3 py-0.5 hover:bg-foreground/10 rounded-sm transition-colors duration-300 justify-between"
+              href={project.link}
+              target="_blank"
             >
               <p className="projectTxt">
                 <span className="font-medium">{project.title} </span>
@@ -122,15 +127,14 @@ export default function KaraScroll() {
                     `${
                       project.subtitle.length > 45
                         ? project.subtitle.slice(0, 45) + "..."
-                        : project.subtitle
+                        : project.subtitle + "..."
                     }`}
                 </span>
               </p>
-            
-                <span className="min-w-[30%] h-px bg-foreground/10 " />
-                <span className="text-foreground/50">{project.time}</span>
-          
-            </div>
+              {/* flexible horizontal bar that fills remaining space */}
+              <span className="flex-1 h-px bg-foreground/10 mx-1" />
+              <span className="text-foreground/50">{project.time}</span>
+            </Link>
           ))}
         </div>
       </div>
@@ -138,28 +142,28 @@ export default function KaraScroll() {
       {/* Scroll Container */}
       <div
         ref={containerRef}
-        className="w-[30vw] h-screen  origin-center max-md:w-[90vw] max-md:mx-auto"
+        className="w-[30vw] h-screen  origin-center max-md:w-[90vw] max-md:mx-auto overflow-hidden"
       >
         <div
           ref={contentRef}
           className="flex flex-col gap-6 h-max mx-auto pb-6 w-full"
         >
-          {PROJECTS.map((project, i) => (
+          {/* Render projects TWICE for seamless infinite scroll */}
+          {[...PROJECTS, ...PROJECTS].map((project, i) => (
             <div key={i}>
-              <div className="aspect-video rounded-lg overflow-hidden pointer-events-none">
+              <div className="aspect-video rounded-sm overflow-hidden pointer-events-none">
                 <Image
                   src={project.image}
                   alt={project.title}
-                  className="w-full h-full object-cover rounded-lg"
+                  className="w-full h-full object-cover rounded-sm"
                   width={900}
                   height={500}
-                  priority
+                  priority={i < PROJECTS.length}
                 />
               </div>
               <div className=" flex items-center gap-3 mb-6 leading-loose justify-between md:hidden">
                 <p className="">
                   <span className="font-medium">{project.title} </span>
-                  {/* <span className="w-[15px] h-[1px] " /> */}
                   <span className="text-foreground/50 lowercase font-extralight">
                     {project.subtitle &&
                       `${
@@ -169,7 +173,8 @@ export default function KaraScroll() {
                       }`}
                   </span>
                 </p>
-                <span className="w-[7%] h-px bg-foreground/10 " />
+                {/* mobile: flexible bar to fill space */}
+                <span className="flex-1 h-px bg-foreground/10 mx-3" />
                 <span className="text-foreground/50">{project.time}</span>
               </div>
             </div>

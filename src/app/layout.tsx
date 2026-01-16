@@ -1,19 +1,15 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, Roboto_Mono } from "next/font/google";
 import "./globals.css";
-import { gsap } from "gsap";
-    
-import { TextPlugin } from "gsap/TextPlugin";
+
 import Navbar from "@/components/shared/navbar";
 
-gsap.registerPlugin(TextPlugin);
-
-const geistSans = Geist({
+const geistSans = Inter({
   variable: "--font-geist-sans",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
+const geistMono = Roboto_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
@@ -40,7 +36,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased font-recia select-none`}
       >
         {children}
-        <Navbar/>
+        <Navbar />
       </body>
     </html>
   );
