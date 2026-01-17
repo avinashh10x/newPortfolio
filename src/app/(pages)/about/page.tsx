@@ -33,9 +33,10 @@ function About() {
 
   return (
     <div className="w-full h-screen flex items-center justify-center">
-      <div className="max-w-3xl px-6 text-center">
+      <div className="max-w-3xl px-6 text-center space-y-10">
+         {/* <p className="text-lg uppercase tracking-tight opacity-70">About</p> */}
         <h1
-          className="text-2xl max-sm:text-lg leading-tight font-recia font-extralight testTXT"
+          className="text-3xl max-sm:text-lg leading-tight font-recia font-extralight testTXT"
         >
           {parts.map((part, index) => {
             const icon = ICON_MAP[part as keyof typeof ICON_MAP];

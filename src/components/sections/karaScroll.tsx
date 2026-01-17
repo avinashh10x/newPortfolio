@@ -104,14 +104,14 @@ export default function KaraScroll() {
   return (
     <section className="relative flex items-center bg-background md:px-[9vw] text-foreground h-screen overflow-hidden ">
       {/* Texts */}
-      <div className="flex-1 font-medium  tracking-[-0.05em] px-20 space-y-10 max-md:hidden">
-        <div className="flex  font-medium leading-[0.8] tracking-[-0.05em] text-[5vw] items-center gap-5 px-2 justify-start">
+      <div className="flex-1 font-medium  tracking-[-0.05em] px-10 space-y-10 max-md:hidden">
+        <div className="flex  font-medium leading-[0.8] tracking-[-0.05em] text-[5vw] items-center  gap-5 px-2 justify-start">
           <p className="">Work</p>
           <span className="w-[60%] h-px bg-foreground/10 " />
           {/* <p>{PROJECTS.length}</p> */}
-          <p>3</p>
+          <p className=" -mt-4">3</p>
         </div>
-        <div className="flex flex-col space-y-2">
+        <div className="flex flex-col space-y-2 text-[1.2vw]">
           {PROJECTS.slice(0, 3).map((project, i) => (
             <Link
               key={i}
@@ -151,32 +151,34 @@ export default function KaraScroll() {
           {/* Render projects TWICE for seamless infinite scroll */}
           {[...PROJECTS, ...PROJECTS].map((project, i) => (
             <div key={i}>
-              <div className="aspect-video rounded-sm overflow-hidden pointer-events-none">
-                <Image
-                  src={project.image}
-                  alt={project.title}
-                  className="w-full h-full object-cover rounded-sm"
-                  width={900}
-                  height={500}
-                  priority={i < PROJECTS.length}
-                />
-              </div>
-              <div className=" flex items-center gap-3 mb-6 leading-loose justify-between md:hidden">
-                <p className="">
-                  <span className="font-medium">{project.title} </span>
-                  <span className="text-foreground/50 lowercase font-extralight">
-                    {project.subtitle &&
-                      `${
-                        project.subtitle.length > 20
-                          ? project.subtitle.slice(0, 25) + "..."
-                          : project.subtitle
-                      }`}
-                  </span>
-                </p>
-                {/* mobile: flexible bar to fill space */}
-                <span className="flex-1 h-px bg-foreground/10 mx-3" />
-                <span className="text-foreground/50">{project.time}</span>
-              </div>
+              <Link href={project.link} target="_blank">
+                <div className="aspect-video rounded-sm overflow-hidden pointer-events-none">
+                  <Image
+                    src={project.image}
+                    alt={project.title}
+                    className="w-full h-full object-cover rounded-sm"
+                    width={900}
+                    height={500}
+                    priority={i < PROJECTS.length}
+                  />
+                </div>
+                <div className=" flex items-center gap-3 mb-6 leading-loose justify-between md:hidden">
+                  <p className="">
+                    <span className="font-medium">{project.title} </span>
+                    <span className="text-foreground/50 lowercase font-extralight">
+                      {project.subtitle &&
+                        `${
+                          project.subtitle.length > 20
+                            ? project.subtitle.slice(0, 25) + "..."
+                            : project.subtitle
+                        }`}
+                    </span>
+                  </p>
+                  {/* mobile: flexible bar to fill space */}
+                  <span className="flex-1 h-px bg-foreground/10 mx-3" />
+                  <span className="text-foreground/50">{project.time}</span>
+                </div>
+              </Link>
             </div>
           ))}
         </div>

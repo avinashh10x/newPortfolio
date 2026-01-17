@@ -8,7 +8,7 @@ import {
   MotionValue,
   AnimatePresence,
 } from "framer-motion";
-import { BriefcaseBusinessIcon, LightbulbIcon } from "lucide-react";
+import { BriefcaseBusinessIcon, ClipboardIcon, ClipboardMinusIcon, LightbulbIcon, Paperclip, PaperclipIcon } from "lucide-react";
 import Link from "next/link";
 import { GithubIcon } from "../GithubIcon";
 import { usePathname } from "next/navigation";
@@ -33,7 +33,7 @@ const DETAIL_LINKS: MenuLink[] = [
   {
     name: "Home",
     icon: <HouseIcon size={24} />,
-    href: "home",
+    href: "/",
     target: "_self",
   },
   {
@@ -52,8 +52,8 @@ const DETAIL_LINKS: MenuLink[] = [
 
 const CONTACT_LINKS: MenuLink[] = [
   {
-    name: "Github",
-    icon: <GithubIcon size={24} />,
+    name: "Resume",
+    icon: <ClipboardMinusIcon size={24} />,
     href: "https://github.com/avinashh10x",
     target: "_blank",
   },
@@ -137,7 +137,7 @@ function DockItem({
           const hrefPath =
             link.href === "#" || link.href.startsWith("http")
               ? null
-              : link.href === "home"
+              : link.href === "/"
                 ? "/"
                 : `/${link.href}`;
 
