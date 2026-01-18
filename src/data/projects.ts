@@ -18,7 +18,7 @@ export const PROJECTS: project[] = [
     image: "/projects/p1.webp",
     link: "https://plingo.byavi.in",
     github: "https://github.com/avinashh10x/plingo",
-    time: "Jan 2024",
+    time: "Jan 2026",
     tag: ["Next.js", "TypeScript", "Node.js", "MongoDB", "Tailwind CSS"],
   },
   {
@@ -29,7 +29,7 @@ export const PROJECTS: project[] = [
     image: "/projects/p2.webp",
     link: "https://stacky.byavi.in",
     github: "https://github.com/avinashh10x/stacky",
-    time: "Jan 2024",
+    time: "Dec 2025",
     tag: ["Next.js", "TypeScript", "Node.js", "MongoDB", "Tailwind CSS"],
   },
   {
@@ -40,7 +40,7 @@ export const PROJECTS: project[] = [
     image: "/projects/p3.webp",
     link: "https://tingy.byavi.in",
     github: "https://github.com/avinashh10x/tingy",
-    time: "Jan 2024",
+    time: "Oct 2025",
     tag: ["Next.js", "TypeScript", "Node.js", "MongoDB", "Tailwind CSS"],
   },
    {
@@ -51,7 +51,7 @@ export const PROJECTS: project[] = [
     image: "/projects/p1.webp",
     link: "https://plingo.byavi.in",
     github: "https://github.com/avinashh10x/plingo",
-    time: "Jan 2024",
+    time: "Jan 2026",
     tag: ["Next.js", "TypeScript", "Node.js", "MongoDB", "Tailwind CSS"],
   },
   {
@@ -62,7 +62,7 @@ export const PROJECTS: project[] = [
     image: "/projects/p2.webp",
     link: "https://stacky.byavi.in",
     github: "https://github.com/avinashh10x/stacky",
-    time: "Jan 2024",
+    time: "Dec 2025",
     tag: ["Next.js", "TypeScript", "Node.js", "MongoDB", "Tailwind CSS"],
   },
   {
@@ -73,7 +73,7 @@ export const PROJECTS: project[] = [
     image: "/projects/p3.webp",
     link: "https://tingy.byavi.in",
     github: "https://github.com/avinashh10x/tingy",
-    time: "Jan 2024",
+    time: "Oct 2025",
     tag: ["Next.js", "TypeScript", "Node.js", "MongoDB", "Tailwind CSS"],
   },
  {
@@ -84,7 +84,7 @@ export const PROJECTS: project[] = [
     image: "/projects/p1.webp",
     link: "https://plingo.byavi.in",
     github: "https://github.com/avinashh10x/plingo",
-    time: "Jan 2024",
+    time: "Jan 2026",
     tag: ["Next.js", "TypeScript", "Node.js", "MongoDB", "Tailwind CSS"],
   },
   {
@@ -95,7 +95,7 @@ export const PROJECTS: project[] = [
     image: "/projects/p2.webp",
     link: "https://stacky.byavi.in",
     github: "https://github.com/avinashh10x/stacky",
-    time: "Jan 2024",
+    time: "Dec 2025",
     tag: ["Next.js", "TypeScript", "Node.js", "MongoDB", "Tailwind CSS"],
   },
   {
@@ -106,7 +106,7 @@ export const PROJECTS: project[] = [
     image: "/projects/p3.webp",
     link: "https://tingy.byavi.in",
     github: "https://github.com/avinashh10x/tingy",
-    time: "Jan 2024",
+    time: "Oct 2025",
     tag: ["Next.js", "TypeScript", "Node.js", "MongoDB", "Tailwind CSS"],
   },
 
