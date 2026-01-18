@@ -1,11 +1,10 @@
-import Hero from '@/components/sections/Hero'
+import KaraScroll from '@/components/sections/karaScroll'
 import React from 'react'
-import About from '../about/page'
 
 function page() {
   return (
     <div>
-      <About />
+      <KaraScroll/>
     </div>
   )
 }

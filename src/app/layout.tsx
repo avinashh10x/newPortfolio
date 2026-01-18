@@ -4,6 +4,7 @@ import "./globals.css";
 import { gsap } from "gsap";
     
 import { TextPlugin } from "gsap/TextPlugin";
+import Navbar from "@/components/shared/navbar";
 
 gsap.registerPlugin(TextPlugin);
 
@@ -127,6 +128,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased font-recia`}
       >
         {children}
+        <Navbar/>
       </body>
     </html>
   );
