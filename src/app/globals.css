@@ -129,5 +129,12 @@
   }
   body {
     @apply bg-background text-foreground;
+
   }
+}
+
+
+body::selection {
+  background-color: #166bd9;
+  color: var(--color-accent-foreground);
 }

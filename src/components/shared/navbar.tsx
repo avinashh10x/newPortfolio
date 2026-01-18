@@ -1,0 +1,280 @@
+"use client";
+import React, { useRef, useState } from "react";
+import {
+  motion,
+  useMotionValue,
+  useSpring,
+  useTransform,
+  MotionValue,
+  AnimatePresence,
+} from "framer-motion";
+import {
+  BriefcaseBusinessIcon,
+  ClipboardIcon,
+  ClipboardMinusIcon,
+  LightbulbIcon,
+  Paperclip,
+  PaperclipIcon,
+} from "lucide-react";
+import Link from "next/link";
+import { GithubIcon } from "../GithubIcon";
+import { usePathname } from "next/navigation";
+import { TwitterIcon } from "../TwitterIcon";
+import { HouseIcon } from "../HouseIcon";
+import { MailIcon } from "../MailIcon";
+import { MoonIcon } from "../MoonIcon";
+import { SunIcon } from "../SunIcon";
+
+type MenuLink = {
+  name: string;
+  href: string;
+  icon: React.ReactNode;
+  target?: string;
+};
+
+const THEME_LINK: MenuLink[] = [
+  { name: "Theme", icon: <MoonIcon size={24} />, href: "#", target: "_self" },
+];
+
+const DETAIL_LINKS: MenuLink[] = [
+  {
+    name: "Home",
+    icon: <HouseIcon size={24} />,
+    href: "/",
+    target: "_self",
+  },
+  // {
+  //   name: "About",
+  //   icon: <LightbulbIcon size={24} />,
+  //   href: "about",
+  //   target: "_self",
+  // },
+  {
+    name: "Work",
+    icon: <BriefcaseBusinessIcon size={24} />,
+    href: "work",
+    target: "_self",
+  },
+];
+
+const CONTACT_LINKS: MenuLink[] = [
+  {
+    name: "Resume",
+    icon: <ClipboardMinusIcon size={24} />,
+    href: "/aviResume.pdf",
+    target: "_blank",
+  },
+
+  // {
+  //   name: "Twitter",
+  //   icon: <TwitterIcon size={24} />,
+  //   href: "https://twitter.com/avinash10x",
+  //   target: "_blank",
+  // },
+  {
+    name: "Mail",
+    icon: <MailIcon size={24} />,
+    href: "mailto:avinash@example.com",
+  },
+];
+
+function DockItem({
+  link,
+  mouseX,
+  onThemeClick,
+}: {
+  link: MenuLink;
+  mouseX: MotionValue<number>;
+  onThemeClick?: () => void;
+}) {
+  const ref = useRef<HTMLLIElement | null>(null);
+  const [isHovered, setIsHovered] = React.useState(false);
+  const path = usePathname();
+
+  const distance = useTransform(mouseX, (val) => {
+    const bounds = ref.current?.getBoundingClientRect() ?? { x: 0, width: 0 };
+    return val - bounds.x - bounds.width / 2;
+  });
+
+  const widthSync = useTransform(distance, [-150, 0, 150], [40, 80, 40]);
+  const width = useSpring(widthSync, {
+    mass: 0.1,
+    stiffness: 150,
+    damping: 12,
+  });
+
+  const iconScaleSync = useTransform(distance, [-150, 0, 150], [0.8, 1.1, 0.8]);
+  const iconScale = useSpring(iconScaleSync, {
+    mass: 0.1,
+    stiffness: 150,
+    damping: 12,
+  });
+
+  const isExternal =
+    link.href === "#" ||
+    link.href.startsWith("http") ||
+    link.href.startsWith("mailto");
+  const isMailto = link.href.startsWith("mailto");
+
+  const content = (
+    <>
+      <motion.span
+        style={{ scale: iconScale }}
+        className="text-foreground/80 flex items-center justify-center"
+      >
+        {link.icon}
+      </motion.span>
+
+      <AnimatePresence>
+        {isHovered && (
+          <motion.span
+            initial={{ opacity: 0, y: 6, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 6, scale: 0.96 }}
+            transition={{ duration: 0.18, ease: "easeOut" }}
+            className="pointer-events-none absolute -top-8 px-2 py-1 text-[10px] rounded-sm bg-background text-white whitespace-nowrap"
+          >
+            {link.name}
+          </motion.span>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {(() => {
+          const hrefPath =
+            link.href === "#" || link.href.startsWith("http")
+              ? null
+              : link.href === "/"
+                ? "/"
+                : `/${link.href}`;
+
+          const isActive = hrefPath ? path === hrefPath : false;
+
+          return (
+            isActive && (
+              <motion.span
+                initial={{ opacity: 1, y: 6, scale: 0.96 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 1, y: 6, scale: 0.96 }}
+                transition={{ duration: 0.18, ease: "easeOut" }}
+                className="pointer-events-none absolute -bottom-1.5 text-[10px] rounded-full bg-foreground/50 h-[3px] w-[3px] "
+              ></motion.span>
+            )
+          );
+        })()}
+      </AnimatePresence>
+    </>
+  );
+
+  return (
+    <motion.li ref={ref} style={{ width }} className="aspect-square">
+      {isExternal ? (
+        <a
+          href={link.href}
+          target={isMailto ? undefined : link.target}
+          rel={link.target === "_blank" ? "noopener noreferrer" : undefined}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          onClick={(e) => {
+            if (link.name === "Theme" && onThemeClick) {
+              e.preventDefault();
+              onThemeClick();
+            }
+            // Don't interfere with mailto links - let browser handle them
+          }}
+          className="w-full h-full flex items-center justify-center rounded-full bg-foreground/20 border border-foreground/30 relative backdrop-blur-lg"
+        >
+          {content}
+        </a>
+      ) : (
+        <Link
+          href={link.href}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          onClick={(e) => {
+            if (link.name === "Theme" && onThemeClick) {
+              e.preventDefault();
+              onThemeClick();
+            }
+          }}
+          className="w-full h-full flex items-center justify-center rounded-full bg-foreground/20 border border-foreground/30 relative backdrop-blur-lg"
+        >
+          {content}
+        </Link>
+      )}
+    </motion.li>
+  );
+}
+
+function Navbar() {
+  const mouseX = useMotionValue(Infinity);
+
+  const [isDark, setIsDark] = useState(() => {
+    if (typeof document !== "undefined") {
+      return document.documentElement.classList.contains("dark");
+    }
+    return false;
+  });
+
+  const toggleTheme = () => {
+    if (typeof document === "undefined") return;
+    const html = document.documentElement;
+    if (html.classList.contains("dark")) {
+      html.classList.remove("dark");
+      setIsDark(false);
+    } else {
+      html.classList.add("dark");
+      setIsDark(true);
+    }
+  };
+
+  return (
+    <div className="w-full flex justify-center items-end pb-5 absolute bottom-0 ">
+      <motion.nav
+        onMouseMove={(e) => mouseX.set(e.pageX)}
+        onMouseLeave={() => mouseX.set(Infinity)}
+        className="bg-background/40 backdrop-blur-xl rounded-full px-2 py-2 border border-foreground/20 shadow-2xl "
+      >
+        <ul className="flex  gap-2 h-10 items-end">
+          {DETAIL_LINKS.map((link) => {
+            const renderedLink =
+              link.name === "Theme"
+                ? {
+                    ...link,
+                    icon: isDark ? (
+                      <SunIcon size={24} />
+                    ) : (
+                      <MoonIcon size={24} />
+                    ),
+                  }
+                : link;
+
+            return (
+              <DockItem
+                key={renderedLink.name}
+                link={renderedLink}
+                mouseX={mouseX}
+                onThemeClick={toggleTheme}
+              />
+            );
+          })}
+          <motion.span className="w-px h-6 bg-foreground/20  my-auto" />
+          {THEME_LINK.map((link) => (
+            <DockItem
+              key={link.name}
+              link={link}
+              mouseX={mouseX}
+              onThemeClick={toggleTheme}
+            />
+          ))}
+          <motion.span className="w-px h-6 bg-foreground/20 my-auto" />
+          {CONTACT_LINKS.map((link) => (
+            <DockItem key={link.name} link={link} mouseX={mouseX} />
+          ))}
+        </ul>
+      </motion.nav>
+    </div>
+  );
+}
+
+export default Navbar;
