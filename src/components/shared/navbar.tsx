@@ -8,7 +8,14 @@ import {
   MotionValue,
   AnimatePresence,
 } from "framer-motion";
-import { BriefcaseBusinessIcon, ClipboardIcon, ClipboardMinusIcon, LightbulbIcon, Paperclip, PaperclipIcon } from "lucide-react";
+import {
+  BriefcaseBusinessIcon,
+  ClipboardIcon,
+  ClipboardMinusIcon,
+  LightbulbIcon,
+  Paperclip,
+  PaperclipIcon,
+} from "lucide-react";
 import Link from "next/link";
 import { GithubIcon } from "../GithubIcon";
 import { usePathname } from "next/navigation";
@@ -36,12 +43,12 @@ const DETAIL_LINKS: MenuLink[] = [
     href: "/",
     target: "_self",
   },
-  {
-    name: "About",
-    icon: <LightbulbIcon size={24} />,
-    href: "about",
-    target: "_self",
-  },
+  // {
+  //   name: "About",
+  //   icon: <LightbulbIcon size={24} />,
+  //   href: "about",
+  //   target: "_self",
+  // },
   {
     name: "Work",
     icon: <BriefcaseBusinessIcon size={24} />,
@@ -54,16 +61,16 @@ const CONTACT_LINKS: MenuLink[] = [
   {
     name: "Resume",
     icon: <ClipboardMinusIcon size={24} />,
-    href: "https://github.com/avinashh10x",
+    href: "https://docs.google.com/document/d/16jEqn1e7BiGwVR97CGY1xjTlwGVkConS/export?format=pdf",
     target: "_blank",
   },
 
-  {
-    name: "Twitter",
-    icon: <TwitterIcon size={24} />,
-    href: "https://twitter.com/avinash10x",
-    target: "_blank",
-  },
+  // {
+  //   name: "Twitter",
+  //   icon: <TwitterIcon size={24} />,
+  //   href: "https://twitter.com/avinash10x",
+  //   target: "_blank",
+  // },
   {
     name: "Mail",
     icon: <MailIcon size={24} />,
