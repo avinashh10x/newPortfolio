@@ -1,12 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { gsap } from "gsap";
-
-import { TextPlugin } from "gsap/TextPlugin";
 import Navbar from "@/components/shared/navbar";
-
-gsap.registerPlugin(TextPlugin);
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -96,8 +91,35 @@ export default function RootLayout({
   const ldJson = JSON.stringify({
     "@context": "https://schema.org",
     "@type": "Person",
-    name: "Avi",
+    name: "Avi (Avinash Kumar)",
+    alternateName: ["Avinash", "Avinash Kumar", "Avi Developer"],
+    description:
+      "India's best Full-Stack Developer specializing in React, Next.js, GSAP animations, and backend development. Based in Mumbai & Punjab.",
     url: "https://byavi.in",
+    image: "https://byavi.in/og.png",
+    jobTitle: "Full-Stack Developer",
+    worksFor: {
+      "@type": "Organization",
+      name: "Freelance / Independent",
+    },
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Mumbai",
+      addressRegion: "Maharashtra",
+      addressCountry: "India",
+    },
+    knowsAbout: [
+      "React",
+      "Next.js",
+      "GSAP",
+      "JavaScript",
+      "TypeScript",
+      "Node.js",
+      "Full Stack Development",
+      "Web Animation",
+      "Backend Development",
+    ],
+    alumniOf: "Computer Science Graduate 2025",
     sameAs: [
       "https://twitter.com/avinash10x",
       "https://github.com/avinashh10x",
