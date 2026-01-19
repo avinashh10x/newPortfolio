@@ -24,6 +24,7 @@ import { HouseIcon } from "../HouseIcon";
 import { MailIcon } from "../MailIcon";
 import { MoonIcon } from "../MoonIcon";
 import { SunIcon } from "../SunIcon";
+import { LinkedInIcon } from "../LinkedinIcon";
 
 type MenuLink = {
   name: string;
@@ -58,23 +59,29 @@ const DETAIL_LINKS: MenuLink[] = [
 ];
 
 const CONTACT_LINKS: MenuLink[] = [
-  {
-    name: "Resume",
-    icon: <ClipboardMinusIcon size={24} />,
-    href: "/aviResume.pdf",
-    target: "_blank",
-  },
-
   // {
-  //   name: "Twitter",
-  //   icon: <TwitterIcon size={24} />,
-  //   href: "https://twitter.com/avinash10x",
+  //   name: "Resume",
+  //   icon: <ClipboardMinusIcon size={24} />,
+  //   href: "/aviResume.pdf",
   //   target: "_blank",
   // },
   {
+    name: "LinkedIn",
+    icon: <LinkedInIcon size={24} />,
+    href: "https://www.linkedin.com/in/avinash-kumar-%F0%9F%8C%9F-519616249/",
+    target: "_blank",
+  },
+
+  {
+    name: "Twitter",
+    icon: <TwitterIcon size={24} />,
+    href: "https://twitter.com/avinash10x",
+    target: "_blank",
+  },
+  {
     name: "Mail",
     icon: <MailIcon size={24} />,
-    href: "mailto:avinash@example.com",
+    href: "mailto:thissideavinash@gmail.com",
   },
 ];
 
