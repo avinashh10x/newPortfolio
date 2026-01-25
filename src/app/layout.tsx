@@ -51,7 +51,8 @@ export const metadata: Metadata = {
   publisher: "Avi - Best Developer Mumbai",
 
   openGraph: {
-    title: "Avi - India's Best Full-Stack Developer | React, Next.js, GSAP Expert",
+    title:
+      "Avi - India's Best Full-Stack Developer | React, Next.js, GSAP Expert",
     description:
       "Top Full-Stack Developer in Mumbai & Punjab, India. Expert in React, Next.js, GSAP animations, and backend development.",
     url: "https://byavi.in",
@@ -93,8 +94,15 @@ export const metadata: Metadata = {
     canonical: "https://byavi.in",
   },
 
-  verification: {
-    google: "YOUR_GOOGLE_VERIFICATION_CODE",
+  applicationName: "Avi - Full Stack Developer Portfolio",
+
+  // Uncomment and add your Google Search Console verification code:
+  // verification: {
+  //   google: "YOUR_GOOGLE_VERIFICATION_CODE",
+  // },
+
+  other: {
+    "revisit-after": "7 days",
   },
 };
 
@@ -143,7 +151,7 @@ export default function RootLayout({
   });
 
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className="light">
       <head>
         <link
           rel="preconnect"

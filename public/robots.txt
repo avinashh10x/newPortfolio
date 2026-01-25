@@ -1,3 +1,21 @@
 User-agent: *
 Allow: /
+
+# Disallow crawling of non-content pages
+Disallow: /api/
+Disallow: /_next/
+
+# Sitemap location
 Sitemap: https://byavi.in/sitemap.xml
+
+# Crawl delay to be friendly to servers
+Crawl-delay: 1
+
+# Specific bot directives
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
