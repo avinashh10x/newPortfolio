@@ -85,6 +85,18 @@ export const PROJECTS: project[] = [
     description:
       "A comprehensive UI library designed to accelerate the design-to-development process. Copy and paste premium logic components directly into Figma and Framer with a single click.",
     image: "/projects/crazyui.webp",
+    link: "https://crazyui.in",
+    github: "https://github.com/avinashh10x/crazyui",
+    time: "Jan 2026",
+    tag: ["Framer", "logic components"],
+  },
+
+  {
+    title: "CrazyUi",
+    subtitle: "One-Click UI Components for Figma & Framer",
+    description:
+      "A comprehensive UI library designed to accelerate the design-to-development process. Copy and paste premium logic components directly into Figma and Framer with a single click.",
+    image: "/projects/crazyui.webp",
     link: "https://crazyui.byavi.in",
     github: "https://github.com/avinashh10x/crazyui",
     time: "Jan 2026",

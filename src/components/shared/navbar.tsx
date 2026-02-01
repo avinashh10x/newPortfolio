@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef, useState, useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   motion,
   useMotionValue,
@@ -25,6 +25,7 @@ import { MailIcon } from "../MailIcon";
 import { MoonIcon } from "../MoonIcon";
 import { SunIcon } from "../SunIcon";
 import { LinkedInIcon } from "../LinkedinIcon";
+import { useTheme } from "next-themes";
 
 type MenuLink = {
   name: string;
@@ -44,12 +45,12 @@ const DETAIL_LINKS: MenuLink[] = [
     href: "/",
     target: "_self",
   },
-  // {
-  //   name: "About",
-  //   icon: <LightbulbIcon size={24} />,
-  //   href: "about",
-  //   target: "_self",
-  // },
+  {
+    name: "About",
+    icon: <LightbulbIcon size={24} />,
+    href: "about",
+    target: "_self",
+  },
   {
     name: "Work",
     icon: <BriefcaseBusinessIcon size={24} />,
@@ -284,8 +285,11 @@ function MobileNavItem({
 function Navbar() {
   const mouseX = useMotionValue(Infinity);
   const [isMobile, setIsMobile] = useState(false);
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
@@ -294,24 +298,11 @@ function Navbar() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  const [isDark, setIsDark] = useState(() => {
-    if (typeof document !== "undefined") {
-      return document.documentElement.classList.contains("dark");
-    }
-    return false;
-  });
-
   const toggleTheme = () => {
-    if (typeof document === "undefined") return;
-    const html = document.documentElement;
-    if (html.classList.contains("dark")) {
-      html.classList.remove("dark");
-      setIsDark(false);
-    } else {
-      html.classList.add("dark");
-      setIsDark(true);
-    }
+    setTheme(theme === "dark" ? "light" : "dark");
   };
+
+  const isDark = mounted ? theme === "dark" : false;
 
   return (
     <div className="w-full flex justify-center items-end pb-5 absolute bottom-0 ">

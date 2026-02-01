@@ -1,5 +1,7 @@
 import { Metadata } from "next";
 import AboutContent from "@/components/sections/AboutContent";
+import Hero from "@/components/sections/Hero";
+import Hero2 from "@/components/sections/Hero2";
 
 export const metadata: Metadata = {
   title: "Avi | Best Full-Stack Developer in India - Mumbai & Punjab",
@@ -39,7 +41,7 @@ export const metadata: Metadata = {
 function HomePage() {
   return (
     <div>
-      <AboutContent />
+      <Hero2 />
     </div>
   );
 }
