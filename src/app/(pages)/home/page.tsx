@@ -1,11 +1,12 @@
-import Hero from '@/components/sections/Hero'
-import React from 'react'
-import About from '../about/page'
+import { Metadata } from "next";
+import AboutContent from "@/components/sections/AboutContent";
+import Hero from "@/components/sections/Hero";
+import Hero2 from "@/components/sections/Hero2";
 
 function page() {
   return (
     <div>
-      <About />
+      <Hero2 />
     </div>
   )
 }

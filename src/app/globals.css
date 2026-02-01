@@ -11,6 +11,10 @@
   font-family: "Erode", serif;
 }
 
+@utility font-poppins {
+  font-family: "Poppins", sans-serif;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -129,10 +133,8 @@
   }
   body {
     @apply bg-background text-foreground;
-
   }
 }
-
 
 body::selection {
   background-color: #166bd9;
