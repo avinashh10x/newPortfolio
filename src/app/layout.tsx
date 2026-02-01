@@ -1,13 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { gsap } from "gsap";
-    
-import { TextPlugin } from "gsap/TextPlugin";
 import Navbar from "@/components/shared/navbar";
 import { ThemeProvider } from "@/components/theme-provider";
-
-gsap.registerPlugin(TextPlugin);
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,51 +18,63 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://byavi.in"),
 
   title: {
-    default: "Avi — Full-Stack Developer",
-    template: "%s | byAvi",
+    default: "Avi - Best Full-Stack Developer in India | Mumbai & Punjab",
+    template: "%s | Avi - Top Developer India",
   },
 
   description:
-    "Hi, I’m Avi, a Full-Stack Developer who builds and ships products on the internet. I turn ideas into working software, build useful tools, and refine how things work.",
+    "Hi, I'm Avi (Avinash Kumar), India's best Full-Stack Developer based in Mumbai & Punjab. Expert in React, Next.js, GSAP animations, and backend development. Building high-performance web applications.",
 
   keywords: [
     "Avi",
     "Avinash",
-    "Full Stack Developer",
-    "Web Developer",
-    "Software Developer",
-    "Indie Developer",
-    "Product Builder",
-    "JavaScript Developer",
-    "React Developer",
-    "Next.js Developer",
+    "Avinash Kumar",
+    "Full Stack Developer India",
+    "Best Full Stack Developer Mumbai",
+    "Best Full Stack Developer Punjab",
+    "Top Web Developer India",
+    "React Developer Mumbai",
+    "Next.js Developer India",
+    "GSAP Animation Developer",
+    "Best React Developer India",
+    "Frontend Developer Mumbai",
+    "Backend Developer Mumbai",
+    "Best Web Developer Punjab",
+    "JavaScript Expert India",
+    "Node.js Developer Mumbai",
+    "hire react developer india",
+    "hire next.js developer mumbai",
+    "best gsap developer india",
   ],
 
-  authors: [{ name: "Avi", url: "https://byavi.in" }],
-  creator: "Avi",
-  publisher: "Avi",
+  authors: [{ name: "Avi (Avinash Kumar)", url: "https://byavi.in" }],
+  creator: "Avi - Full Stack Developer India",
+  publisher: "Avi - Best Developer Mumbai",
 
   openGraph: {
-    title: "Avi — Full-Stack Developer",
+    title:
+      "Avi - India's Best Full-Stack Developer | React, Next.js, GSAP Expert",
     description:
-      "Full-Stack Developer building and shipping useful products on the internet. I turn ideas into working software and share my progress publicly.",
+      "Top Full-Stack Developer in Mumbai & Punjab, India. Expert in React, Next.js, GSAP animations, and backend development.",
     url: "https://byavi.in",
-    siteName: "byAvi",
-    locale: "en_US",
+    siteName: "Avi - Best Developer Portfolio India",
+    locale: "en_IN",
     type: "website",
     images: [
       {
         url: "https://byavi.in/og.png",
-        alt: "Avi — Full-Stack Developer",
+        width: 1200,
+        height: 630,
+        alt: "Avi - Best Full-Stack Developer in India | Mumbai & Punjab",
       },
     ],
   },
 
   twitter: {
     card: "summary_large_image",
-    title: "Avi — Full-Stack Developer building products on the internet",
+    title: "Avi - India's Best Full-Stack Developer | React, Next.js, GSAP",
     description:
-      "I build and ship products on the internet. Full-Stack Developer focused on turning ideas into working software.",
+      "Top Full-Stack Developer in Mumbai & Punjab. Expert in React, Next.js, GSAP animations & backend development.",
     creator: "@avinash10x",
     images: ["https://byavi.in/og.png"],
   },
@@ -87,6 +94,17 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://byavi.in",
   },
+
+  applicationName: "Avi - Full Stack Developer Portfolio",
+
+  // Uncomment and add your Google Search Console verification code:
+  // verification: {
+  //   google: "YOUR_GOOGLE_VERIFICATION_CODE",
+  // },
+
+  other: {
+    "revisit-after": "7 days",
+  },
 };
 
 export default function RootLayout({
@@ -97,8 +115,35 @@ export default function RootLayout({
   const ldJson = JSON.stringify({
     "@context": "https://schema.org",
     "@type": "Person",
-    name: "Avi",
+    name: "Avi (Avinash Kumar)",
+    alternateName: ["Avinash", "Avinash Kumar", "Avi Developer"],
+    description:
+      "India's best Full-Stack Developer specializing in React, Next.js, GSAP animations, and backend development. Based in Mumbai & Punjab.",
     url: "https://byavi.in",
+    image: "https://byavi.in/og.png",
+    jobTitle: "Full-Stack Developer",
+    worksFor: {
+      "@type": "Organization",
+      name: "Freelance / Independent",
+    },
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Mumbai",
+      addressRegion: "Maharashtra",
+      addressCountry: "India",
+    },
+    knowsAbout: [
+      "React",
+      "Next.js",
+      "GSAP",
+      "JavaScript",
+      "TypeScript",
+      "Node.js",
+      "Full Stack Development",
+      "Web Animation",
+      "Backend Development",
+    ],
+    alumniOf: "Computer Science Graduate 2025",
     sameAs: [
       "https://twitter.com/avinash10x",
       "https://github.com/avinashh10x",
@@ -130,6 +175,8 @@ export default function RootLayout({
           rel="stylesheet"
         />
         <meta name="apple-mobile-web-app-title" content="byAvi" />
+        <meta name="geo.region" content="IN-MH" />
+        <meta name="geo.placename" content="Mumbai" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: ldJson }}

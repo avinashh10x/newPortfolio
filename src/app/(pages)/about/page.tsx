@@ -1,67 +1,41 @@
-"use client"
-import { heroText, ICON_MAP } from "@/data/profile";
-import Link from "next/link";
-import { useEffect } from "react";
-import gsap, { SplitText } from "gsap/all";
+import { Metadata } from "next";
+import AboutContent from "@/components/sections/AboutContent";
 
+export const metadata: Metadata = {
+  title: "About Avi | Best Full-Stack Developer in Mumbai & Punjab, India",
+  description:
+    "Learn about Avi (Avinash Kumar), India's top full-stack developer specializing in React, Next.js, GSAP animations, and backend development. CS'25 graduate based in Mumbai & Punjab building modern web applications.",
+  keywords: [
+    "About Avi Developer",
+    "Avinash Kumar Developer",
+    "Full Stack Developer Mumbai",
+    "Best Developer Punjab",
+    "React Expert India",
+    "Next.js Developer Mumbai",
+    "GSAP Animation Developer India",
+    "Web Developer Portfolio India",
+    "Hire Developer Mumbai",
+    "Frontend Backend Developer India",
+  ],
+  openGraph: {
+    title: "About Avi | India's Best Full-Stack Developer",
+    description:
+      "Meet Avi - A top-tier full-stack developer in Mumbai & Punjab, India. Expert in React, Next.js, GSAP, and modern web technologies.",
+    url: "https://byavi.in/about",
+    type: "profile",
+  },
+  twitter: {
+    title: "About Avi | Best Full-Stack Developer in India",
+    description:
+      "Discover Avi's journey as India's best full-stack developer. Expert in React, Next.js, GSAP animations & backend development.",
+  },
+  alternates: {
+    canonical: "https://byavi.in/about",
+  },
+};
 
 function About() {
-  const parts = heroText.split(
-    /(\{\{github\}\}|\{\{twitter\}\}|\{\{linkedin\}\})/
-  );
-
-  useEffect(() => {
-    const splitText = SplitText.create(".testTXT", { type: "lines" }) ?? null;
-
-    if (splitText) {
-      gsap.from(splitText.lines, {
-        duration: .5,
-        y: 15,
-        opacity: 0,
-        filter: "blur(3px)",
-        stagger: 0.1,
-        ease: "power2.out",
-      });
-    }
-
-    return () => {
-      if (splitText) {
-        splitText.revert();
-      }
-    };
-  }, []);
-
-  return (
-    <div className="w-full h-screen flex items-center justify-center">
-      <div className="max-w-3xl px-6 text-center space-y-10">
-         {/* <p className="text-lg uppercase tracking-tight opacity-70">About</p> */}
-        <h1
-          className="text-3xl max-sm:text-lg leading-tight font-recia font-extralight testTXT"
-        >
-          {parts.map((part, index) => {
-            const icon = ICON_MAP[part as keyof typeof ICON_MAP];
-
-            if (!icon) {
-              return <span key={index}>{part}</span>;
-            }
-
-            return (
-              <Link
-                key={index}
-                href={icon.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={icon.label}
-                className="inline-flex items-center mx-1 align-middle"
-              >
-                <icon.Icon />
-              </Link>
-            );
-          })}
-        </h1>
-      </div>
-    </div>
-  );
+  return <AboutContent />;
 }
 
 export default About;

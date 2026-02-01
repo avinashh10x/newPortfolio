@@ -1,9 +1,9 @@
-import HomePage from "./(pages)/home/page";
+import AboutContent from "@/components/sections/AboutContent";
 
 export default function Home() {
   return (
     <>
-      <HomePage />
+      <AboutContent />
     </>
   );
 }
