@@ -48,13 +48,13 @@ const DETAIL_LINKS: MenuLink[] = [
   {
     name: "About",
     icon: <LightbulbIcon size={24} />,
-    href: "about",
+    href: "/about",
     target: "_self",
   },
   {
     name: "Work",
     icon: <BriefcaseBusinessIcon size={24} />,
-    href: "work",
+    href: "/work",
     target: "_self",
   },
 ];
@@ -140,7 +140,7 @@ function DockItem({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 6, scale: 0.96 }}
             transition={{ duration: 0.18, ease: "easeOut" }}
-            className="pointer-events-none absolute -top-8 px-2 py-1 text-[10px] rounded-sm bg-background text-white whitespace-nowrap"
+            className="pointer-events-none absolute -top-8 px-2 py-1 text-[10px] rounded-sm bg-background text-foreground whitespace-nowrap"
           >
             {link.name}
           </motion.span>
@@ -152,11 +152,13 @@ function DockItem({
           const hrefPath =
             link.href === "#" || link.href.startsWith("http")
               ? null
-              : link.href === "/"
-                ? "/"
-                : `/${link.href}`;
+              : link.href;
 
-          const isActive = hrefPath ? path === hrefPath : false;
+          const isActive = hrefPath
+            ? hrefPath === "/"
+              ? path === "/"
+              : path.startsWith(hrefPath)
+            : false;
 
           return (
             isActive && (
@@ -231,13 +233,13 @@ function MobileNavItem({
   const isMailto = link.href.startsWith("mailto");
 
   const hrefPath =
-    link.href === "#" || link.href.startsWith("http")
-      ? null
-      : link.href === "/"
-        ? "/"
-        : `/${link.href}`;
+    link.href === "#" || link.href.startsWith("http") ? null : link.href;
 
-  const isActive = hrefPath ? path === hrefPath : false;
+  const isActive = hrefPath
+    ? hrefPath === "/"
+      ? path === "/"
+      : path.startsWith(hrefPath)
+    : false;
 
   const content = (
     <span className="text-foreground/80 flex items-center justify-center">
@@ -305,7 +307,7 @@ function Navbar() {
   const isDark = mounted ? theme === "dark" : false;
 
   return (
-    <div className="w-full flex justify-center items-end pb-5 absolute bottom-0 ">
+    <div className="w-full flex justify-center items-end pb-5 fixed bottom-0 ">
       {isMobile ? (
         // Mobile: Simple nav without dock animations
         <nav className="bg-background/40 backdrop-blur-xl rounded-full px-3 py-2 border border-foreground/20 shadow-2xl">
