@@ -149,12 +149,11 @@ export default function KaraScroll() {
           </p>
         </div>
         <div className="flex flex-col space-y-2 text-[1.2vw]">
-          {PROJECTS.slice(0, 3).map((project, i) => (
+          {PROJECTS.slice(0, 5).map((project, i) => (
             <Link
               key={i}
               className="flex items-center gap-2 leading-loose px-3 py-0.5 hover:bg-foreground/10 rounded-sm transition-colors duration-300 justify-between"
-              href={project.link}
-              target="_blank"
+              href={`/work/${project.slug}`}
             >
               <p className="projectTxt">
                 <span className="font-medium">{project.title} </span>
@@ -241,7 +240,7 @@ export default function KaraScroll() {
               <Link href={project.link} target="_blank">
                 <div className="aspect-video rounded-sm overflow-hidden pointer-events-none">
                   <Image
-                    src={project.image}
+                    src={project.image[0]}
                     alt={project.title}
                     className="w-full h-full object-cover rounded-sm"
                     width={900}
