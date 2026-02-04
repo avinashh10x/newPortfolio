@@ -103,7 +103,7 @@ export default function InfiniteMediaGrid() {
               >
                 <Link href={src.link}>
                   <img
-                    src={src.image}
+                    src={src.image[0]}
                     alt=""
                     className="w-full aspect-video object-contain block rounded-md"
                     draggable={false}
