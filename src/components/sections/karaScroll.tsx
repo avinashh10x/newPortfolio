@@ -145,7 +145,7 @@ export default function KaraScroll() {
           />
           {/* <p>{PROJECTS.length}</p> */}
           <p className=" -mt-4" ref={numberRef}>
-            <NumberFlow value={count} />
+            {/* <NumberFlow value={count} /> */}#
           </p>
         </div>
         <div className="flex flex-col space-y-2 text-[1.2vw]">

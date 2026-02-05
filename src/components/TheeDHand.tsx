@@ -12,15 +12,15 @@ import * as THREE from "three";
 
 // Left Hand Model Component with mouse interaction
 function LeftHandModel() {
-  const { scene } = useGLTF("/model/L.glb");
+  const { scene } = useGLTF("/model/l2.glb");
   const modelRef = useRef<THREE.Group>(null);
   const { pointer } = useThree();
 
   // Store current rotation for smooth lerping
-  const currentRotation = useRef({ x: 0, y: 1.8, z: 0 });
+  const currentRotation = useRef({ x: 0.1, y: 4.9, z: 0 });
 
   // Base rotation values (your default)
-  const baseRotation = { x: 0, y: 1.8, z: 0 };
+  const baseRotation = { x: 0.1, y: 4.9, z: 0 };
 
   // Apply material/shader to the model
   scene.traverse((child) => {
@@ -41,7 +41,7 @@ function LeftHandModel() {
     if (modelRef.current) {
       // Calculate target rotation based on mouse position
       // pointer.x and pointer.y are normalized from -1 to 1
-      const tiltAmount = 0.2; // How much tilt to apply
+      const tiltAmount = 0.1; // How much tilt to apply
 
       const targetX = baseRotation.x + pointer.y * tiltAmount;
       const targetY = baseRotation.y + pointer.x * tiltAmount;
@@ -63,23 +63,23 @@ function LeftHandModel() {
     <primitive
       ref={modelRef}
       object={scene}
-      scale={1.1}
-      position={[-4.5, -1, 0]}
+      scale={1.5}
+      position={[-1.2, -3.5, -5]}
     />
   );
 }
 
 // Right Hand Model Component with mouse interaction
 function RightHandModel() {
-  const { scene } = useGLTF("/model/R.glb");
+  const { scene } = useGLTF("/model/r3.glb");
   const modelRef = useRef<THREE.Group>(null);
   const { pointer } = useThree();
 
   // Store current rotation for smooth lerping
-  const currentRotation = useRef({ x: 0.78, y: 1.8, z: 0 });
+  const currentRotation = useRef({ x: 0, y: -1.8, z: -0.3 });
 
   // Base rotation values (your default)
-  const baseRotation = { x: 0.78, y: 1.8, z: 0 };
+  const baseRotation = { x: 0, y: -1.6, z: -0.3 };
 
   // Apply material/shader to the model
   scene.traverse((child) => {
@@ -99,7 +99,7 @@ function RightHandModel() {
   useFrame(() => {
     if (modelRef.current) {
       // Calculate target rotation based on mouse position
-      const tiltAmount = 0.2; // How much tilt to apply
+      const tiltAmount = 0.1; // How much tilt to apply
 
       const targetX = baseRotation.x + pointer.y * tiltAmount;
       const targetY = baseRotation.y + pointer.x * tiltAmount;
@@ -121,8 +121,8 @@ function RightHandModel() {
     <primitive
       ref={modelRef}
       object={scene}
-      scale={1}
-      position={[-1.4, -0.6, 0]}
+      scale={0.6}
+      position={[4, -0.6, -5]}
     />
   );
 }
@@ -146,16 +146,7 @@ export default function ThreeDHand() {
         gl={{ antialias: true, alpha: true }}
         style={{ width: "100%", height: "100%" }}
       >
-        {/* Lighting */}
-        <ambientLight intensity={0.4} />
-        {/* <directionalLight
-          position={[5, 5, 5]}
-          intensity={1.5}
-          castShadow
-          shadow-mapSize={[1024, 1024]}
-        /> */}
-        {/* <pointLight position={[-5, 5, -5]} intensity={0.5} color="#a855f7" /> */}
-        {/* <pointLight position={[5, -5, 5]} intensity={0.3} color="#3b82f6" /> */}
+        <pointLight position={[5, -5, 5]} intensity={0.3} color="#3b82f6" />
 
         {/* Environment for reflections */}
         <Environment preset="city" />
@@ -170,24 +161,37 @@ export default function ThreeDHand() {
         <ContactShadows
           position={[0, -1.5, 0]}
           opacity={0.4}
-          scale={10}
+          scale={20}
           blur={2.5}
-          far={4}
+          far={20}
         />
-        {/* <OrbitControls /> */}
+        <OrbitControls />
       </Canvas>
 
       {/* Optional overlay gradient for depth */}
       {/* <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-zinc-950/60 via-transparent to-zinc-950/30" /> */}
 
       {/* Debug: Center dot */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center font-poppins font-bold justify-center z-50">
-        <p className="text-foreground text-5xl text-center">Where Ideas Turn <br /> Into Products</p>
+      <div className="absolute top-1/2 left-1/2 z-50 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center text-center font-poppins">
+        {/* Role / authority */}
+        <span className="mb-3 text-xs tracking-widest text-muted-foreground uppercase">
+          Full Stack Developer 
+        </span>
+
+        {/* Identity */}
+        <h1 className="mb-4 text-4xl font-semibold text-foreground sm:text-5xl">
+          Yo, I’m Avinash <span className="inline-block"></span>
+        </h1>
+
+        {/* Hook */}
+        <p className="max-w-xl text-xl font-medium text-foreground sm:text-2xl">
+          I design it. I build it. I ship it.
+        </p>
       </div>
     </div>
   );
 }
 
 // Preload the models
-useGLTF.preload("/model/L.glb");
-useGLTF.preload("/model/R.glb");
+useGLTF.preload("/model/l2.glb");
+useGLTF.preload("/model/r3.glb");
