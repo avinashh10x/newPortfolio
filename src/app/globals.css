@@ -34,16 +34,16 @@
 :root {
   --radius: 0.625rem;
   --background: #f9f8f6;
-  --foreground: #1b211a;
+  --foreground: #000000;
   --primary: #bb8ded;
   --primary-foreground: #f9f8f6;
 }
 
 .dark {
-  --background: #1b211a;
+  --background: #010101;
   --foreground: #f9f8f6;
   --primary: #bb8ded;
-  --primary-foreground: #1b211a;
+  --primary-foreground: #010101;
 }
 
 @layer base {
@@ -65,10 +65,18 @@
   background-color: transparent;
 }
 
-
 ::-webkit-scrollbar-thumb {
   background-color: var(--primary);
   border-radius: 10px;
   width: 2px;
 }
 
+/* Hide scrollbar utility */
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}

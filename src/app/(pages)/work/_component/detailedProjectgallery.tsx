@@ -4,27 +4,11 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
+import { project } from "@/data/projects";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Placeholder images for now
-const GALLERY_IMAGES = [
-  "https://plus.unsplash.com/premium_photo-1754254834163-7d100f5a9f93?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1769320940078-8746ee0f7055?q=80&w=1176&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://plus.unsplash.com/premium_photo-1754254834163-7d100f5a9f93?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1769320940078-8746ee0f7055?q=80&w=1176&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://plus.unsplash.com/premium_photo-1754254834163-7d100f5a9f93?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1769320940078-8746ee0f7055?q=80&w=1176&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://plus.unsplash.com/premium_photo-1754254834163-7d100f5a9f93?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1769320940078-8746ee0f7055?q=80&w=1176&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://plus.unsplash.com/premium_photo-1754254834163-7d100f5a9f93?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1769320940078-8746ee0f7055?q=80&w=1176&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-];
-
-// Clone images for infinite effect
-const CLONE_IMAGES = GALLERY_IMAGES.slice(0, 5);
-
-const DetailedProjectGallery = () => {
+const DetailedProjectGallery = ({ Project }: { Project: project }) => {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -145,7 +129,7 @@ const DetailedProjectGallery = () => {
         >
           {/* Main list */}
           <ul className="flex items-end gap-4 px-4 md:px-8 -translate-x-20">
-            {GALLERY_IMAGES.map((src, index) => (
+            {Project.image.map((src, index) => (
               <li
                 key={index}
                 className="media relative flex-shrink-0"
@@ -172,7 +156,7 @@ const DetailedProjectGallery = () => {
             aria-hidden="true"
             style={{ width: "100vw" }}
           >
-            {CLONE_IMAGES.map((src, index) => (
+            {Project.image.map((src, index) => (
               <li
                 key={`clone-${index}`}
                 className="media relative flex-shrink-0"

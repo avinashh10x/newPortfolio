@@ -24,6 +24,20 @@ export default function KaraScroll() {
   const isInView = useInView(numberRef, { once: true });
   const [currentTime, setCurrentTime] = useState("");
   const [count, setCount] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect mobile/touch devices
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(
+        window.matchMedia("(max-width: 768px)").matches ||
+          "ontouchstart" in window,
+      );
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   useEffect(() => {
     if (isInView) {
@@ -47,66 +61,142 @@ export default function KaraScroll() {
     return () => clearInterval(interval);
   }, []);
 
+  // Unified GSAP scroll animation for both desktop and mobile
   useEffect(() => {
     if (!contentRef.current || !containerRef.current) return;
 
+    const content = contentRef.current;
+    const container = containerRef.current;
+
     let incrTick = 0;
+    let velocity = 0;
     let interactionTimeout: ReturnType<typeof setTimeout>;
 
-    const content = contentRef.current;
     const half = content.getBoundingClientRect().height / 2;
     const wrap = gsap.utils.wrap(-half, 0);
 
+    // Buttery smooth animation with longer duration for mobile
     const yTo = gsap.quickTo(content, "y", {
-      duration: 1,
-      ease: "power4",
+      duration: isMobile ? 0.8 : 1,
+      ease: "power3.out",
       modifiers: {
         y: gsap.utils.unitize(wrap),
       },
     });
 
-    const scaleTo = gsap.quickTo(containerRef.current, "scaleY", {
-      duration: 0.6,
-      ease: "power4",
+    const scaleTo = gsap.quickTo(container, "scaleY", {
+      duration: 0.5,
+      ease: "power3.out",
     });
 
-    const handleInteraction = (e: {
-      event?: Event | WheelEvent | PointerEvent | TouchEvent | null;
-      deltaY?: number;
-    }) => {
-      const deltaY = e.deltaY ?? 0;
+    // Touch tracking for mobile
+    let touchStartY = 0;
+    let lastTouchY = 0;
+    let isTouching = false;
+    let touchVelocity = 0;
+    let lastTouchTime = 0;
 
-      if (e.event?.type === "wheel") incrTick -= deltaY;
-      else incrTick += deltaY;
+    const handleTouchStart = (e: TouchEvent) => {
+      isTouching = true;
+      touchStartY = e.touches[0].clientY;
+      lastTouchY = touchStartY;
+      lastTouchTime = Date.now();
+      touchVelocity = 0;
+    };
 
-      const valSc = 1 - gsap.utils.clamp(-0.2, 0.2, deltaY / 300);
+    const handleTouchMove = (e: TouchEvent) => {
+      if (!isTouching) return;
 
+      const currentY = e.touches[0].clientY;
+      const deltaY = lastTouchY - currentY; // Positive = swiping up
+      const now = Date.now();
+      const dt = now - lastTouchTime;
+
+      // Calculate velocity for momentum
+      if (dt > 0) {
+        touchVelocity = (deltaY / dt) * 16; // Normalize to ~60fps
+      }
+
+      // Only prevent default and handle scroll if swiping UP
+      // This allows pull-to-refresh when swiping DOWN at top
+      if (deltaY > 0) {
+        e.preventDefault();
+        incrTick -= deltaY * 1.5; // Amplify for responsiveness
+
+        // Subtle scale effect
+        const valSc = 1 - gsap.utils.clamp(-0.08, 0.08, deltaY / 500);
+        scaleTo(valSc);
+
+        clearTimeout(interactionTimeout);
+        interactionTimeout = setTimeout(() => scaleTo(1), 100);
+      } else if (deltaY < -5) {
+        // Swiping down - allow if not too aggressive
+        incrTick -= deltaY * 1.2;
+      }
+
+      lastTouchY = currentY;
+      lastTouchTime = now;
+    };
+
+    const handleTouchEnd = () => {
+      isTouching = false;
+      // Apply momentum after touch ends
+      velocity = touchVelocity * 8;
+      scaleTo(1);
+    };
+
+    // Desktop wheel handler
+    const handleWheel = (e: WheelEvent) => {
+      incrTick -= e.deltaY;
+      const valSc = 1 - gsap.utils.clamp(-0.15, 0.15, e.deltaY / 300);
       scaleTo(valSc);
 
       clearTimeout(interactionTimeout);
-      interactionTimeout = setTimeout(() => {
-        scaleTo(1);
-      }, 66);
+      interactionTimeout = setTimeout(() => scaleTo(1), 80);
     };
 
-    Observer.create({
-      target: window,
-      type: "wheel,pointer,touch",
-      onChange: handleInteraction,
-    });
-
+    // Animation tick
     const tick = (_time: number, dt: number) => {
-      incrTick += dt / 30;
+      // Auto-scroll (slower on mobile for better feel)
+      const autoSpeed = isMobile ? dt / 50 : dt / 30;
+      incrTick += autoSpeed;
+
+      // Apply momentum decay for mobile
+      if (isMobile && Math.abs(velocity) > 0.5) {
+        incrTick -= velocity;
+        velocity *= 0.92; // Smooth decay
+      }
+
       yTo(incrTick);
     };
+
+    // Attach event listeners based on device
+    if (isMobile) {
+      container.addEventListener("touchstart", handleTouchStart, {
+        passive: true,
+      });
+      container.addEventListener("touchmove", handleTouchMove, {
+        passive: false,
+      });
+      container.addEventListener("touchend", handleTouchEnd, { passive: true });
+    } else {
+      window.addEventListener("wheel", handleWheel, { passive: true });
+    }
 
     gsap.ticker.add(tick);
 
     return () => {
       gsap.ticker.remove(tick);
-      Observer.getAll().forEach((o) => o.kill());
+      if (isMobile) {
+        container.removeEventListener("touchstart", handleTouchStart);
+        container.removeEventListener("touchmove", handleTouchMove);
+        container.removeEventListener("touchend", handleTouchEnd);
+      } else {
+        window.removeEventListener("wheel", handleWheel);
+      }
+      clearTimeout(interactionTimeout);
     };
-  }, []);
+  }, [isMobile]);
 
   useEffect(() => {
     const splitText =
@@ -228,57 +318,103 @@ export default function KaraScroll() {
       {/* Scroll Container */}
       <div
         ref={containerRef}
-        className="w-[30vw] h-screen  origin-center max-md:w-[90vw] max-md:mx-auto overflow-hidden"
+        className="w-[30vw] h-screen origin-center max-md:w-[90vw] max-md:mx-auto overflow-hidden scrollbar-none"
       >
         <div
           ref={contentRef}
           className="flex flex-col gap-6 h-max mx-auto pb-6 w-full"
         >
-          {/* Render projects TWICE for seamless infinite scroll */}
-          {[...PROJECTS, ...PROJECTS].map((project, i) => (
-            <div key={i}>
-              <Link href={project.link} target="_blank">
-                <div className="aspect-video rounded-sm overflow-hidden pointer-events-none">
-                  <Image
-                    src={project.image[0]}
-                    alt={project.title}
-                    className="w-full h-full object-cover rounded-sm"
-                    width={900}
-                    height={500}
-                    priority={i < PROJECTS.length}
-                  />
-                </div>
-                <div className=" flex items-center gap-3 mb-6 leading-loose justify-between md:hidden">
-                  <p className="">
-                    <span className="font-medium">{project.title} </span>
-                    <span className="text-foreground/50 lowercase font-extralight">
-                      {project.subtitle &&
-                        `${
-                          project.subtitle.length > 15
-                            ? project.subtitle.slice(0, 15) + "..."
-                            : project.subtitle
-                        }`}
-                    </span>
-                  </p>
-                  {/* mobile: flexible bar to fill space */}
-                  <motion.span
-                    initial={{ scaleX: 0, originX: 0 }}
-                    whileInView={{ scaleX: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                    className="flex-1 h-px bg-foreground/10 mx-3"
-                  />
-                  <motion.span
-                    initial={{ y: 20, opacity: 0, filter: "blur(5px)" }}
-                    whileInView={{ y: 0, opacity: 1, filter: "blur(0px)" }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, ease: "easeOut" }}
-                    className="text-foreground/50"
+          {/* Render projects twice for infinite scroll on desktop, with gallery card after each set */}
+          {[0, 1].map((setIndex) => (
+            <div key={setIndex} className="flex flex-col gap-6">
+              {PROJECTS.map((project, i) => (
+                <div key={`${setIndex}-${i}`}>
+                  {/* Mobile: go to project detail, Desktop: go to external link */}
+                  <Link
+                    href={isMobile ? `/work/${project.slug}` : project.link}
+                    target={isMobile ? undefined : "_blank"}
                   >
-                    {project.time}
-                  </motion.span>
+                    <div className="w-full rounded-sm overflow-hidden">
+                      <Image
+                        src={project.image[0]}
+                        alt={project.title}
+                        className="w-full h-full object-cover rounded-sm hover:scale-[1.03] transition-all duration-300"
+                        width={900}
+                        height={500}
+                        priority={setIndex === 0 && i < 3}
+                      />
+                    </div>
+                    <div className="flex items-center gap-3 mb-6 leading-loose justify-between md:hidden">
+                      <p className="">
+                        <span className="font-medium">{project.title} </span>
+                        <span className="text-foreground/50 lowercase font-extralight">
+                          {project.subtitle &&
+                            `${
+                              project.subtitle.length > 15
+                                ? project.subtitle.slice(0, 15) + "..."
+                                : project.subtitle
+                            }`}
+                        </span>
+                      </p>
+                      {/* mobile: flexible bar to fill space */}
+                      <motion.span
+                        initial={{ scaleX: 0, originX: 0 }}
+                        whileInView={{ scaleX: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+                        className="flex-1 h-px bg-foreground/10 mx-3"
+                      />
+                      <motion.span
+                        initial={{ y: 20, opacity: 0, filter: "blur(5px)" }}
+                        whileInView={{ y: 0, opacity: 1, filter: "blur(0px)" }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.5, ease: "easeOut" }}
+                        className="text-foreground/50"
+                      >
+                        {project.time}
+                      </motion.span>
+                    </div>
+                  </Link>
                 </div>
-              </Link>
+              ))}
+
+              {/* Gallery Link Card - appears after each project set */}
+              <div>
+                <Link href="/gallery">
+                  <div className="aspect-video rounded-sm overflow-hidden pointer-events-none bg-gradient-to-br from-primary/20 via-primary/10 to-transparent flex items-center justify-center border border-foreground/10">
+                    <div className="text-center">
+                      <p className="text-[8vw] md:text-[2vw] font-medium text-foreground/80">
+                        →
+                      </p>
+                      <p className="text-foreground/60 text-sm">Archive</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3 mb-6 leading-loose justify-between md:hidden">
+                    <p className="">
+                      <span className="font-medium">View All </span>
+                      <span className="text-foreground/50 lowercase font-extralight">
+                        explore archive
+                      </span>
+                    </p>
+                    <motion.span
+                      initial={{ scaleX: 0, originX: 0 }}
+                      whileInView={{ scaleX: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+                      className="flex-1 h-px bg-foreground/10 mx-3"
+                    />
+                    <motion.span
+                      initial={{ y: 20, opacity: 0, filter: "blur(5px)" }}
+                      whileInView={{ y: 0, opacity: 1, filter: "blur(0px)" }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.5, ease: "easeOut" }}
+                      className="text-primary"
+                    >
+                      {PROJECTS.length}+
+                    </motion.span>
+                  </div>
+                </Link>
+              </div>
             </div>
           ))}
         </div>

@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import AboutContent from "@/components/sections/AboutContent";
+import About2 from "@/components/sections/About2";
 
 export const metadata: Metadata = {
   title: "About Avi | Best Full-Stack Developer in Mumbai & Punjab, India",
@@ -35,7 +36,12 @@ export const metadata: Metadata = {
 };
 
 function About() {
-  return <AboutContent />;
+  return (
+    <>
+      <AboutContent />
+      <About2 />
+    </>
+  );
 }
 
 export default About;
