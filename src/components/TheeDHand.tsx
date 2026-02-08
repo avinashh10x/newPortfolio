@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, Suspense } from "react";
+import { useRef, Suspense, useState, useEffect } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import {
   useGLTF,
@@ -10,23 +10,21 @@ import {
 } from "@react-three/drei";
 import * as THREE from "three";
 
-// Left Hand Model Component with mouse interaction
-function LeftHandModel() {
-  const { scene } = useGLTF("/model/l2.glb");
+function LeftHandModel({ isMobile }: { isMobile: boolean }) {
+  const { scene } = useGLTF("/model/left2.glb");
   const modelRef = useRef<THREE.Group>(null);
   const { pointer } = useThree();
 
-  // Store current rotation for smooth lerping
-  const currentRotation = useRef({ x: 0.1, y: 4.9, z: 0 });
+  const baseRotation = isMobile
+    ? { x: 1.1, y: -1.1, z: 1.1 } 
+    : { x: -0.1, y: -1.5, z: 0 }; 
 
-  // Base rotation values (your default)
-  const baseRotation = { x: 0.1, y: 4.9, z: 0 };
+  const currentRotation = useRef(baseRotation);
 
-  // Apply material/shader to the model
   scene.traverse((child) => {
     if (child instanceof THREE.Mesh) {
       child.material = new THREE.MeshStandardMaterial({
-        color: new THREE.Color("#8b5cf6"), // Purple shade
+        color: new THREE.Color("#8b5cf6"), 
         metalness: 0.3,
         roughness: 0.4,
         envMapIntensity: 1,
@@ -36,56 +34,51 @@ function LeftHandModel() {
     }
   });
 
-  // Mouse-based tilt interaction
   useFrame(() => {
     if (modelRef.current) {
-      // Calculate target rotation based on mouse position
-      // pointer.x and pointer.y are normalized from -1 to 1
-      const tiltAmount = 0.1; // How much tilt to apply
+      const tiltAmount = 0.1; 
 
       const targetX = baseRotation.x + pointer.y * tiltAmount;
       const targetY = baseRotation.y + pointer.x * tiltAmount;
       const targetZ = baseRotation.z + pointer.x * 0.08;
 
-      // Smooth lerp to target rotation (momentum effect)
       currentRotation.current.x += (targetX - currentRotation.current.x) * 0.05;
       currentRotation.current.y += (targetY - currentRotation.current.y) * 0.05;
       currentRotation.current.z += (targetZ - currentRotation.current.z) * 0.05;
-
-      // Apply rotation
       modelRef.current.rotation.x = currentRotation.current.x;
       modelRef.current.rotation.y = currentRotation.current.y;
       modelRef.current.rotation.z = currentRotation.current.z;
     }
   });
 
+  const position: [number, number, number] = isMobile
+    ? [-1, -1.4, -5] 
+    : [-4.5, -2, -5]; 
+
   return (
     <primitive
       ref={modelRef}
       object={scene}
-      scale={1.5}
-      position={[-1.2, -3.5, -5]}
+      scale={isMobile ? 0.35 : 0.7}
+      position={position}
     />
   );
 }
 
-// Right Hand Model Component with mouse interaction
-function RightHandModel() {
-  const { scene } = useGLTF("/model/r3.glb");
+function RightHandModel({ isMobile }: { isMobile: boolean }) {
+  const { scene } = useGLTF("/model/right2.glb");
   const modelRef = useRef<THREE.Group>(null);
   const { pointer } = useThree();
 
-  // Store current rotation for smooth lerping
-  const currentRotation = useRef({ x: 0, y: -1.8, z: -0.3 });
+  const baseRotation = isMobile
+    ? { x: 1.2, y: -1.1, z: 0.9 } 
+    : { x: 0, y: -1.6, z: -0.3 }; 
+  const currentRotation = useRef(baseRotation);
 
-  // Base rotation values (your default)
-  const baseRotation = { x: 0, y: -1.6, z: -0.3 };
-
-  // Apply material/shader to the model
   scene.traverse((child) => {
     if (child instanceof THREE.Mesh) {
       child.material = new THREE.MeshStandardMaterial({
-        color: new THREE.Color("#8b5cf6"), // Purple shade
+        color: new THREE.Color("#8b5cf6"), 
         metalness: 0.3,
         roughness: 0.4,
         envMapIntensity: 1,
@@ -95,34 +88,34 @@ function RightHandModel() {
     }
   });
 
-  // Mouse-based tilt interaction
   useFrame(() => {
     if (modelRef.current) {
-      // Calculate target rotation based on mouse position
-      const tiltAmount = 0.1; // How much tilt to apply
+      const tiltAmount = 0.1; 
 
       const targetX = baseRotation.x + pointer.y * tiltAmount;
       const targetY = baseRotation.y + pointer.x * tiltAmount;
       const targetZ = baseRotation.z + pointer.x * 0.08;
 
-      // Smooth lerp to target rotation (momentum effect)
       currentRotation.current.x += (targetX - currentRotation.current.x) * 0.05;
       currentRotation.current.y += (targetY - currentRotation.current.y) * 0.02;
       currentRotation.current.z += (targetZ - currentRotation.current.z) * 0.05;
 
-      // Apply rotation
       modelRef.current.rotation.x = currentRotation.current.x;
       modelRef.current.rotation.y = currentRotation.current.y;
       modelRef.current.rotation.z = currentRotation.current.z;
     }
   });
 
+  const position: [number, number, number] = isMobile
+    ? [0.2, -0.1, -5] 
+    : [2, -0.6, -5]; 
+
   return (
     <primitive
       ref={modelRef}
       object={scene}
-      scale={0.6}
-      position={[4, -0.6, -5]}
+      scale={isMobile ? 0.3 : 0.55}
+      position={position}
     />
   );
 }
@@ -138,8 +131,34 @@ function Loader() {
 }
 
 export default function ThreeDHand() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
   return (
-    <div className="w-screen h-screen fixed inset-0 bg-background">
+    <div
+      className="fixed inset-0 w-screen h-screen"
+      style={{
+        background: `
+    radial-gradient(
+      circle at center,
+      var(--background) 20%,
+      rgba(139,92,246,0.3) 80%,
+      rgba(139,92,246,0.6) 120%,
+      transparent 250%
+    )
+  `,
+      }}
+    >
       <Canvas
         shadows
         camera={{ position: [0, 0, 5], fov: 45 }}
@@ -148,44 +167,39 @@ export default function ThreeDHand() {
       >
         <pointLight position={[5, -5, 5]} intensity={0.3} color="#3b82f6" />
 
-        {/* Environment for reflections */}
         <Environment preset="city" />
 
-        {/* 3D Models */}
         <Suspense fallback={<Loader />}>
-          <LeftHandModel />
-          <RightHandModel />
+          <LeftHandModel isMobile={isMobile} />
+          <RightHandModel isMobile={isMobile} />
         </Suspense>
 
-        {/* Ground shadow */}
-        <ContactShadows
-          position={[0, -1.5, 0]}
-          opacity={0.4}
-          scale={20}
-          blur={2.5}
-          far={20}
-        />
-        <OrbitControls />
+        
+          <ContactShadows
+            position={[0, -3.9, 0]}
+            opacity={0.3}
+            scale={30}
+            blur={2.5} 
+            far={20}
+          />
+        {/* <OrbitControls /> */}
       </Canvas>
 
-      {/* Optional overlay gradient for depth */}
-      {/* <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-zinc-950/60 via-transparent to-zinc-950/30" /> */}
-
-      {/* Debug: Center dot */}
-      <div className="absolute top-1/2 left-1/2 z-50 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center text-center font-poppins">
-        {/* Role / authority */}
-        <span className="mb-3 text-xs tracking-widest text-muted-foreground uppercase">
-          Full Stack Developer 
+     
+     
+      <div className="absolute top-1/2 left-1/2 z-50 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center text-center font-poppins leading-[10px] md:leading-8">
+        <span className="mb-3 text-[2.2vw] md:text-[1vw] tracking-widest text-foreground/50 uppercase">
+          Full Stack Developer
         </span>
 
-        {/* Identity */}
-        <h1 className="mb-4 text-4xl font-semibold text-foreground sm:text-5xl">
-          Yo, I’m Avinash <span className="inline-block"></span>
+       
+        <h1 className="mb-4 text-[5.5vw] md:text-[3vw] font-semibold uppercase   text-primary leading-[10px] md:leading-5">
+          I&apos;m Avinash <span className="inline-block"></span>
         </h1>
 
-        {/* Hook */}
-        <p className="max-w-xl text-xl font-medium text-foreground sm:text-2xl">
-          I design it. I build it. I ship it.
+    
+        <p className="max-w-xl text-[3.5vw] md:text-[1.7vw] font-medium text-foreground leading-[10px] md:leading-5">
+          I Design. Build. Ship.
         </p>
       </div>
     </div>
@@ -193,5 +207,5 @@ export default function ThreeDHand() {
 }
 
 // Preload the models
-useGLTF.preload("/model/l2.glb");
-useGLTF.preload("/model/r3.glb");
+useGLTF.preload("/model/left2.glb");
+useGLTF.preload("/model/right2.glb");

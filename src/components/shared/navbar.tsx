@@ -90,10 +90,12 @@ function DockItem({
   link,
   mouseX,
   onThemeClick,
+  isActive,
 }: {
   link: MenuLink;
   mouseX: MotionValue<number>;
   onThemeClick?: () => void;
+  isActive: boolean;
 }) {
   const ref = useRef<HTMLLIElement | null>(null);
   const [isHovered, setIsHovered] = React.useState(false);
@@ -128,7 +130,7 @@ function DockItem({
     <>
       <motion.span
         style={{ scale: iconScale }}
-        className="text-foreground/80 flex items-center justify-center"
+        className={ `text-foreground/80 flex items-center justify-center ${isActive ? "text-primary" : ""}`}
       >
         {link.icon}
       </motion.span>
@@ -167,7 +169,7 @@ function DockItem({
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 1, y: 6, scale: 0.96 }}
                 transition={{ duration: 0.18, ease: "easeOut" }}
-                className="pointer-events-none absolute -bottom-1.5 text-[10px] rounded-full bg-foreground/50 h-[3px] w-[3px] "
+                className="pointer-events-none absolute -bottom-1.5 text-primary text-[10px] rounded-full bg-primary h-[3px] w-[3px] "
               ></motion.span>
             )
           );
@@ -289,6 +291,15 @@ function Navbar() {
   const [isMobile, setIsMobile] = useState(false);
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const path = usePathname();
+
+  const isActive = (hrefPath: string) => {
+    return hrefPath
+      ? hrefPath === "/"
+        ? path === "/"
+        : path.startsWith(hrefPath)
+      : false;
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -377,6 +388,7 @@ function Navbar() {
                   link={renderedLink}
                   mouseX={mouseX}
                   onThemeClick={toggleTheme}
+                  isActive={isActive(link.href)}
                 />
               );
             })}
@@ -386,12 +398,13 @@ function Navbar() {
                 key={link.name}
                 link={link}
                 mouseX={mouseX}
+                isActive={isActive(link.href)}
                 onThemeClick={toggleTheme}
               />
             ))}
             <motion.span className="w-px h-6 bg-foreground/20 my-auto" />
             {CONTACT_LINKS.map((link) => (
-              <DockItem key={link.name} link={link} mouseX={mouseX} />
+              <DockItem key={link.name} link={link} mouseX={mouseX} isActive={isActive(link.href)} />
             ))}
           </ul>
         </motion.nav>
