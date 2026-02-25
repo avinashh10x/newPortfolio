@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef, useState, useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   motion,
   useMotionValue,
@@ -25,6 +25,7 @@ import { MailIcon } from "../MailIcon";
 import { MoonIcon } from "../MoonIcon";
 import { SunIcon } from "../SunIcon";
 import { LinkedInIcon } from "../LinkedinIcon";
+import { useTheme } from "next-themes";
 
 type MenuLink = {
   name: string;
@@ -44,16 +45,16 @@ const DETAIL_LINKS: MenuLink[] = [
     href: "/",
     target: "_self",
   },
-  // {
-  //   name: "About",
-  //   icon: <LightbulbIcon size={24} />,
-  //   href: "about",
-  //   target: "_self",
-  // },
+  {
+    name: "About",
+    icon: <LightbulbIcon size={24} />,
+    href: "/about",
+    target: "_self",
+  },
   {
     name: "Work",
     icon: <BriefcaseBusinessIcon size={24} />,
-    href: "work",
+    href: "/work",
     target: "_self",
   },
 ];
@@ -89,10 +90,12 @@ function DockItem({
   link,
   mouseX,
   onThemeClick,
+  isActive,
 }: {
   link: MenuLink;
   mouseX: MotionValue<number>;
   onThemeClick?: () => void;
+  isActive: boolean;
 }) {
   const ref = useRef<HTMLLIElement | null>(null);
   const [isHovered, setIsHovered] = React.useState(false);
@@ -127,7 +130,7 @@ function DockItem({
     <>
       <motion.span
         style={{ scale: iconScale }}
-        className="text-foreground/80 flex items-center justify-center"
+        className={ `text-foreground/80 flex items-center justify-center ${isActive ? "text-primary" : ""}`}
       >
         {link.icon}
       </motion.span>
@@ -139,7 +142,7 @@ function DockItem({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 6, scale: 0.96 }}
             transition={{ duration: 0.18, ease: "easeOut" }}
-            className="pointer-events-none absolute -top-8 px-2 py-1 text-[10px] rounded-sm bg-background text-white whitespace-nowrap"
+            className="pointer-events-none absolute -top-8 px-2 py-1 text-[10px] rounded-sm bg-background text-foreground whitespace-nowrap"
           >
             {link.name}
           </motion.span>
@@ -151,11 +154,13 @@ function DockItem({
           const hrefPath =
             link.href === "#" || link.href.startsWith("http")
               ? null
-              : link.href === "/"
-                ? "/"
-                : `/${link.href}`;
+              : link.href;
 
-          const isActive = hrefPath ? path === hrefPath : false;
+          const isActive = hrefPath
+            ? hrefPath === "/"
+              ? path === "/"
+              : path.startsWith(hrefPath)
+            : false;
 
           return (
             isActive && (
@@ -164,7 +169,7 @@ function DockItem({
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 1, y: 6, scale: 0.96 }}
                 transition={{ duration: 0.18, ease: "easeOut" }}
-                className="pointer-events-none absolute -bottom-1.5 text-[10px] rounded-full bg-foreground/50 h-[3px] w-[3px] "
+                className="pointer-events-none absolute -bottom-1.5 text-primary text-[10px] rounded-full bg-primary h-[3px] w-[3px] "
               ></motion.span>
             )
           );
@@ -230,13 +235,13 @@ function MobileNavItem({
   const isMailto = link.href.startsWith("mailto");
 
   const hrefPath =
-    link.href === "#" || link.href.startsWith("http")
-      ? null
-      : link.href === "/"
-        ? "/"
-        : `/${link.href}`;
+    link.href === "#" || link.href.startsWith("http") ? null : link.href;
 
-  const isActive = hrefPath ? path === hrefPath : false;
+  const isActive = hrefPath
+    ? hrefPath === "/"
+      ? path === "/"
+      : path.startsWith(hrefPath)
+    : false;
 
   const content = (
     <span className="text-foreground/80 flex items-center justify-center">
@@ -284,8 +289,20 @@ function MobileNavItem({
 function Navbar() {
   const mouseX = useMotionValue(Infinity);
   const [isMobile, setIsMobile] = useState(false);
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  const path = usePathname();
+
+  const isActive = (hrefPath: string) => {
+    return hrefPath
+      ? hrefPath === "/"
+        ? path === "/"
+        : path.startsWith(hrefPath)
+      : false;
+  };
 
   useEffect(() => {
+    setMounted(true);
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
@@ -294,27 +311,14 @@ function Navbar() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  const [isDark, setIsDark] = useState(() => {
-    if (typeof document !== "undefined") {
-      return document.documentElement.classList.contains("dark");
-    }
-    return false;
-  });
-
   const toggleTheme = () => {
-    if (typeof document === "undefined") return;
-    const html = document.documentElement;
-    if (html.classList.contains("dark")) {
-      html.classList.remove("dark");
-      setIsDark(false);
-    } else {
-      html.classList.add("dark");
-      setIsDark(true);
-    }
+    setTheme(theme === "dark" ? "light" : "dark");
   };
 
+  const isDark = mounted ? theme === "dark" : false;
+
   return (
-    <div className="w-full flex justify-center items-end pb-5 absolute bottom-0 ">
+    <div className="w-full flex justify-center items-end pb-5 fixed bottom-0 ">
       {isMobile ? (
         // Mobile: Simple nav without dock animations
         <nav className="bg-background/40 backdrop-blur-xl rounded-full px-3 py-2 border border-foreground/20 shadow-2xl">
@@ -384,6 +388,7 @@ function Navbar() {
                   link={renderedLink}
                   mouseX={mouseX}
                   onThemeClick={toggleTheme}
+                  isActive={isActive(link.href)}
                 />
               );
             })}
@@ -393,12 +398,13 @@ function Navbar() {
                 key={link.name}
                 link={link}
                 mouseX={mouseX}
+                isActive={isActive(link.href)}
                 onThemeClick={toggleTheme}
               />
             ))}
             <motion.span className="w-px h-6 bg-foreground/20 my-auto" />
             {CONTACT_LINKS.map((link) => (
-              <DockItem key={link.name} link={link} mouseX={mouseX} />
+              <DockItem key={link.name} link={link} mouseX={mouseX} isActive={isActive(link.href)} />
             ))}
           </ul>
         </motion.nav>

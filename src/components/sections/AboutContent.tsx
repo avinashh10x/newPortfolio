@@ -32,9 +32,9 @@ function AboutContent() {
   }, []);
 
   return (
-    <div className="w-full h-screen flex items-center justify-center">
+    <div className="w-full h-screen flex items-center justify-center bg-background">
       <div className="max-w-3xl px-6 text-center space-y-10">
-        <h1 className="text-3xl max-sm:text-lg leading-tight font-recia font-extralight testTXT">
+        <h1 className="text-3xl max-sm:text-lg leading-tight font-poppins font-medium testTXT ">
           {parts.map((part, index) => {
             const icon = ICON_MAP[part as keyof typeof ICON_MAP];
 
