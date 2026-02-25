@@ -36,26 +36,50 @@ function LeftHandModel({ isMobile }: { isMobile: boolean }) {
 
   useFrame(() => {
     if (modelRef.current) {
-      const tiltAmount = 0.1;
-      const maxTilt = 0.15;
+      const tiltAmount = 0.08;
+      const maxTilt = 0.1; // hard limit: max deviation from base in radians
 
-      const targetX =
-        baseRotation.x +
-        THREE.MathUtils.clamp(pointer.y * tiltAmount, -maxTilt, maxTilt);
-      const targetY =
-        baseRotation.y +
-        THREE.MathUtils.clamp(pointer.x * tiltAmount, -maxTilt, maxTilt);
-      const targetZ =
-        baseRotation.z +
-        THREE.MathUtils.clamp(pointer.x * 0.08, -maxTilt, maxTilt);
+      // Clamp the mouse input offset
+      const offsetX = THREE.MathUtils.clamp(
+        pointer.y * tiltAmount,
+        -maxTilt,
+        maxTilt,
+      );
+      const offsetY = THREE.MathUtils.clamp(
+        pointer.x * tiltAmount,
+        -maxTilt,
+        maxTilt,
+      );
+      const offsetZ = THREE.MathUtils.clamp(
+        pointer.x * 0.05,
+        -maxTilt,
+        maxTilt,
+      );
+
+      const targetX = baseRotation.x + offsetX;
+      const targetY = baseRotation.y + offsetY;
+      const targetZ = baseRotation.z + offsetZ;
 
       currentRotation.current.x += (targetX - currentRotation.current.x) * 0.05;
       currentRotation.current.y += (targetY - currentRotation.current.y) * 0.05;
       currentRotation.current.z += (targetZ - currentRotation.current.z) * 0.05;
 
-      modelRef.current.rotation.x = currentRotation.current.x;
-      modelRef.current.rotation.y = currentRotation.current.y;
-      modelRef.current.rotation.z = currentRotation.current.z;
+      // Hard clamp final rotation to never exceed base ± maxTilt
+      modelRef.current.rotation.x = THREE.MathUtils.clamp(
+        currentRotation.current.x,
+        baseRotation.x - maxTilt,
+        baseRotation.x + maxTilt,
+      );
+      modelRef.current.rotation.y = THREE.MathUtils.clamp(
+        currentRotation.current.y,
+        baseRotation.y - maxTilt,
+        baseRotation.y + maxTilt,
+      );
+      modelRef.current.rotation.z = THREE.MathUtils.clamp(
+        currentRotation.current.z,
+        baseRotation.z - maxTilt,
+        baseRotation.z + maxTilt,
+      );
     }
   });
 
@@ -98,26 +122,50 @@ function RightHandModel({ isMobile }: { isMobile: boolean }) {
 
   useFrame(() => {
     if (modelRef.current) {
-      const tiltAmount = 0.1;
-      const maxTilt = 0.15;
+      const tiltAmount = 0.08;
+      const maxTilt = 0.1; // hard limit: max deviation from base in radians
 
-      const targetX =
-        baseRotation.x +
-        THREE.MathUtils.clamp(pointer.y * tiltAmount, -maxTilt, maxTilt);
-      const targetY =
-        baseRotation.y +
-        THREE.MathUtils.clamp(pointer.x * tiltAmount, -maxTilt, maxTilt);
-      const targetZ =
-        baseRotation.z +
-        THREE.MathUtils.clamp(pointer.x * 0.08, -maxTilt, maxTilt);
+      // Clamp the mouse input offset
+      const offsetX = THREE.MathUtils.clamp(
+        pointer.y * tiltAmount,
+        -maxTilt,
+        maxTilt,
+      );
+      const offsetY = THREE.MathUtils.clamp(
+        pointer.x * tiltAmount,
+        -maxTilt,
+        maxTilt,
+      );
+      const offsetZ = THREE.MathUtils.clamp(
+        pointer.x * 0.05,
+        -maxTilt,
+        maxTilt,
+      );
+
+      const targetX = baseRotation.x + offsetX;
+      const targetY = baseRotation.y + offsetY;
+      const targetZ = baseRotation.z + offsetZ;
 
       currentRotation.current.x += (targetX - currentRotation.current.x) * 0.05;
       currentRotation.current.y += (targetY - currentRotation.current.y) * 0.02;
       currentRotation.current.z += (targetZ - currentRotation.current.z) * 0.05;
 
-      modelRef.current.rotation.x = currentRotation.current.x;
-      modelRef.current.rotation.y = currentRotation.current.y;
-      modelRef.current.rotation.z = currentRotation.current.z;
+      // Hard clamp final rotation to never exceed base ± maxTilt
+      modelRef.current.rotation.x = THREE.MathUtils.clamp(
+        currentRotation.current.x,
+        baseRotation.x - maxTilt,
+        baseRotation.x + maxTilt,
+      );
+      modelRef.current.rotation.y = THREE.MathUtils.clamp(
+        currentRotation.current.y,
+        baseRotation.y - maxTilt,
+        baseRotation.y + maxTilt,
+      );
+      modelRef.current.rotation.z = THREE.MathUtils.clamp(
+        currentRotation.current.z,
+        baseRotation.z - maxTilt,
+        baseRotation.z + maxTilt,
+      );
     }
   });
 
