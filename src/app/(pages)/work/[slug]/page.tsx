@@ -5,7 +5,6 @@ import Image from "next/image";
 import DetailedContent from "../_component/detailedContent";
 import DetailedProjectGallery from "../_component/detailedProjectgallery";
 
-
 type Props = {
   params: Promise<{ slug: string }>;
 };
@@ -75,7 +74,7 @@ export default async function ProjectPage({ params }: Props) {
       <DetailedContent project={project} />
 
       {/* Horizontal Scroll Gallery */}
-      <DetailedProjectGallery />
+      <DetailedProjectGallery Project={project} />
     </main>
   );
 }

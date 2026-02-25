@@ -94,14 +94,14 @@ export default function InfiniteMediaGrid() {
           <div
             key={i}
             aria-hidden={i !== 0}
-            className="grid w-max grid-cols-5 gap-[5vw] p-[2vw]"
+            className="grid w-max grid-cols-3 md:grid-cols-5 gap-[6vw] md:gap-[5vw] p-[3vw] md:p-[2vw]"
           >
             {PROJECTS.map((src, idx) => (
               <div
                 key={idx}
-                className="w-[20vw] aspect-video select-none rounded-md overflow-hidden"
+                className="w-[30vw] md:w-[20vw] aspect-video select-none rounded-md overflow-hidden"
               >
-                <Link href={src.link}>
+                <Link href={`/work/${src.slug}`}>
                   <img
                     src={src.image[0]}
                     alt=""

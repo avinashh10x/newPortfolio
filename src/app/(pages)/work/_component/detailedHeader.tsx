@@ -16,7 +16,7 @@ function DetailedHeader({ project }: { project: project }) {
           transition={{ duration: 0.5 }}
           className="flex flex-col gap-2"
         >
-          <h1 className=" text-[5vw] font-medium tracking-tight text-foreground">
+          <h1 className=" md:text-[5vw] text-[12vw] font-medium tracking-tight text-foreground">
             {project.title}
           </h1>
 
@@ -31,25 +31,25 @@ function DetailedHeader({ project }: { project: project }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="flex flex-wrap gap-4 mt-4 h-12 "
+          className="flex flex-wrap gap-4 mt-4 h-fit "
         >
           {project.link && (
             <Link
               href={project.link}
               target="_blank"
-              className="group flex items-center gap-2 px-6 py-3 bg-foreground  h-full text-background rounded-full font-medium sm:text-lg hover:bg-foreground/80 transition-colors"
+              className="group flex items-center gap-2 px-4 py-2 bg-foreground  h-full text-background rounded-full font-medium md:text-md text-xs hover:bg-foreground/80 transition-colors"
             >
               Visit Live Site
-              <ArrowUpRight className="w-5 h-5 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-transform" />
+              <ArrowUpRight className="size-4 group-hover:rotate-0 rotate-45 transition-transform duration-300" />
             </Link>
           )}
           {project.github && project.github !== "#" && (
             <Link
               href={project.github}
               target="_blank"
-              className="group flex items-center gap-2 h-full px-6 py-3 border border-foreground/20 text-foreground rounded-full font-medium sm:text-lg hover:bg-foreground/10 transition-colors"
+              className="group flex items-center gap-2 h-full px-4 py-2 border border-foreground/20 text-foreground rounded-full font-medium md:text-md text-xs hover:bg-foreground/10 transition-colors"
             >
-              <Github className="w-5 h-5" />
+              <Github className="size-4 group-hover:rotate-10 rotate-0 transition-transform duration-300" />
               Source Code
             </Link>
           )}
