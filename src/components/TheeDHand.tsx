@@ -1,25 +1,23 @@
 "use client";
 
 import { useRef, Suspense, useState, useEffect } from "react";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import {
-  useGLTF,
-  Environment,
-  ContactShadows,
-  OrbitControls,
-} from "@react-three/drei";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { useGLTF, Environment, ContactShadows } from "@react-three/drei";
 import * as THREE from "three";
+
+// Shared mouse state tracked via window-level events (not R3F pointer)
+// This avoids issues with overlay divs blocking canvas pointer events
+const mouseState = { x: 0, y: 0 };
 
 function LeftHandModel({ isMobile }: { isMobile: boolean }) {
   const { scene } = useGLTF("/model/left2.glb");
   const modelRef = useRef<THREE.Group>(null);
-  const { pointer } = useThree();
 
   const baseRotation = isMobile
     ? { x: 1.1, y: -1.1, z: 1.1 }
     : { x: -0.1, y: -1.5, z: 0 };
 
-  const currentRotation = useRef(baseRotation);
+  const currentRotation = useRef({ ...baseRotation });
 
   scene.traverse((child) => {
     if (child instanceof THREE.Mesh) {
@@ -34,24 +32,25 @@ function LeftHandModel({ isMobile }: { isMobile: boolean }) {
     }
   });
 
-  useFrame(() => {
+  useFrame((_, delta) => {
     if (modelRef.current) {
       const tiltAmount = 0.08;
-      const maxTilt = 0.1; // hard limit: max deviation from base in radians
+      const maxTilt = 0.1;
+      // Use delta time for frame-rate independent lerp (target ~60fps baseline)
+      const lerpFactor = 1 - Math.pow(0.001, delta);
 
-      // Clamp the mouse input offset
       const offsetX = THREE.MathUtils.clamp(
-        pointer.y * tiltAmount,
+        mouseState.y * tiltAmount,
         -maxTilt,
         maxTilt,
       );
       const offsetY = THREE.MathUtils.clamp(
-        pointer.x * tiltAmount,
+        mouseState.x * tiltAmount,
         -maxTilt,
         maxTilt,
       );
       const offsetZ = THREE.MathUtils.clamp(
-        pointer.x * 0.05,
+        mouseState.x * 0.05,
         -maxTilt,
         maxTilt,
       );
@@ -60,11 +59,13 @@ function LeftHandModel({ isMobile }: { isMobile: boolean }) {
       const targetY = baseRotation.y + offsetY;
       const targetZ = baseRotation.z + offsetZ;
 
-      currentRotation.current.x += (targetX - currentRotation.current.x) * 0.05;
-      currentRotation.current.y += (targetY - currentRotation.current.y) * 0.05;
-      currentRotation.current.z += (targetZ - currentRotation.current.z) * 0.05;
+      currentRotation.current.x +=
+        (targetX - currentRotation.current.x) * lerpFactor;
+      currentRotation.current.y +=
+        (targetY - currentRotation.current.y) * lerpFactor;
+      currentRotation.current.z +=
+        (targetZ - currentRotation.current.z) * lerpFactor;
 
-      // Hard clamp final rotation to never exceed base ± maxTilt
       modelRef.current.rotation.x = THREE.MathUtils.clamp(
         currentRotation.current.x,
         baseRotation.x - maxTilt,
@@ -100,12 +101,11 @@ function LeftHandModel({ isMobile }: { isMobile: boolean }) {
 function RightHandModel({ isMobile }: { isMobile: boolean }) {
   const { scene } = useGLTF("/model/right2.glb");
   const modelRef = useRef<THREE.Group>(null);
-  const { pointer } = useThree();
 
   const baseRotation = isMobile
     ? { x: 1.2, y: -1.1, z: 0.9 }
     : { x: 0, y: -1.6, z: -0.3 };
-  const currentRotation = useRef(baseRotation);
+  const currentRotation = useRef({ ...baseRotation });
 
   scene.traverse((child) => {
     if (child instanceof THREE.Mesh) {
@@ -120,24 +120,24 @@ function RightHandModel({ isMobile }: { isMobile: boolean }) {
     }
   });
 
-  useFrame(() => {
+  useFrame((_, delta) => {
     if (modelRef.current) {
       const tiltAmount = 0.08;
-      const maxTilt = 0.1; // hard limit: max deviation from base in radians
+      const maxTilt = 0.1;
+      const lerpFactor = 1 - Math.pow(0.001, delta);
 
-      // Clamp the mouse input offset
       const offsetX = THREE.MathUtils.clamp(
-        pointer.y * tiltAmount,
+        mouseState.y * tiltAmount,
         -maxTilt,
         maxTilt,
       );
       const offsetY = THREE.MathUtils.clamp(
-        pointer.x * tiltAmount,
+        mouseState.x * tiltAmount,
         -maxTilt,
         maxTilt,
       );
       const offsetZ = THREE.MathUtils.clamp(
-        pointer.x * 0.05,
+        mouseState.x * 0.05,
         -maxTilt,
         maxTilt,
       );
@@ -146,11 +146,13 @@ function RightHandModel({ isMobile }: { isMobile: boolean }) {
       const targetY = baseRotation.y + offsetY;
       const targetZ = baseRotation.z + offsetZ;
 
-      currentRotation.current.x += (targetX - currentRotation.current.x) * 0.05;
-      currentRotation.current.y += (targetY - currentRotation.current.y) * 0.02;
-      currentRotation.current.z += (targetZ - currentRotation.current.z) * 0.05;
+      currentRotation.current.x +=
+        (targetX - currentRotation.current.x) * lerpFactor;
+      currentRotation.current.y +=
+        (targetY - currentRotation.current.y) * lerpFactor * 0.4;
+      currentRotation.current.z +=
+        (targetZ - currentRotation.current.z) * lerpFactor;
 
-      // Hard clamp final rotation to never exceed base ± maxTilt
       modelRef.current.rotation.x = THREE.MathUtils.clamp(
         currentRotation.current.x,
         baseRotation.x - maxTilt,
@@ -195,6 +197,7 @@ function Loader() {
 
 export default function ThreeDHand() {
   const [isMobile, setIsMobile] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -207,8 +210,24 @@ export default function ThreeDHand() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
+  // Track mouse at the window level so the overlay div doesn't block events
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      // Normalize mouse position to -1..1 (same as R3F pointer)
+      mouseState.x = (e.clientX / window.innerWidth) * 2 - 1;
+      mouseState.y = -(e.clientY / window.innerHeight) * 2 + 1;
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, []);
+
   return (
     <div
+      ref={containerRef}
       className="fixed inset-0 w-screen h-screen"
       style={{
         background: `
@@ -244,10 +263,9 @@ export default function ThreeDHand() {
           blur={2.5}
           far={20}
         />
-        {/* <OrbitControls /> */}
       </Canvas>
 
-      <div className="absolute top-1/2 left-1/2 z-50 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center text-center font-poppins leading-[10px] md:leading-8">
+      <div className="pointer-events-none absolute top-1/2 left-1/2 z-50 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center text-center font-poppins leading-[10px] md:leading-8">
         <span className="mb-3 text-[2.2vw] md:text-[1vw] tracking-widest text-foreground/50 uppercase">
           Full Stack Developer
         </span>
