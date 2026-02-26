@@ -130,7 +130,7 @@ function DockItem({
     <>
       <motion.span
         style={{ scale: iconScale }}
-        className={ `text-foreground/80 flex items-center justify-center ${isActive ? "text-primary" : ""}`}
+        className={`text-foreground/80 flex items-center justify-center ${isActive ? "text-primary" : ""}`}
       >
         {link.icon}
       </motion.span>
@@ -318,7 +318,7 @@ function Navbar() {
   const isDark = mounted ? theme === "dark" : false;
 
   return (
-    <div className="w-full flex justify-center items-end pb-5 fixed bottom-0 ">
+    <div className="w-full flex justify-center items-end pb-5 fixed bottom-0 z-50">
       {isMobile ? (
         // Mobile: Simple nav without dock animations
         <nav className="bg-background/40 backdrop-blur-xl rounded-full px-3 py-2 border border-foreground/20 shadow-2xl">
@@ -404,7 +404,12 @@ function Navbar() {
             ))}
             <motion.span className="w-px h-6 bg-foreground/20 my-auto" />
             {CONTACT_LINKS.map((link) => (
-              <DockItem key={link.name} link={link} mouseX={mouseX} isActive={isActive(link.href)} />
+              <DockItem
+                key={link.name}
+                link={link}
+                mouseX={mouseX}
+                isActive={isActive(link.href)}
+              />
             ))}
           </ul>
         </motion.nav>

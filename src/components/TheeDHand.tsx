@@ -228,19 +228,23 @@ export default function ThreeDHand() {
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 w-screen h-screen"
-      style={{
-        background: `
-    radial-gradient(
-      circle at center,
-      var(--background) 20%,
-      rgba(139,92,246,0.3) 80%,
-      rgba(139,92,246,0.6) 120%,
-      transparent 250%
-    )
-  `,
-      }}
+      className="fixed inset-0 w-screen h-screen bg-background"
     >
+      {/* Halftone dot pattern */}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-100 dark:opacity-90"
+        style={{
+          backgroundImage: `radial-gradient(circle, var(--primary) 0.6px, transparent 0.6px)`,
+          backgroundSize: "10px 10px",
+        }}
+      />
+      {/* Radial fade — clears dots from center, keeps them at edges */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: `radial-gradient(ellipse at 50% 50%, var(--background) 10%, transparent 65%)`,
+        }}
+      />
       <Canvas
         shadows
         camera={{ position: [0, 0, 5], fov: 45 }}
