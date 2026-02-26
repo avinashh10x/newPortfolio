@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useRef, Suspense, useState, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
@@ -238,7 +238,7 @@ export default function ThreeDHand() {
           backgroundSize: "10px 10px",
         }}
       />
-      {/* Radial fade — clears dots from center, keeps them at edges */}
+      {/* Radial fade â€” clears dots from center, keeps them at edges */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
