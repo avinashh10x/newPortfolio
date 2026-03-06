@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { heroText, ICON_MAP } from "@/data/profile";
 import Link from "next/link";

@@ -1,5 +1,4 @@
 import { Metadata } from "next";
-import AboutContent from "@/components/sections/AboutContent";
 import About2 from "@/components/sections/About2";
 
 export const metadata: Metadata = {
@@ -36,12 +35,7 @@ export const metadata: Metadata = {
 };
 
 function About() {
-  return (
-    <>
-      <AboutContent />
-      <About2 />
-    </>
-  );
+  return <About2 />;
 }
 
 export default About;

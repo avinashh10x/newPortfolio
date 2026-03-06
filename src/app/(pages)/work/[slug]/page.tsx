@@ -35,6 +35,14 @@ export default async function ProjectPage({ params }: Props) {
 
   return (
     <main className="min-h-screen bg-background text-foreground ">
+        <div
+        className="pointer-events-none fixed inset-0 z-0 opacity-90 dark:opacity-45"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle, var(--primary) 0.5px, transparent 0.5px)",
+          backgroundSize: "10px 10px",
+        }}
+      />
       <DetailedHeader project={project} />
 
       {/* Video Section */}

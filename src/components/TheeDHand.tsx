@@ -1,15 +1,22 @@
-"use client";
+﻿"use client";
 
 import { useRef, Suspense, useState, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { useGLTF, Environment, ContactShadows } from "@react-three/drei";
+import { useGLTF, ContactShadows, Environment } from "@react-three/drei";
 import * as THREE from "three";
+import { motion } from "motion/react";
 
 // Shared mouse state tracked via window-level events (not R3F pointer)
 // This avoids issues with overlay divs blocking canvas pointer events
 const mouseState = { x: 0, y: 0 };
 
-function LeftHandModel({ isMobile }: { isMobile: boolean }) {
+function LeftHandModel({
+  isMobile,
+  animateIn,
+}: {
+  isMobile: boolean;
+  animateIn: boolean;
+}) {
   const { scene } = useGLTF("/model/left2.glb");
   const modelRef = useRef<THREE.Group>(null);
 
@@ -18,6 +25,15 @@ function LeftHandModel({ isMobile }: { isMobile: boolean }) {
     : { x: -0.1, y: -1.5, z: 0 };
 
   const currentRotation = useRef({ ...baseRotation });
+
+  // Entrance animation - start position off-screen to the left
+  const finalPosition: [number, number, number] = isMobile
+    ? [-1, -1.4, -5]
+    : [-4.5, -2, -5];
+  const startPosition: [number, number, number] = isMobile
+    ? [-6, -1.4, -5]
+    : [-12, -2, -5];
+  const currentPosition = useRef<[number, number, number]>([...startPosition]);
 
   scene.traverse((child) => {
     if (child instanceof THREE.Mesh) {
@@ -34,6 +50,18 @@ function LeftHandModel({ isMobile }: { isMobile: boolean }) {
 
   useFrame((_, delta) => {
     if (modelRef.current) {
+      // Entrance animation
+      if (animateIn) {
+        const entranceLerp = 1 - Math.pow(0.02, delta);
+        currentPosition.current[0] +=
+          (finalPosition[0] - currentPosition.current[0]) * entranceLerp;
+        currentPosition.current[1] +=
+          (finalPosition[1] - currentPosition.current[1]) * entranceLerp;
+        currentPosition.current[2] +=
+          (finalPosition[2] - currentPosition.current[2]) * entranceLerp;
+        modelRef.current.position.set(...currentPosition.current);
+      }
+
       const tiltAmount = 0.08;
       const maxTilt = 0.1;
       // Use delta time for frame-rate independent lerp (target ~60fps baseline)
@@ -84,21 +112,23 @@ function LeftHandModel({ isMobile }: { isMobile: boolean }) {
     }
   });
 
-  const position: [number, number, number] = isMobile
-    ? [-1, -1.4, -5]
-    : [-4.5, -2, -5];
-
   return (
     <primitive
       ref={modelRef}
       object={scene}
       scale={isMobile ? 0.35 : 0.7}
-      position={position}
+      position={startPosition}
     />
   );
 }
 
-function RightHandModel({ isMobile }: { isMobile: boolean }) {
+function RightHandModel({
+  isMobile,
+  animateIn,
+}: {
+  isMobile: boolean;
+  animateIn: boolean;
+}) {
   const { scene } = useGLTF("/model/right2.glb");
   const modelRef = useRef<THREE.Group>(null);
 
@@ -106,7 +136,14 @@ function RightHandModel({ isMobile }: { isMobile: boolean }) {
     ? { x: 1.2, y: -1.1, z: 0.9 }
     : { x: 0, y: -1.6, z: -0.3 };
   const currentRotation = useRef({ ...baseRotation });
-
+  // Entrance animation - start position off-screen to the right
+  const finalPosition: [number, number, number] = isMobile
+    ? [0.2, -0.1, -5]
+    : [2, -0.6, -5];
+  const startPosition: [number, number, number] = isMobile
+    ? [6, -0.1, -5]
+    : [10, -0.6, -5];
+  const currentPosition = useRef<[number, number, number]>([...startPosition]);
   scene.traverse((child) => {
     if (child instanceof THREE.Mesh) {
       child.material = new THREE.MeshStandardMaterial({
@@ -122,6 +159,18 @@ function RightHandModel({ isMobile }: { isMobile: boolean }) {
 
   useFrame((_, delta) => {
     if (modelRef.current) {
+      // Entrance animation
+      if (animateIn) {
+        const entranceLerp = 1 - Math.pow(0.02, delta);
+        currentPosition.current[0] +=
+          (finalPosition[0] - currentPosition.current[0]) * entranceLerp;
+        currentPosition.current[1] +=
+          (finalPosition[1] - currentPosition.current[1]) * entranceLerp;
+        currentPosition.current[2] +=
+          (finalPosition[2] - currentPosition.current[2]) * entranceLerp;
+        modelRef.current.position.set(...currentPosition.current);
+      }
+
       const tiltAmount = 0.08;
       const maxTilt = 0.1;
       const lerpFactor = 1 - Math.pow(0.001, delta);
@@ -171,16 +220,12 @@ function RightHandModel({ isMobile }: { isMobile: boolean }) {
     }
   });
 
-  const position: [number, number, number] = isMobile
-    ? [0.2, -0.1, -5]
-    : [2, -0.6, -5];
-
   return (
     <primitive
       ref={modelRef}
       object={scene}
       scale={isMobile ? 0.3 : 0.55}
-      position={position}
+      position={startPosition}
     />
   );
 }
@@ -197,6 +242,7 @@ function Loader() {
 
 export default function ThreeDHand() {
   const [isMobile, setIsMobile] = useState(false);
+  const [animateIn, setAnimateIn] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -207,7 +253,15 @@ export default function ThreeDHand() {
     checkMobile();
     window.addEventListener("resize", checkMobile);
 
-    return () => window.removeEventListener("resize", checkMobile);
+    // Trigger entrance animation after a short delay
+    const timer = setTimeout(() => {
+      setAnimateIn(true);
+    }, 100);
+
+    return () => {
+      window.removeEventListener("resize", checkMobile);
+      clearTimeout(timer);
+    };
   }, []);
 
   // Track mouse at the window level so the overlay div doesn't block events
@@ -228,42 +282,59 @@ export default function ThreeDHand() {
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 w-screen h-screen"
-      style={{
-        background: `
-    radial-gradient(
-      circle at center,
-      var(--background) 20%,
-      rgba(139,92,246,0.3) 80%,
-      rgba(139,92,246,0.6) 120%,
-      transparent 250%
-    )
-  `,
-      }}
+      className="fixed inset-0 w-screen h-screen bg-background"
     >
-      <Canvas
-        shadows
-        camera={{ position: [0, 0, 5], fov: 45 }}
-        gl={{ antialias: true, alpha: true }}
-        style={{ width: "100%", height: "100%" }}
-      >
-        <pointLight position={[5, -5, 5]} intensity={0.3} color="#3b82f6" />
+      {/* Halftone dot pattern */}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-100 dark:opacity-90"
+        style={{
+          backgroundImage: `radial-gradient(circle, var(--primary) 0.5px, transparent 0.6px)`,
+          backgroundSize: "10px 10px",
+        }}
+      />
+      {/* Radial fade â€” clears dots from center, keeps them at edges */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: `radial-gradient(ellipse at 50% 50%, var(--background) 10%, transparent 65%)`,
+        }}
+      />
+      <motion.div className="w-full h-full">
+        <Canvas
+          shadows
+          camera={{ position: [0, 0, 5], fov: 45 }}
+          gl={{ antialias: true, alpha: true }}
+          style={{ width: "100%", height: "100%" }}
+        >
+          <pointLight position={[5, -5, 5]} intensity={0.3} color="#3b82f6" />
 
-        <Environment preset="city" />
+          <ambientLight intensity={0.4} />
+          <directionalLight
+            position={[5, 5, 5]}
+            intensity={0.8}
+            color="#ffffff"
+          />
+          <directionalLight
+            position={[-3, 3, -5]}
+            intensity={0.3}
+            color="#a78bfa"
+          />
 
-        <Suspense fallback={<Loader />}>
-          <LeftHandModel isMobile={isMobile} />
-          <RightHandModel isMobile={isMobile} />
-        </Suspense>
+          <Suspense fallback={<Loader />}>
+            <LeftHandModel isMobile={isMobile} animateIn={animateIn} />
+            <RightHandModel isMobile={isMobile} animateIn={animateIn} />
+          </Suspense>
 
-        <ContactShadows
-          position={[0, -3.9, 0]}
-          opacity={0.3}
-          scale={30}
-          blur={2.5}
-          far={20}
-        />
-      </Canvas>
+          <ContactShadows
+            position={[0, -3.9, 0]}
+            opacity={0.3}
+            scale={30}
+            blur={2.5}
+            far={20}
+          />
+          <Environment preset="city" />
+        </Canvas>
+      </motion.div>
 
       <div className="pointer-events-none absolute top-1/2 left-1/2 z-50 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center text-center font-poppins leading-[10px] md:leading-8">
         <span className="mb-3 text-[2.2vw] md:text-[1vw] tracking-widest text-foreground/50 uppercase">

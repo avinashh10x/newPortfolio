@@ -47,6 +47,14 @@ export const metadata: Metadata = {
 export default function GalleryPage() {
   return (
     <div>
+      <div
+        className="pointer-events-none fixed inset-0 z-0 opacity-40 dark:opacity-45"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle, var(--primary) 0.5px, transparent 0.5px)",
+          backgroundSize: "10px 10px",
+        }}
+      />
       <InfiniteMediaGrid />
     </div>
   );

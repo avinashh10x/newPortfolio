@@ -16,12 +16,12 @@ function DetailedHeader({ project }: { project: project }) {
           transition={{ duration: 0.5 }}
           className="flex flex-col gap-2"
         >
-          <h1 className=" md:text-[5vw] text-[12vw] font-medium tracking-tight text-foreground">
+          <h1 className="font-erode md:text-[5vw] text-[12vw] font-semibold tracking-tight text-foreground">
             {project.title}
           </h1>
 
           {project.subtitle && (
-            <h2 className="text-xl md:text-2xl text-foreground/70  max-w-2xl mt-2">
+            <h2 className="font-poppins text-xl md:text-2xl text-foreground/60 max-w-2xl mt-2">
               {project.subtitle}
             </h2>
           )}
@@ -37,7 +37,7 @@ function DetailedHeader({ project }: { project: project }) {
             <Link
               href={project.link}
               target="_blank"
-              className="group flex items-center gap-2 px-4 py-2 bg-foreground  h-full text-background rounded-full font-medium md:text-md text-xs hover:bg-foreground/80 transition-colors"
+              className="group flex items-center gap-2 px-4 py-2 bg-white h-full text-primary-foreground rounded-full font-poppins font-medium md:text-md text-xs hover:bg-primary duration-300 transition-colors"
             >
               Visit Live Site
               <ArrowUpRight className="size-4 group-hover:rotate-0 rotate-45 transition-transform duration-300" />
@@ -47,7 +47,7 @@ function DetailedHeader({ project }: { project: project }) {
             <Link
               href={project.github}
               target="_blank"
-              className="group flex items-center gap-2 h-full px-4 py-2 border border-foreground/20 text-foreground rounded-full font-medium md:text-md text-xs hover:bg-foreground/10 transition-colors"
+              className="group flex items-center gap-2 h-full px-4 py-2 border border-primary/30 text-foreground rounded-full font-poppins font-medium md:text-md text-xs hover:bg-primary/20 transition-colors"
             >
               <Github className="size-4 group-hover:rotate-10 rotate-0 transition-transform duration-300" />
               Source Code
