@@ -320,10 +320,10 @@ export default function ThreeDHand() {
             color="#a78bfa"
           />
 
-          <Suspense fallback={<Loader />}>
+          {/* <Suspense fallback={<Loader />}> */}
             <LeftHandModel isMobile={isMobile} animateIn={animateIn} />
             <RightHandModel isMobile={isMobile} animateIn={animateIn} />
-          </Suspense>
+          {/* </Suspense> */}
 
           <ContactShadows
             position={[0, -3.9, 0]}
