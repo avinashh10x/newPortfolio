@@ -9,7 +9,7 @@ export default function About2() {
     <div className="relative bg-background">
       {/* subtle dot texture matching hero */}
       <div
-        className="pointer-events-none fixed inset-0 z-0 opacity-40 dark:opacity-25"
+        className="pointer-events-none fixed inset-0 z-0 opacity-40 dark:opacity-45"
         style={{
           backgroundImage:
             "radial-gradient(circle, var(--primary) 0.5px, transparent 0.5px)",
@@ -17,14 +17,14 @@ export default function About2() {
         }}
       />
 
-      <div className="relative z-10">
+      <div className="relative z-10 mb-10">
         <AboutIntro />
    
         <AboutJourney />
       
         <AboutNow />
+        {/* <AboutTechStack /> */}
       
-        <AboutTechStack />
       </div>
     </div>
   );

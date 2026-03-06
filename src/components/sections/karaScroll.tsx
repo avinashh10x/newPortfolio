@@ -11,6 +11,7 @@ import Link from "next/link";
 import { SplitText } from "gsap/all";
 import { motion, useInView } from "motion/react";
 import NumberFlow from "@number-flow/react";
+import { BriefcaseBusinessIcon } from "lucide-react";
 
 // Register GSAP plugins
 if (typeof window !== "undefined") {
@@ -223,32 +224,48 @@ export default function KaraScroll() {
   return (
     <section className="relative flex items-center bg-background md:px-[6vw] text-foreground h-screen overflow-hidden gap-6">
       {/* Texts */}
-      <div className="flex-1 font-medium  tracking-[-0.05em] px-10 space-y-10 max-md:hidden">
-        <div className="flex  font-medium leading-[0.8] tracking-[-0.05em] text-[5vw] items-center gap-5 px-2 justify-between">
-          <p className="">Work</p>
+      <div
+        className="absolute inset-0 pointer-events-none opacity-100 dark:opacity-40"
+        style={{
+          backgroundImage: `radial-gradient(circle, var(--primary) 0.6px, transparent 0.6px)`,
+          backgroundSize: "10px 10px",
+        }}
+      />
+      {/* Radial fade â€” clears dots from center, keeps them at edges */}
+      {/* <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: `radial-gradient(ellipse at 50% 50%, var(--background) 10%, transparent 65%)`,
+        }}
+      /> */}
+      <div className="flex-1 tracking-[-0.05em] px-10 space-y-10 max-md:hidden">
+        <div className="flex font-erode font-semibold leading-[0.8] tracking-[-0.05em] text-[5vw] items-center gap-5 px-2 justify-between ">
+          <p className="text-primary">Work</p>
           <motion.span
             initial={{ scaleX: 0, originX: 0 }}
             whileInView={{ scaleX: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-            className="w-[70%] h-[1px] bg-foreground/50 "
+            className="w-[70%] h-[1px] bg-foreground/50  "
           />
           {/* <p>{PROJECTS.length}</p> */}
-          <p className=" -mt-4" ref={numberRef}>
-            {/* <NumberFlow value={count} /> */}#
+          <p className="" ref={numberRef} >
+            {/* <NumberFlow value={count} /> */}<BriefcaseBusinessIcon className="size-8 text-primary" />
           </p>
         </div>
         <div className="flex flex-col space-y-2 text-[1.2vw]">
           {PROJECTS.slice(0, 5).map((project, i) => (
             <Link
               key={i}
-              className="flex items-center gap-2 leading-loose px-3 py-0.5 hover:bg-foreground/10 rounded-sm transition-colors duration-300 justify-between"
+              className="flex items-center gap-2 leading-loose px-3 py-0.5 hover:bg-foreground/10 rounded-sm transition-colors duration-300 justify-between font-poppins"
               href={`/work/${project.slug}`}
             >
               <p className="projectTxt">
-                <span className="font-medium">{project.title} </span>
+                <span className="font-erode font-semibold">
+                  {project.title}{" "}
+                </span>
                 {/* <span className="w-[15px] h-[1px] " /> */}
-                <span className="text-foreground/50 lowercase font-extralight ">
+                <span className="text-foreground/60 lowercase font-poppins font-light ">
                   {project.subtitle &&
                     `${
                       project.subtitle.length > 45
@@ -287,11 +304,13 @@ export default function KaraScroll() {
           <Link
             href="/gallery"
             target="_blank"
-            className="flex items-center gap-2 leading-loose px-3 py-0.5 hover:bg-foreground/10 rounded-sm transition-colors duration-300 justify-between text-foreground/70 hover:text-foreground"
+            className="flex items-center gap-2 leading-loose px-3 py-0.5 hover:bg-foreground/10 rounded-sm transition-colors duration-300 justify-between text-foreground/70 hover:text-foreground font-poppins"
           >
             <p className="projectTxt">
-              <span className="font-medium text-foreground">See all </span>
-              <span className="text-foreground/50 lowercase font-extralight ">
+              <span className="font-erode font-semibold text-foreground">
+                See all{" "}
+              </span>
+              <span className="text-foreground/60 lowercase font-poppins font-light ">
                 archive projects by clicking here
               </span>
             </p>
@@ -344,10 +363,12 @@ export default function KaraScroll() {
                         priority={setIndex === 0 && i < 3}
                       />
                     </div>
-                    <div className="flex items-center gap-3 mb-6 leading-loose justify-between md:hidden">
+                    <div className="flex items-center gap-3 mb-6 leading-loose justify-between md:hidden font-poppins">
                       <p className="">
-                        <span className="font-medium">{project.title} </span>
-                        <span className="text-foreground/50 lowercase font-extralight">
+                        <span className="font-erode font-semibold">
+                          {project.title}{" "}
+                        </span>
+                        <span className="text-foreground/60 lowercase font-poppins font-light">
                           {project.subtitle &&
                             `${
                               project.subtitle.length > 15
