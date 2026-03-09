@@ -75,7 +75,7 @@ function ChapterCard({
       onMouseMove={handleMove}
       onMouseLeave={handleLeave}
       data-anim="journey"
-      className="group relative overflow-hidden rounded-2xl border border-foreground/6 bg-foreground/2 p-6 transition-[border-color,box-shadow] duration-300 hover:border-primary/20 hover:shadow-[0_0_40px_-12px] hover:shadow-primary/10 md:p-8"
+      className="group relative overflow-hidden rounded-2xl border border-foreground/6 bg-foreground/10 p-6 transition-[border-color,box-shadow] duration-300 hover:border-primary/20 hover:shadow-[0_0_40px_-12px] hover:shadow-primary/10 md:p-8"
       style={{ willChange: "transform" }}
     >
       {/* glow layer */}
@@ -85,7 +85,7 @@ function ChapterCard({
       />
 
       {/* watermark number */}
-      <span className="pointer-events-none absolute -right-2 -top-4 z-0 select-none font-erode text-[80px] font-bold leading-none text-foreground/3 md:text-[100px]">
+      <span className="pointer-events-none absolute -right-2 -top-4 z-0 select-none font-erode text-[80px] font-bold leading-none text-foreground/9 md:text-[100px]">
         {String(index + 1).padStart(2, "0")}
       </span>
 
@@ -133,9 +133,8 @@ export default function AboutJourney() {
             data-anim="journey"
             className="font-erode text-3xl font-semibold leading-snug md:text-5xl"
           >
-            Built,
-            <br />
-            <span className="text-primary">not planned.</span>
+            Built, {' '}
+            <span className="text-primary"> not planned.</span>
           </h2>
           <div
             data-anim="journey"

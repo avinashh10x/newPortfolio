@@ -321,8 +321,8 @@ export default function ThreeDHand() {
           />
 
           {/* <Suspense fallback={<Loader />}> */}
-            <LeftHandModel isMobile={isMobile} animateIn={animateIn} />
-            <RightHandModel isMobile={isMobile} animateIn={animateIn} />
+          <LeftHandModel isMobile={isMobile} animateIn={animateIn} />
+          <RightHandModel isMobile={isMobile} animateIn={animateIn} />
           {/* </Suspense> */}
 
           <ContactShadows
@@ -336,16 +336,16 @@ export default function ThreeDHand() {
         </Canvas>
       </motion.div>
 
-      <div className="pointer-events-none absolute top-1/2 left-1/2 z-50 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center text-center font-poppins leading-[10px] md:leading-8">
-        <span className="mb-3 text-[2.2vw] md:text-[1vw] tracking-widest text-foreground/50 uppercase">
+      <div className="pointer-events-none absolute top-1/2 left-1/2 z-50 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center text-center leading-[10px] md:leading-8">
+        <span className="mb-3 font-recia text-[2.2vw] md:text-[1vw] tracking-widest text-foreground/50 uppercase">
           Full Stack Developer
         </span>
 
-        <h1 className="mb-4 text-[5.5vw] md:text-[3vw] font-semibold uppercase   text-primary leading-[10px] md:leading-5">
+        <h1 className="mb-4 font-erode text-[5.5vw] md:text-[4vw] font-semibold uppercase text-primary leading-[10px] md:leading-5">
           I&apos;m Avinash <span className="inline-block"></span>
         </h1>
 
-        <p className="max-w-xl text-[3.5vw] md:text-[1.7vw] font-medium text-foreground leading-[10px] md:leading-5">
+        <p className="max-w-xl font-poppins text-[3.5vw] md:text-[1.7vw] font-medium text-foreground leading-[10px] md:leading-5">
           I Design. Build. Ship.
         </p>
       </div>

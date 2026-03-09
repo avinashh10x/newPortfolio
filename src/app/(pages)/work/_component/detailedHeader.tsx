@@ -2,13 +2,26 @@
 
 import React from "react";
 import { motion } from "motion/react";
-import { ArrowUpRight, Github } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, Github } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { project } from "@/data/projects";
 
 function DetailedHeader({ project }: { project: project }) {
+  const router = useRouter();
+
   return (
     <div className="w-full relative pt-32 pb-10 px-4 md:px-8 max-w-7xl mx-auto">
+      <motion.button
+        initial={{ opacity: 0, x: -10 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.4 }}
+        onClick={() => router.back()}
+        className="group mb-6 flex items-center gap-2 font-poppins text-sm text-foreground/60 hover:text-foreground transition-colors duration-300 cursor-pointer"
+      >
+        <ArrowLeft className="size-4 group-hover:-translate-x-1 transition-transform duration-300" />
+        Back
+      </motion.button>
       <div className="flex justify-between items-end  gap-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

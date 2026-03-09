@@ -402,7 +402,7 @@ export default function KaraScroll() {
               {/* Gallery Link Card - appears after each project set */}
               <div>
                 <Link href="/gallery">
-                  <div className="aspect-video rounded-sm overflow-hidden pointer-events-none bg-gradient-to-br from-primary/20 via-primary/10 to-transparent flex items-center justify-center border border-foreground/10">
+                  <div className="aspect-[16/8] rounded-sm overflow-hidden pointer-events-none bg-gradient-to-br from-primary/20 via-primary/10 to-transparent flex items-center justify-center border border-foreground/10">
                     <div className="text-center">
                       <p className="text-[8vw] md:text-[2vw] font-medium text-foreground/80">
                         →

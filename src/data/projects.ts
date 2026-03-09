@@ -21,7 +21,16 @@ export const PROJECTS: project[] = [
       "A comprehensive social media management platform that empowers users to plan, schedule, and automate posts across multiple channels, driving consistent engagement and online growth.",
     article:
       "In the fast-paced world of digital marketing, consistency is everything. Plingo was born from a simple frustration: juggling multiple social media accounts while trying to maintain a cohesive brand voice across platforms. This project set out to solve that pain point with an elegant, all-in-one scheduling solution.<br/><br/>At its core, Plingo enables users to compose, schedule, and automate posts across Twitter (X) and LinkedIn from a single dashboard. The intuitive calendar interface provides a bird's-eye view of your content pipeline, making it effortless to spot gaps and optimize posting times for maximum engagement.<br/><br/>The technical architecture leverages Next.js for a seamless user experience, backed by MongoDB for flexible data modeling and Node.js for handling OAuth integrations with social platforms. Real-time preview functionality ensures every post looks exactly as intended before it goes live.<br/><br/>Beyond basic scheduling, Plingo incorporates smart features like timezone-aware posting, draft management, and post analytics to help users understand what resonates with their audience. The platform was designed with scalability in mind, ready to support additional platforms and team collaboration features as it evolves.",
-    image: ["/projects/plingo.webp"],
+    image: ["/projects/plingo.webp",
+      "https://res.cloudinary.com/dsr8rjhoc/image/upload/v1773073557/Screenshot_2026-03-09_215129_hrv9vd.png",
+      "https://res.cloudinary.com/dsr8rjhoc/image/upload/v1773073556/Screenshot_2026-03-09_215158_jhaqdj.png",
+      "https://res.cloudinary.com/dsr8rjhoc/image/upload/v1773073556/Screenshot_2026-03-09_215235_znlpix.png",
+      "https://res.cloudinary.com/dsr8rjhoc/image/upload/v1773073556/Screenshot_2026-03-09_215304_utryav.png",
+      "https://res.cloudinary.com/dsr8rjhoc/image/upload/v1773073556/Screenshot_2026-03-09_215218_yprg7x.png",
+      "https://res.cloudinary.com/dsr8rjhoc/image/upload/v1773073557/Screenshot_2026-03-09_215336_rcpo0p.png",
+      "https://res.cloudinary.com/dsr8rjhoc/image/upload/v1773073556/Screenshot_2026-03-09_215144_ijunoo.png",
+
+    ],
     video: [
       "https://res.cloudinary.com/dsr8rjhoc/video/upload/v1770549899/plingo_-_Made_with_Clipchamp_vyjcrq.mp4",
     ],
@@ -232,8 +241,17 @@ export const PROJECTS: project[] = [
       "An experimental playground for immersive 3D web experiences. This project pushes the boundaries of web technology by integrating Three.js with modern web frameworks.",
     article:
       "The web is evolving beyond flat interfaces. XYZ represents an exploration into the next frontier of digital experiencesâ€”where 3D graphics, physics simulations, and interactive environments become native to the browser.<br/><br/>This experimental project serves as a technical sandbox for pushing the limits of what's possible with Three.js and React. From real-time rendering techniques to complex shader programming, XYZ is a proving ground for ideas that may eventually find their way into production projects.<br/><br/>Key experiments include: optimized model loading and rendering pipelines, post-processing effects that rival native applications, physics-based interactions using cannon.js, and seamless integration with React's component model. Performance optimization is a constant focusâ€”achieving smooth 60fps experiences even on modest hardware.<br/><br/>Beyond the technical achievements, XYZ explores the design language of 3D interfaces. How should users navigate virtual spaces? What interaction patterns feel natural? How do we balance immersion with usability? These questions guide ongoing development. XYZ isn't just a projectâ€”it's a laboratory for the future of web experiences.",
-    image: ["/projects/xyz.webp"],
+    image: ["/projects/xyz.webp",
+      "https://res.cloudinary.com/dsr8rjhoc/image/upload/v1773073770/Screenshot_2026-03-09_215730_jy6wcw.png",
+      "https://res.cloudinary.com/dsr8rjhoc/image/upload/v1773073770/Screenshot_2026-03-09_215750_dygi13.png",
+      "https://res.cloudinary.com/dsr8rjhoc/image/upload/v1773073770/Screenshot_2026-03-09_215810_gsd7mj.png",
+      "https://res.cloudinary.com/dsr8rjhoc/image/upload/v1773073771/Screenshot_2026-03-09_215827_hev3g6.png",
+      "https://res.cloudinary.com/dsr8rjhoc/image/upload/v1773073772/Screenshot_2026-03-09_215847_rtgm4a.png"
+    ],
 
+    video: [
+      "https://res.cloudinary.com/dsr8rjhoc/video/upload/v1770549899/xyz_-_Made_with_Clipchamp_l6liw0.mp4",
+    ],
     link: "https://xyz.byavi.in",
     github: "https://github.com/avinashh10x/xyz.git",
     time: "Jan 2026",
