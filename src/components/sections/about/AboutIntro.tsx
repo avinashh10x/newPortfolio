@@ -29,7 +29,7 @@ export default function AboutIntro() {
   }, []);
 
   return (
-    <section ref={ref} className="px-6 pt-32 pb-16 md:pt-44 md:pb-24">
+    <section ref={ref} className="px-6 pt-32 pb-16 md:pt-20 md:pb-24">
       <div className="mx-auto max-w-3xl space-y-10">
         {/* tag + heading */}
         <div className="space-y-6 text-center">
@@ -61,8 +61,7 @@ export default function AboutIntro() {
             used.
           </p>
           <p>
-            Most ideas start small.
-            <br />I just like taking them to the point where they actually work.
+            Most ideas start small. I just like taking them to the point where they actually work.
           </p>
           <p>
             Over time I moved from web to full-stack systems, mobile apps, and

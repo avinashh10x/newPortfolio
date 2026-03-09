@@ -396,7 +396,10 @@ function Navbar() {
             {THEME_LINK.map((link) => (
               <DockItem
                 key={link.name}
-                link={link}
+                link={{
+                  ...link,
+                  icon: isDark ? <SunIcon size={24} /> : <MoonIcon size={24} />,
+                }}
                 mouseX={mouseX}
                 isActive={isActive(link.href)}
                 onThemeClick={toggleTheme}
