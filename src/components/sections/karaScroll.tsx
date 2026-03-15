@@ -239,8 +239,8 @@ export default function KaraScroll() {
         }}
       /> */}
       <div className="flex-1 tracking-[-0.05em] px-10 space-y-10 max-md:hidden">
-        <div className="flex font-erode font-semibold leading-[0.8] tracking-[-0.05em] text-[5vw] items-center gap-5 px-2 justify-between ">
-          <p className="text-primary">Work</p>
+        <div className="flex font-erode font-semibold leading-[1.1] tracking-[-0.05em] text-[4vw] items-center gap-5 px-2 justify-between">
+          <p className="text-primary drop-shadow-sm ">Work</p>
           <motion.span
             initial={{ scaleX: 0, originX: 0 }}
             whileInView={{ scaleX: 1 }}
@@ -257,15 +257,15 @@ export default function KaraScroll() {
           {PROJECTS.slice(0, 5).map((project, i) => (
             <Link
               key={i}
-              className="flex items-center gap-2 leading-loose px-3 py-0.5 hover:bg-foreground/10 rounded-sm transition-colors duration-300 justify-between font-poppins"
+              className="flex items-center gap-2 leading-loose px-3 py-0.5 hover:bg-foreground/10 rounded-sm transition-colors duration-300 justify-between font-sans"
               href={`/work/${project.slug}`}
             >
               <p className="projectTxt">
-                <span className="font-erode font-semibold">
+                <span className="font-sans ">
                   {project.title}{" "}
                 </span>
                 {/* <span className="w-[15px] h-[1px] " /> */}
-                <span className="text-foreground/60 lowercase font-poppins font-light ">
+                <span className="text-foreground/50 lowercase font-sans font-normal tracking-[-0.01em]">
                   {project.subtitle &&
                     `${
                       project.subtitle.length > 45
@@ -304,13 +304,13 @@ export default function KaraScroll() {
           <Link
             href="/gallery"
             target="_blank"
-            className="flex items-center gap-2 leading-loose px-3 py-0.5 hover:bg-foreground/10 rounded-sm transition-colors duration-300 justify-between text-foreground/70 hover:text-foreground font-poppins"
+            className="flex items-center gap-2 leading-loose px-3 py-0.5 hover:bg-foreground/10 rounded-sm transition-colors duration-300 justify-between text-foreground/70 hover:text-foreground font-sans"
           >
             <p className="projectTxt">
-              <span className="font-erode font-semibold text-foreground">
+              <span className="font-sans font-semibold text-foreground">
                 See all{" "}
               </span>
-              <span className="text-foreground/60 lowercase font-poppins font-light ">
+              <span className="text-foreground/50 lowercase font-sans font-normal tracking-[-0.01em]">
                 archive projects by clicking here
               </span>
             </p>
@@ -363,12 +363,12 @@ export default function KaraScroll() {
                         priority={setIndex === 0 && i < 3}
                       />
                     </div>
-                    <div className="flex items-center gap-3 mb-6 leading-loose justify-between md:hidden font-poppins">
+                    <div className="flex items-center gap-3 mb-6 leading-loose justify-between md:hidden font-sans">
                       <p className="">
-                        <span className="font-erode font-semibold">
+                        <span className="font-sans font-semibold">
                           {project.title}{" "}
                         </span>
-                        <span className="text-foreground/60 lowercase font-poppins font-light">
+                        <span className="text-foreground/50 lowercase font-sans font-normal tracking-[-0.01em]">
                           {project.subtitle &&
                             `${
                               project.subtitle.length > 15
@@ -412,8 +412,8 @@ export default function KaraScroll() {
                   </div>
                   <div className="flex items-center gap-3 mb-6 leading-loose justify-between md:hidden">
                     <p className="">
-                      <span className="font-medium">View All </span>
-                      <span className="text-foreground/50 lowercase font-extralight">
+                      <span className="font-sans font-semibold">View All </span>
+                      <span className="text-foreground/50 lowercase font-sans font-normal tracking-[-0.01em]">
                         explore archive
                       </span>
                     </p>

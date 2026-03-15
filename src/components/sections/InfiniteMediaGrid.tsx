@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { Observer } from "gsap/all";
 import { PROJECTS } from "@/data/projects";
@@ -94,26 +94,71 @@ export default function InfiniteMediaGrid() {
           <div
             key={i}
             aria-hidden={i !== 0}
-            className="grid w-max grid-cols-3 md:grid-cols-5 gap-[6vw] md:gap-[5vw] p-[3vw] md:p-[2vw]"
+            className="grid w-max  grid-cols-3 md:grid-cols-5 gap-[6vw] md:gap-[5vw] p-[3vw] md:p-[2vw]"
           >
-            {PROJECTS.map((src, idx) => (
-              <div
-                key={idx}
-                className="w-[30vw] md:w-[20vw] aspect-video select-none rounded-md overflow-hidden"
-              >
-                <Link href={`/work/${src.slug}`}>
-                  <img
-                    src={src.image[0]}
-                    alt=""
-                    className="w-full aspect-video object-contain block rounded-md"
-                    draggable={false}
-                  />
-                </Link>
-              </div>
+            {PROJECTS.map((project, idx) => (
+              <ProjectCard key={idx} project={project} />
             ))}
           </div>
         ))}
       </div>
     </section>
+  );
+}
+
+function ProjectCard({ project }: { project: (typeof PROJECTS)[0] }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+    if (videoRef.current) {
+      videoRef.current.play().catch(() => {});
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    if (videoRef.current) {
+      videoRef.current.pause();
+      // videoRef.current.currentTime = 0; // Optional: Reset to start
+    }
+  };
+
+  return (
+    <div
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      className="w-[30vw] md:w-[20vw] aspect-video select-none rounded-md overflow-hidden relative group bg-foreground/5 border border-foreground/5 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:shadow-primary/10"
+    >
+      <Link href={`/work/${project.slug}`}>
+        {/* Static Image */}
+        <img
+          src={project.image[0]}
+          alt={project.title}
+          className={`w-full h-full object-cover block transition-opacity duration-500 ${
+            isHovered && project.video?.[0] ? "opacity-0" : "opacity-100"
+          }`}
+          draggable={false}
+        />
+
+        {/* Hover Video */}
+        {project.video?.[0] && (
+          <video
+            ref={videoRef}
+            src={project.video[0]}
+            loop
+            muted
+            playsInline
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 pointer-events-none ${
+              isHovered ? "opacity-100" : "opacity-0"
+            }`}
+          />
+        )}
+        
+        {/* Subtle overlay for better contrast if needed */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+      </Link>
+    </div>
   );
 }

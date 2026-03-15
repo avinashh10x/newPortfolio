@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 import React, { useEffect, useRef, useState } from "react";
 import {
   motion,
@@ -35,25 +35,25 @@ type MenuLink = {
 };
 
 const THEME_LINK: MenuLink[] = [
-  { name: "Theme", icon: <MoonIcon size={24} />, href: "#", target: "_self" },
+  { name: "Theme", icon: <SunIcon size={22} />, href: "#", target: "_self" },
 ];
 
 const DETAIL_LINKS: MenuLink[] = [
   {
     name: "Home",
-    icon: <HouseIcon size={24} />,
+    icon: <HouseIcon size={22} />,
     href: "/",
     target: "_self",
   },
   {
     name: "About",
-    icon: <LightbulbIcon size={24} />,
+    icon: <LightbulbIcon size={22} strokeWidth={1.5} />,
     href: "/about",
     target: "_self",
   },
   {
     name: "Work",
-    icon: <BriefcaseBusinessIcon size={24} />,
+    icon: <BriefcaseBusinessIcon size={22} strokeWidth={1.5} />,
     href: "/work",
     target: "_self",
   },
@@ -62,26 +62,26 @@ const DETAIL_LINKS: MenuLink[] = [
 const CONTACT_LINKS: MenuLink[] = [
   // {
   //   name: "Resume",
-  //   icon: <ClipboardMinusIcon size={24} />,
+  //   icon: <ClipboardMinusIcon size={22} strokeWidth={1.5} />,
   //   href: "/aviResume.pdf",
   //   target: "_blank",
   // },
   {
     name: "LinkedIn",
-    icon: <LinkedInIcon size={24} />,
+    icon: <LinkedInIcon size={22} />,
     href: "https://www.linkedin.com/in/avinash-kumar-%F0%9F%8C%9F-519616249/",
     target: "_blank",
   },
 
   {
     name: "Twitter",
-    icon: <TwitterIcon size={24} />,
+    icon: <TwitterIcon size={22} />,
     href: "https://twitter.com/avinash10x",
     target: "_blank",
   },
   {
     name: "Mail",
-    icon: <MailIcon size={24} />,
+    icon: <MailIcon size={22} />,
     href: "mailto:thissideavinash@gmail.com",
   },
 ];
@@ -130,7 +130,7 @@ function DockItem({
     <>
       <motion.span
         style={{ scale: iconScale }}
-        className={`text-foreground/80 flex items-center justify-center ${isActive ? "text-primary" : ""}`}
+        className={`transition-colors duration-300 flex items-center justify-center [&_svg]:stroke-[1.5px] ${isActive ? "text-foreground" : "text-foreground/40 group-hover:text-foreground/80"}`}
       >
         {link.icon}
       </motion.span>
@@ -142,7 +142,7 @@ function DockItem({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 6, scale: 0.96 }}
             transition={{ duration: 0.18, ease: "easeOut" }}
-            className="pointer-events-none absolute -top-8 px-2 py-1 text-[10px] rounded-sm bg-background text-foreground whitespace-nowrap"
+            className="pointer-events-none absolute -top-9 px-2 py-1 text-[10px] rounded-sm bg-foreground/90 text-background whitespace-nowrap shadow-md font-medium"
           >
             {link.name}
           </motion.span>
@@ -166,10 +166,10 @@ function DockItem({
             isActive && (
               <motion.span
                 initial={{ opacity: 1, y: 6, scale: 0.96 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
+                animate={{ opacity: 1, y: -5, scale: 1 }}
                 exit={{ opacity: 1, y: 6, scale: 0.96 }}
                 transition={{ duration: 0.18, ease: "easeOut" }}
-                className="pointer-events-none absolute -bottom-1.5 text-primary text-[10px] rounded-full bg-primary h-[3px] w-[3px] "
+                className="pointer-events-none absolute -bottom-2 text-foreground text-[10px] rounded-full bg-foreground h-1 w-1 "
               ></motion.span>
             )
           );
@@ -194,7 +194,7 @@ function DockItem({
             }
             // Don't interfere with mailto links - let browser handle them
           }}
-          className="w-full h-full flex items-center justify-center rounded-full bg-foreground/20 border border-foreground/30 relative backdrop-blur-lg hover"
+          className="group w-full h-full flex items-center justify-center rounded-full bg-transparent hover:bg-foreground/5 transition-colors duration-300 relative"
         >
           {content}
         </a>
@@ -209,7 +209,7 @@ function DockItem({
               onThemeClick();
             }
           }}
-          className="w-full h-full flex items-center justify-center rounded-full bg-foreground/20 border border-foreground/30 relative backdrop-blur-lg"
+          className="group w-full h-full flex items-center justify-center rounded-full bg-transparent hover:bg-foreground/5 transition-colors duration-300 relative"
         >
           {content}
         </Link>
@@ -244,12 +244,12 @@ function MobileNavItem({
     : false;
 
   const content = (
-    <span className="text-foreground/80 flex items-center justify-center">
+    <span className={`transition-colors duration-300 flex items-center justify-center [&_svg]:stroke-[1.5px] ${isActive ? "text-foreground" : "text-foreground/40 group-hover:text-foreground/80"}`}>
       {link.icon}
     </span>
   );
 
-  const className = `w-10 h-10 flex items-center justify-center rounded-full bg-foreground/20 border border-foreground/30 relative backdrop-blur-lg ${isActive ? "ring-2 ring-foreground/50" : ""}`;
+  const className = `group w-10 h-10 flex items-center justify-center rounded-full bg-transparent hover:bg-foreground/5 transition-colors duration-300 relative ${isActive ? "ring-1 ring-foreground/20" : ""}`;
 
   return (
     <li className="flex-shrink-0">
@@ -318,10 +318,10 @@ function Navbar() {
   const isDark = mounted ? theme === "dark" : false;
 
   return (
-    <div className="w-full flex justify-center items-end pb-5 fixed bottom-0 z-50">
+    <div className="w-full flex justify-center items-end pb-5 md:pb-8 fixed bottom-0 z-50">
       {isMobile ? (
         // Mobile: Simple nav without dock animations
-        <nav className="bg-background/40 backdrop-blur-xl rounded-full px-3 py-2 border border-foreground/20 shadow-2xl">
+        <nav className="bg-background/80 backdrop-blur-xl rounded-full px-3 py-2.5 border border-foreground/10 shadow-lg">
           <ul className="flex gap-2 h-10 items-center">
             {DETAIL_LINKS.map((link) => {
               const renderedLink =
@@ -344,18 +344,18 @@ function Navbar() {
                 />
               );
             })}
-            <span className="w-px h-6 bg-foreground/20 my-auto" />
+            <span className="w-px h-5 bg-foreground/10 my-auto mx-1" />
             {THEME_LINK.map((link) => (
               <MobileNavItem
                 key={link.name}
                 link={{
                   ...link,
-                  icon: isDark ? <SunIcon size={20} /> : <MoonIcon size={20} />,
+                  icon: isDark ? <MoonIcon size={20} /> : <SunIcon size={20} />,
                 }}
                 onThemeClick={toggleTheme}
               />
             ))}
-            <span className="w-px h-6 bg-foreground/20 my-auto" />
+            <span className="w-px h-5 bg-foreground/10 my-auto mx-1" />
             {CONTACT_LINKS.map((link) => (
               <MobileNavItem key={link.name} link={link} />
             ))}
@@ -366,18 +366,18 @@ function Navbar() {
         <motion.nav
           onMouseMove={(e) => mouseX.set(e.pageX)}
           onMouseLeave={() => mouseX.set(Infinity)}
-          className="bg-background/40 backdrop-blur-xl rounded-full px-2 py-2 border border-foreground/20 shadow-2xl "
+          className="bg-background/80 backdrop-blur-2xl rounded-full px-3 py-2 border border-foreground/10 shadow-xl"
         >
-          <ul className="flex  gap-2 h-10 items-end">
+          <ul className="flex gap-1 h-11 items-end">
             {DETAIL_LINKS.map((link) => {
               const renderedLink =
                 link.name === "Theme"
                   ? {
                       ...link,
                       icon: isDark ? (
-                        <SunIcon size={24} />
+                        <SunIcon size={22} />
                       ) : (
-                        <MoonIcon size={24} />
+                        <MoonIcon size={22} />
                       ),
                     }
                   : link;
@@ -392,20 +392,20 @@ function Navbar() {
                 />
               );
             })}
-            <motion.span className="w-px h-6 bg-foreground/20   my-auto" />
+            <motion.span className="w-[1px] h-6 bg-foreground/10 my-auto mx-2" />
             {THEME_LINK.map((link) => (
               <DockItem
                 key={link.name}
                 link={{
                   ...link,
-                  icon: isDark ? <SunIcon size={24} /> : <MoonIcon size={24} />,
+                  icon: isDark ? <MoonIcon size={22} /> : <SunIcon size={22} />,
                 }}
                 mouseX={mouseX}
                 isActive={isActive(link.href)}
                 onThemeClick={toggleTheme}
               />
             ))}
-            <motion.span className="w-px h-6 bg-foreground/20 my-auto" />
+            <motion.span className="w-[1px] h-6 bg-foreground/10 my-auto mx-2" />
             {CONTACT_LINKS.map((link) => (
               <DockItem
                 key={link.name}
