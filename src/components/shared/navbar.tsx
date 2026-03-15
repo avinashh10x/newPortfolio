@@ -35,7 +35,7 @@ type MenuLink = {
 };
 
 const THEME_LINK: MenuLink[] = [
-  { name: "Theme", icon: <SunIcon size={22} />, href: "#", target: "_self" },
+  { name: "Theme", icon: <MoonIcon size={22} />, href: "#", target: "_self" },
 ];
 
 const DETAIL_LINKS: MenuLink[] = [
@@ -249,7 +249,7 @@ function MobileNavItem({
     </span>
   );
 
-  const className = `group w-10 h-10 flex items-center justify-center rounded-full bg-transparent hover:bg-foreground/5 transition-colors duration-300 relative ${isActive ? "ring-1 ring-foreground/20" : ""}`;
+  const className = `group w-9 h-9 flex items-center justify-center rounded-full bg-transparent hover:bg-foreground/5 transition-colors duration-300 relative ${isActive ? "ring-1 ring-foreground/20" : ""}`;
 
   return (
     <li className="flex-shrink-0">
@@ -289,7 +289,7 @@ function MobileNavItem({
 function Navbar() {
   const mouseX = useMotionValue(Infinity);
   const [isMobile, setIsMobile] = useState(false);
-  const { theme, setTheme } = useTheme();
+  const { resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const path = usePathname();
 
@@ -312,16 +312,16 @@ function Navbar() {
   }, []);
 
   const toggleTheme = () => {
-    setTheme(theme === "dark" ? "light" : "dark");
+    setTheme(resolvedTheme === "dark" ? "light" : "dark");
   };
 
-  const isDark = mounted ? theme === "dark" : false;
+  const isDark = mounted ? resolvedTheme === "dark" : true;
 
   return (
     <div className="w-full flex justify-center items-end pb-5 md:pb-8 fixed bottom-0 z-50">
       {isMobile ? (
         // Mobile: Simple nav without dock animations
-        <nav className="bg-background/80 backdrop-blur-xl rounded-full px-3 py-2.5 border border-foreground/10 shadow-lg">
+        <nav className="bg-background/80 backdrop-blur-xl rounded-full px-[10px] py-[10px] border border-foreground/10 shadow-lg mx-4">
           <ul className="flex gap-2 h-10 items-center">
             {DETAIL_LINKS.map((link) => {
               const renderedLink =
@@ -329,9 +329,9 @@ function Navbar() {
                   ? {
                       ...link,
                       icon: isDark ? (
-                        <SunIcon size={20} />
-                      ) : (
                         <MoonIcon size={20} />
+                      ) : (
+                        <SunIcon size={20} />
                       ),
                     }
                   : link;

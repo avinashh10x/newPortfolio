@@ -12,6 +12,7 @@ import { SplitText } from "gsap/all";
 import { motion, useInView } from "motion/react";
 import NumberFlow from "@number-flow/react";
 import { BriefcaseBusinessIcon } from "lucide-react";
+import ScrollUpHint from "@/components/shared/ScrollUpHint";
 
 // Register GSAP plugins
 if (typeof window !== "undefined") {
@@ -223,6 +224,7 @@ export default function KaraScroll() {
 
   return (
     <section className="relative flex items-center bg-background md:px-[6vw] text-foreground h-screen overflow-hidden gap-6">
+      <ScrollUpHint />
       {/* Texts */}
       <div
         className="absolute inset-0 pointer-events-none opacity-100 dark:opacity-40"
