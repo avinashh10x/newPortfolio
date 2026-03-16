@@ -26,6 +26,7 @@ import { MoonIcon } from "../MoonIcon";
 import { SunIcon } from "../SunIcon";
 import { LinkedInIcon } from "../LinkedinIcon";
 import { useTheme } from "next-themes";
+import Link from "next/link";
 
 type MenuLink = {
   name: string;
@@ -191,8 +192,9 @@ function DockItem({
             e.preventDefault();
             onThemeClick();
           }
+
         }}
-        className="group w-full h-full flex items-center justify-center rounded-full bg-transparent hover:bg-foreground/5 transition-colors duration-300 relative"
+        className=" group w-full h-full flex items-center justify-center rounded-full bg-transparent hover:bg-foreground/5 transition-colors duration-300 relative"
       >
         {content}
       </SoundLink>
