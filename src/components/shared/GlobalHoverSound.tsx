@@ -35,6 +35,12 @@ export default function GlobalHoverSound() {
       const interactiveEl = target.closest("a, button");
 
       if (interactiveEl) {
+        // Skip elements that use SoundLink (they handle their own sound)
+        if (interactiveEl.closest("[data-sound-link]")) {
+          lastHoveredRef.current = null;
+          return;
+        }
+
         // Prevent multiple sounds when moving between nested layers of the same button/link
         const isSelfOrChild = lastHoveredRef.current && (
           interactiveEl === lastHoveredRef.current ||

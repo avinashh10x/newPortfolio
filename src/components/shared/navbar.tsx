@@ -16,7 +16,7 @@ import {
   Paperclip,
   PaperclipIcon,
 } from "lucide-react";
-import Link from "next/link";
+import SoundLink from "./SoundLink";
 import { GithubIcon } from "../GithubIcon";
 import { usePathname } from "next/navigation";
 import { TwitterIcon } from "../TwitterIcon";
@@ -180,40 +180,22 @@ function DockItem({
 
   return (
     <motion.li ref={ref} style={{ width }} className="aspect-square">
-      {isExternal ? (
-        <a
-          href={link.href}
-          target={isMailto ? undefined : link.target}
-          rel={link.target === "_blank" ? "noopener noreferrer" : undefined}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-          onClick={(e) => {
-            if (link.name === "Theme" && onThemeClick) {
-              e.preventDefault();
-              onThemeClick();
-            }
-            // Don't interfere with mailto links - let browser handle them
-          }}
-          className="group w-full h-full flex items-center justify-center rounded-full bg-transparent hover:bg-foreground/5 transition-colors duration-300 relative"
-        >
-          {content}
-        </a>
-      ) : (
-        <Link
-          href={link.href}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-          onClick={(e) => {
-            if (link.name === "Theme" && onThemeClick) {
-              e.preventDefault();
-              onThemeClick();
-            }
-          }}
-          className="group w-full h-full flex items-center justify-center rounded-full bg-transparent hover:bg-foreground/5 transition-colors duration-300 relative"
-        >
-          {content}
-        </Link>
-      )}
+      <SoundLink
+        href={link.href}
+        target={isMailto ? undefined : link.target}
+        rel={link.target === "_blank" ? "noopener noreferrer" : undefined}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        onClick={(e) => {
+          if (link.name === "Theme" && onThemeClick) {
+            e.preventDefault();
+            onThemeClick();
+          }
+        }}
+        className="group w-full h-full flex items-center justify-center rounded-full bg-transparent hover:bg-foreground/5 transition-colors duration-300 relative"
+      >
+        {content}
+      </SoundLink>
     </motion.li>
   );
 }
@@ -253,35 +235,20 @@ function MobileNavItem({
 
   return (
     <li className="flex-shrink-0">
-      {isExternal ? (
-        <a
-          href={link.href}
-          target={isMailto ? undefined : link.target}
-          rel={link.target === "_blank" ? "noopener noreferrer" : undefined}
-          onClick={(e) => {
-            if (link.name === "Theme" && onThemeClick) {
-              e.preventDefault();
-              onThemeClick();
-            }
-          }}
-          className={className}
-        >
-          {content}
-        </a>
-      ) : (
-        <Link
-          href={link.href}
-          onClick={(e) => {
-            if (link.name === "Theme" && onThemeClick) {
-              e.preventDefault();
-              onThemeClick();
-            }
-          }}
-          className={className}
-        >
-          {content}
-        </Link>
-      )}
+      <SoundLink
+        href={link.href}
+        target={isMailto ? undefined : link.target}
+        rel={link.target === "_blank" ? "noopener noreferrer" : undefined}
+        onClick={(e) => {
+          if (link.name === "Theme" && onThemeClick) {
+            e.preventDefault();
+            onThemeClick();
+          }
+        }}
+        className={className}
+      >
+        {content}
+      </SoundLink>
     </li>
   );
 }

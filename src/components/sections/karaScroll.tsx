@@ -13,6 +13,7 @@ import { motion, useInView } from "motion/react";
 import NumberFlow from "@number-flow/react";
 import { BriefcaseBusinessIcon } from "lucide-react";
 import ScrollUpHint from "@/components/shared/ScrollUpHint";
+import SoundLink from "../shared/SoundLink";
 
 // Register GSAP plugins
 if (typeof window !== "undefined") {
@@ -257,7 +258,7 @@ export default function KaraScroll() {
         </div>
         <div className="flex flex-col space-y-2 text-[1.2vw]">
           {PROJECTS.slice(0, 5).map((project, i) => (
-            <Link
+            <SoundLink
               key={i}
               className="flex items-center gap-2 leading-loose px-3 py-0.5 hover:bg-foreground/10 rounded-sm transition-colors duration-300 justify-between font-sans"
               href={`/work/${project.slug}`}
@@ -301,15 +302,15 @@ export default function KaraScroll() {
               >
                 {project.time}
               </motion.span>
-            </Link>
+            </SoundLink>
           ))}
-          <Link
+          <SoundLink
             href="/gallery"
             target="_blank"
             className="flex items-center gap-2 leading-loose px-3 py-0.5 hover:bg-foreground/10 rounded-sm transition-colors duration-300 justify-between text-foreground/70 hover:text-foreground font-sans"
           >
             <p className="projectTxt">
-              <span className="font-sans font-semibold text-foreground">
+              <span className="font-sans text-foreground">
                 See all{" "}
               </span>
               <span className="text-foreground/50 lowercase font-sans font-normal tracking-[-0.01em]">
@@ -332,7 +333,7 @@ export default function KaraScroll() {
             >
               {currentTime}
             </motion.span>
-          </Link>
+          </SoundLink>
         </div>
       </div>
 

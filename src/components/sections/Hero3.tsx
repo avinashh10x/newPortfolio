@@ -50,7 +50,7 @@ const Hero3 = () => {
                     transition={{ duration: 0.7, delay: 0.2, ease: [0.21, 0.47, 0.32, 0.98] }}
                     className={`font-sans text-[16px] sm:text-[18px] md:text-[20px] leading-[1.65] mb-10 max-w-[100%] sm:max-w-[80%] font-normal tracking-[-0.01em] transition-colors duration-500 ${isAnyHovered ? 'text-foreground/10' : 'text-foreground/50'}`}
                 >
-                   <strong className={`font-semibold transition-colors duration-500 ${isAnyHovered ? 'text-foreground/10' : 'text-foreground/80'}`}>Full-Stack Developer</strong> building fast, thoughtful products for the web with a focus on performance and scalable systems.
+                   <strong className={`font-semibold transition-colors duration-500 ${isAnyHovered ? 'text-foreground/10' : 'text-foreground/80'}`}>Creative Developer</strong> building fast, immersive products for the web with a focus on interactive experiences, performance, and UI/UX.
                 </motion.p>
             </div>
 
@@ -66,9 +66,9 @@ const Hero3 = () => {
                     onMouseEnter={() => setHoveredLink('about')}
                     onMouseLeave={() => setHoveredLink(null)}
                     className={`font-sans text-[13px] sm:text-sm font-medium py-2.5 sm:py-3 px-5 sm:px-6 rounded-lg transition-all duration-500 shadow-sm hover:shadow-md pointer-events-auto active:scale-95 group/btn
-                        ${hoveredLink === 'about' ? 'bg-primary text-primary-foreground' : 
-                          hoveredLink === 'work' ? 'bg-primary/90 text-primary-foreground/90 opacity-40' : 
-                          'bg-primary text-primary-foreground'}
+                        ${hoveredLink === 'about' ? 'bg-foreground text-background' : 
+                          hoveredLink === 'work' ? 'bg-foreground/90 text-background/90 opacity-40' : 
+                          'bg-foreground text-background'}
                     `}
                 >
                     More about me

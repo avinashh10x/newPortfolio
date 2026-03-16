@@ -2,9 +2,9 @@ import { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Page Not Found | Avi - Full-Stack Developer India",
+  title: "Page Not Found | Avi - Creative Developer India",
   description:
-    "The page you're looking for doesn't exist. Return to Avi's portfolio - India's best full-stack developer in Mumbai & Punjab.",
+    "The page you're looking for doesn't exist. Return to Avi's portfolio - India's Creative Developer in Mumbai & Punjab.",
   robots: {
     index: false,
     follow: true,

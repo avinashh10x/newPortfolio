@@ -90,7 +90,7 @@ export default function InfiniteMediaGrid() {
         ref={containerRef}
         className="grid grid-cols-2 w-max will-change-transform"
       >
-        {Array.from({ length: 12 }).map((_, i) => (
+        {Array.from({ length: 4 }).map((_, i) => (
           <div
             key={i}
             aria-hidden={i !== 0}
@@ -121,7 +121,6 @@ function ProjectCard({ project }: { project: (typeof PROJECTS)[0] }) {
     setIsHovered(false);
     if (videoRef.current) {
       videoRef.current.pause();
-      // videoRef.current.currentTime = 0; // Optional: Reset to start
     }
   };
 
@@ -131,11 +130,13 @@ function ProjectCard({ project }: { project: (typeof PROJECTS)[0] }) {
       onMouseLeave={handleMouseLeave}
       className="w-[30vw] md:w-[20vw] aspect-video select-none rounded-md overflow-hidden relative group bg-foreground/5 border border-foreground/5 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:shadow-primary/10"
     >
-      <Link href={`/work/${project.slug}`}>
+      <Link href={`/work/${project.slug}`} className="block w-full h-full">
         {/* Static Image */}
         <img
           src={project.image[0]}
           alt={project.title}
+          loading="lazy"
+          decoding="async"
           className={`w-full h-full object-cover block transition-opacity duration-500 ${
             isHovered && project.video?.[0] ? "opacity-0" : "opacity-100"
           }`}
@@ -147,6 +148,8 @@ function ProjectCard({ project }: { project: (typeof PROJECTS)[0] }) {
           <video
             ref={videoRef}
             src={project.video[0]}
+            preload="none"
+            poster={project.image[0]}
             loop
             muted
             playsInline

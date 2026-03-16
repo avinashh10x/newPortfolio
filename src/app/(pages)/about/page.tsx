@@ -2,32 +2,32 @@ import { Metadata } from "next";
 import About2 from "@/components/sections/About2";
 
 export const metadata: Metadata = {
-  title: "About Avi | Best Full-Stack Developer in Mumbai & Punjab, India",
+  title: "About Avi | Creative Developer in Mumbai & Punjab, India",
   description:
-    "Learn about Avi (Avinash Kumar), India's top full-stack developer specializing in React, Next.js, GSAP animations, and backend development. CS'25 graduate based in Mumbai & Punjab building modern web applications.",
+    "Learn about Avi (Avinash Kumar), a Creative Developer specializing in interactive web experiences, React, Next.js, and GSAP animations. Based in Mumbai & Punjab building modern web applications.",
   keywords: [
     "About Avi Developer",
     "Avinash Kumar Developer",
-    "Full Stack Developer Mumbai",
-    "Best Developer Punjab",
+    "Creative Developer Mumbai",
+    "Best Frontend Developer Punjab",
     "React Expert India",
     "Next.js Developer Mumbai",
     "GSAP Animation Developer India",
-    "Web Developer Portfolio India",
-    "Hire Developer Mumbai",
-    "Frontend Backend Developer India",
+    "Creative Web Portfolio India",
+    "Hire Creative Developer Mumbai",
+    "Frontend Interactive Developer India",
   ],
   openGraph: {
-    title: "About Avi | India's Best Full-Stack Developer",
+    title: "About Avi | Creative Developer",
     description:
-      "Meet Avi - A top-tier full-stack developer in Mumbai & Punjab, India. Expert in React, Next.js, GSAP, and modern web technologies.",
+      "Meet Avi - A top-tier Creative Developer in Mumbai & Punjab, India. Expert in React, Next.js, GSAP, and interactive web technologies.",
     url: "https://byavi.in/about",
     type: "profile",
   },
   twitter: {
-    title: "About Avi | Best Full-Stack Developer in India",
+    title: "About Avi | Creative Developer in India",
     description:
-      "Discover Avi's journey as India's best full-stack developer. Expert in React, Next.js, GSAP animations & backend development.",
+      "Discover Avi's journey as a Creative Developer. Expert in React, Next.js, GSAP animations & interactive web development.",
   },
   alternates: {
     canonical: "https://byavi.in/about",

@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/shared/navbar";
 import { ThemeProvider } from "@/components/theme-provider";
-import GlobalHoverSound from "@/components/shared/GlobalHoverSound";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,46 +19,44 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://byavi.in"),
 
   title: {
-    default: "Avi - Best Full-Stack Developer in India | Mumbai & Punjab",
-    template: "%s | Avi - Top Developer India",
+    default: "Avi - Creative Developer | Mumbai & Punjab, India",
+    template: "%s | Avi - Creative Developer",
   },
 
   description:
-    "Hi, I'm Avi (Avinash Kumar), India's best Full-Stack Developer based in Mumbai & Punjab. Expert in React, Next.js, GSAP animations, and backend development. Building high-performance web applications.",
+    "Hi, I'm Avi (Avinash Kumar), a Creative Developer based in Mumbai & Punjab. Expert in React, Next.js, GSAP animations, and interactive web experiences.",
 
   keywords: [
     "Avi",
     "Avinash",
     "Avinash Kumar",
-    "Full Stack Developer India",
-    "Best Full Stack Developer Mumbai",
-    "Best Full Stack Developer Punjab",
-    "Top Web Developer India",
+    "Creative Developer India",
+    "Creative Web Developer",
+    "Frontend Developer Mumbai",
     "React Developer Mumbai",
     "Next.js Developer India",
     "GSAP Animation Developer",
-    "Best React Developer India",
-    "Frontend Developer Mumbai",
-    "Backend Developer Mumbai",
-    "Best Web Developer Punjab",
-    "JavaScript Expert India",
-    "Node.js Developer Mumbai",
-    "hire react developer india",
-    "hire next.js developer mumbai",
-    "best gsap developer india",
+    "Interactive Developer India",
+    "Creative Developer Punjab",
+    "WebGL Developer India",
+    "Best Frontend Developer Mumbai",
+    "Web Animation Expert",
+    "hire creative developer india",
+    "hire gsap developer",
+    "interactive web designer india",
   ],
 
   authors: [{ name: "Avi (Avinash Kumar)", url: "https://byavi.in" }],
-  creator: "Avi - Full Stack Developer India",
-  publisher: "Avi - Best Developer Mumbai",
+  creator: "Avi - Creative Developer India",
+  publisher: "Avi - Creative Developer",
 
   openGraph: {
     title:
-      "Avi - India's Best Full-Stack Developer | React, Next.js, GSAP Expert",
+      "Avi - Creative Developer | React, Next.js, GSAP Expert",
     description:
-      "Top Full-Stack Developer in Mumbai & Punjab, India. Expert in React, Next.js, GSAP animations, and backend development.",
+      "Creative Developer in Mumbai & Punjab, India. Specializing in interactive web experiences, GSAP animations, and modern frontend development.",
     url: "https://byavi.in",
-    siteName: "Avi - Best Developer Portfolio India",
+    siteName: "Avi - Creative Developer Portfolio",
     locale: "en_IN",
     type: "website",
     images: [
@@ -66,16 +64,16 @@ export const metadata: Metadata = {
         url: "https://byavi.in/og.png",
         width: 1200,
         height: 630,
-        alt: "Avi - Best Full-Stack Developer in India | Mumbai & Punjab",
+        alt: "Avi - Creative Developer in India | Mumbai & Punjab",
       },
     ],
   },
 
   twitter: {
     card: "summary_large_image",
-    title: "Avi - India's Best Full-Stack Developer | React, Next.js, GSAP",
+    title: "Avi - Creative Developer | React, Next.js, GSAP",
     description:
-      "Top Full-Stack Developer in Mumbai & Punjab. Expert in React, Next.js, GSAP animations & backend development.",
+      "Creative Developer in Mumbai & Punjab. Expert in React, Next.js, GSAP animations & interactive web experiences.",
     creator: "@avinash10x",
     images: ["https://byavi.in/og.png"],
   },
@@ -96,7 +94,7 @@ export const metadata: Metadata = {
     canonical: "https://byavi.in",
   },
 
-  applicationName: "Avi - Full Stack Developer Portfolio",
+  applicationName: "Avi - Creative Developer Portfolio",
 
   // Uncomment and add your Google Search Console verification code:
   // verification: {
@@ -119,10 +117,10 @@ export default function RootLayout({
     name: "Avi (Avinash Kumar)",
     alternateName: ["Avinash", "Avinash Kumar", "Avi Developer"],
     description:
-      "India's best Full-Stack Developer specializing in React, Next.js, GSAP animations, and backend development. Based in Mumbai & Punjab.",
+      "A Creative Developer specializing in interactive web experiences, React, Next.js, and GSAP animations. Based in Mumbai & Punjab.",
     url: "https://byavi.in",
     image: "https://byavi.in/og.png",
-    jobTitle: "Full-Stack Developer",
+    jobTitle: "Creative Developer",
     worksFor: {
       "@type": "Organization",
       name: "Freelance / Independent",
@@ -137,12 +135,12 @@ export default function RootLayout({
       "React",
       "Next.js",
       "GSAP",
-      "JavaScript",
+      "Creative Development",
       "TypeScript",
-      "Node.js",
-      "Full Stack Development",
+      "Frontend Development",
+      "Three.js",
       "Web Animation",
-      "Backend Development",
+      "Interactive Design",
     ],
     alumniOf: "Computer Science Graduate 2025",
     sameAs: [
@@ -194,7 +192,7 @@ export default function RootLayout({
         >
           {children}
           <Navbar />
-          <GlobalHoverSound />
+
         </ThemeProvider>
       </body>
     </html>
