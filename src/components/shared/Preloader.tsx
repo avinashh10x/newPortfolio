@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import gsap from "gsap";
 import { motion } from "framer-motion";
+import { usePathname } from "next/navigation";
 
 
 const names = [
@@ -18,10 +19,15 @@ const names = [
 ]
 
 export default function Preloader() {
+  const pathname = usePathname();
   const [isLoading, setIsLoading] = useState(true);
   const preloaderRef = useRef<HTMLDivElement>(null);
   const [name, setName] = useState(names[0]);
   const [index, setIndex] = useState(0);
+
+  if (pathname !== "/" && pathname !== "/home") {
+    return null;
+  }
 
   useEffect(() => {
     // Only run on initial load
