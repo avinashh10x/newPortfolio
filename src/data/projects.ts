@@ -201,7 +201,7 @@ export const PROJECTS: project[] = [
     // video: [
     //   "https://paleturquoise-ant-927868.hostingersite.com/video/DZINR%20Showreel%2009.mp4",
     // ],
-    link: "https://crazyui.in",
+    link: "https://crazyui.com",
     github: "https://github.com/avinashh10x/crazyui",
     time: "Jan 2026",
     tag: ["Framer", "logic components"],
@@ -268,7 +268,7 @@ export const PROJECTS: project[] = [
 
 
   //  dublicate 
-   {
+  {
     title: "Plingo",
     slug: "plingo-the-social-media-scheduler",
     subtitle: "The Ultimate Social Media Scheduling Tool",
@@ -456,7 +456,7 @@ export const PROJECTS: project[] = [
     // video: [
     //   "https://paleturquoise-ant-927868.hostingersite.com/video/DZINR%20Showreel%2009.mp4",
     // ],
-    link: "https://crazyui.in",
+    link: "https://crazyui.com",
     github: "https://github.com/avinashh10x/crazyui",
     time: "Jan 2026",
     tag: ["Framer", "logic components"],
@@ -521,8 +521,8 @@ export const PROJECTS: project[] = [
     ],
   },
 
-  
-   {
+
+  {
     title: "Plingo",
     slug: "plingo-the-social-media-scheduler",
     subtitle: "The Ultimate Social Media Scheduling Tool",
@@ -710,7 +710,7 @@ export const PROJECTS: project[] = [
     // video: [
     //   "https://paleturquoise-ant-927868.hostingersite.com/video/DZINR%20Showreel%2009.mp4",
     // ],
-    link: "https://crazyui.in",
+    link: "https://crazyui.com",
     github: "https://github.com/avinashh10x/crazyui",
     time: "Jan 2026",
     tag: ["Framer", "logic components"],
@@ -774,7 +774,7 @@ export const PROJECTS: project[] = [
       "Tailwind CSS",
     ],
   },
- {
+  {
     title: "Plingo",
     slug: "plingo-the-social-media-scheduler",
     subtitle: "The Ultimate Social Media Scheduling Tool",
@@ -810,7 +810,7 @@ export const PROJECTS: project[] = [
       "Tailwind CSS",
     ],
   }
- 
+
 
 ];
 
