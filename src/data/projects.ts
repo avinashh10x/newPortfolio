@@ -13,6 +13,33 @@ export type project = {
 };
 
 export const PROJECTS: project[] = [
+    {
+    title: "GetMyPortfolio",
+    slug: "get-my-portfolio",
+    subtitle: "Portfolios That Get You Hired",
+    description:
+      "A platform offering premium, deploy-ready portfolio templates for developers, designers, and editors. Buy once, customize easily, and launch your personal brand in minutes.",
+    article:
+      "In today’s fast-moving digital world, having a strong personal portfolio is no longer optional—it’s your first impression. GetMyPortfolio was built to simplify that process by providing high-quality, ready-to-use portfolio templates that look professional and perform fast.<br/><br/>Instead of spending days designing and developing from scratch, users can choose a template, customize it to fit their identity, and deploy instantly. The focus is on clean design, performance, and real-world usability—helping individuals stand out without overcomplicating the process.<br/><br/>The platform is designed with scalability in mind. Each template is structured to be easily customizable, allowing even non-technical users to adapt it with minimal effort. Future iterations aim to push this further with deeper personalization and self-serve customization flows.<br/><br/>Built using modern web technologies like Next.js and Tailwind CSS, GetMyPortfolio ensures fast load times, responsive design, and a seamless user experience. This project reflects a shift from just building websites to creating products that solve real problems—helping people present themselves better online.",
+    image: [
+      "https://res.cloudinary.com/dsr8rjhoc/image/upload/v1773923288/Screenshot_2026-03-19_175256_xaurgi.png",
+      "https://res.cloudinary.com/dsr8rjhoc/image/upload/v1773923288/Screenshot_2026-03-19_175256_xaurgi.png",
+      "https://res.cloudinary.com/dsr8rjhoc/image/upload/v1773923288/Screenshot_2026-03-19_175256_xaurgi.png",
+      "https://res.cloudinary.com/dsr8rjhoc/image/upload/v1773923288/Screenshot_2026-03-19_175256_xaurgi.png",
+      "https://res.cloudinary.com/dsr8rjhoc/image/upload/v1773923288/Screenshot_2026-03-19_175256_xaurgi.png",
+      "https://res.cloudinary.com/dsr8rjhoc/image/upload/v1773923288/Screenshot_2026-03-19_175256_xaurgi.png",
+    ],
+    video: [],
+    link: "https://getmyportfolio.byavi.in",
+    github: "",
+    time: "Mar 2026",
+    tag: [
+      "Next.js",
+      "TypeScript",
+      "Tailwind CSS",
+      "Framer Motion",
+    ],
+  },
   {
     title: "Plingo",
     slug: "plingo-the-social-media-scheduler",
@@ -558,39 +585,7 @@ export const PROJECTS: project[] = [
       "Tailwind CSS",
     ],
   },
-  {
-    title: "DZINR",
-    slug: "dzinr-brand-design-agency",
-    subtitle: "Mumbai's Premier Brand Design Agency",
-    description:
-      "The official digital presence for DZINR, a Mumbai-based creative agency led by Anik Jain, specializing in brand identity, visual storytelling, and strategic design solutions.",
-    article:
-      "DZINR is more than a website—it's a digital manifesto for one of Mumbai's most compelling creative agencies. The challenge was clear: translate the agency's bold visual identity and meticulous craft into an immersive web experience that commands attention from the first scroll.<br/><br/>The site architecture was designed around storytelling. Each section unfolds with purpose, guiding visitors through the agency's philosophy, notable works, and the team behind the magic. Heavy emphasis was placed on showcasing the portfolio through high-impact imagery and video content that mirrors the quality of DZINR's output.<br/><br/>From a technical standpoint, the project demanded performance without compromise. GSAP and Framer Motion power the cinematic transitions and micro-interactions that give the site its distinctive character. Every animation serves a purpose—drawing attention, revealing content, or reinforcing brand personality.<br/><br/>The result is a digital experience that feels as premium as the brand it represents. Fast, fluid, and uncompromising in its execution, the DZINR website stands as a testament to what's possible when design and development work in perfect harmony.",
-    image: ["/projects/dzinr.webp",
-      "https://res.cloudinary.com/dsr8rjhoc/image/upload/v1770552594/Screenshot_2026-02-08_173749_okfxfu.png",
-      "https://res.cloudinary.com/dsr8rjhoc/image/upload/v1770552587/Screenshot_2026-02-08_173511_rxowqy.png",
-      "https://res.cloudinary.com/dsr8rjhoc/image/upload/v1770552590/Screenshot_2026-02-08_173530_ahx1vt.png",
-      "https://res.cloudinary.com/dsr8rjhoc/image/upload/v1770552591/Screenshot_2026-02-08_173633_yixfyq.png",
-      "https://res.cloudinary.com/dsr8rjhoc/image/upload/v1770552586/Screenshot_2026-02-08_173354_wgoerv.png",
-      "https://res.cloudinary.com/dsr8rjhoc/image/upload/v1770552586/Screenshot_2026-02-08_173434_awwbk2.png",
-      "https://res.cloudinary.com/dsr8rjhoc/image/upload/v1770552586/Screenshot_2026-02-08_173327_o6xn46.png"
-    ],
-    video: [
-      "https://paleturquoise-ant-927868.hostingersite.com/video/DZINR%20Showreel%2009.mp4",
-    ],
-    link: "https://dzinr.in",
-    github: "#",
-    time: "Sep 2025",
-    tag: [
-      "Next.js",
-      "TypeScript",
-      "Node.js",
-      "MongoDB",
-      "framer-motion",
-      "gsap",
-      "Tailwind CSS",
-    ],
-  },
+  
   {
     title: "Tingy",
     slug: "tingy-smart-image-compression",

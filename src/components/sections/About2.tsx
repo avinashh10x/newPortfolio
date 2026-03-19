@@ -7,16 +7,7 @@ import Divider from "./about/Divider";
 export default function About2() {
   return (
     <div className="relative bg-background">
-      {/* subtle dot texture matching hero */}
-      <div
-        className="pointer-events-none fixed inset-0 z-0 opacity-40 dark:opacity-45"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle, var(--primary) 0.5px, transparent 0.5px)",
-          backgroundSize: "10px 10px",
-        }}
-      />
-
+      
       <div className="relative z-10 ">
         <AboutIntro />
    

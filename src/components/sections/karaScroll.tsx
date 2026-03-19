@@ -34,7 +34,7 @@ export default function KaraScroll() {
     const checkMobile = () => {
       setIsMobile(
         window.matchMedia("(max-width: 768px)").matches ||
-          "ontouchstart" in window,
+        "ontouchstart" in window,
       );
     };
     checkMobile();
@@ -227,13 +227,7 @@ export default function KaraScroll() {
     <section className="relative flex items-center bg-background md:px-[6vw] text-foreground h-screen overflow-hidden gap-6">
       <ScrollUpHint />
       {/* Texts */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-100 dark:opacity-40"
-        style={{
-          backgroundImage: `radial-gradient(circle, var(--primary) 0.6px, transparent 0.6px)`,
-          backgroundSize: "10px 10px",
-        }}
-      />
+      
       {/* Radial fade â€” clears dots from center, keeps them at edges */}
       {/* <div
         className="absolute inset-0 pointer-events-none"
@@ -270,10 +264,9 @@ export default function KaraScroll() {
                 {/* <span className="w-[15px] h-[1px] " /> */}
                 <span className="text-foreground/50 lowercase font-sans font-normal tracking-[-0.01em]">
                   {project.subtitle &&
-                    `${
-                      project.subtitle.length > 45
-                        ? project.subtitle.slice(0, 45) + ""
-                        : project.subtitle + ""
+                    `${project.subtitle.length > 45
+                      ? project.subtitle.slice(0, 45) + ""
+                      : project.subtitle + ""
                     }`}
                 </span>
               </p>
@@ -307,7 +300,7 @@ export default function KaraScroll() {
           <SoundLink
             href="/gallery"
             target="_blank"
-            className="flex items-center gap-2 leading-loose px-3 py-0.5 hover:bg-foreground/10 rounded-sm transition-colors duration-300 justify-between text-foreground/70 hover:text-foreground font-sans"
+            className="flex items-center gap-2 leading-loose px-3 py-0.5 hover:bg-foreground/10 rounded-sm transition-colors duration-300 justify-between text-foreground/70 hover:text-foreground font-sans "
           >
             <p className="projectTxt">
               <span className="font-sans text-foreground">
@@ -359,7 +352,7 @@ export default function KaraScroll() {
                     <div className="w-full rounded-sm overflow-hidden">
                       <Image
                         src={project.image[0]}
-                        alt={project.title}
+                        alt={`${project.title} - Avi | Creative Developer Portfolio`}
                         className="w-full h-full object-cover rounded-sm hover:scale-[1.03] transition-all duration-300"
                         width={900}
                         height={500}
@@ -373,10 +366,9 @@ export default function KaraScroll() {
                         </span>
                         <span className="text-foreground/50 lowercase font-sans font-normal tracking-[-0.01em]">
                           {project.subtitle &&
-                            `${
-                              project.subtitle.length > 15
-                                ? project.subtitle.slice(0, 15) + "..."
-                                : project.subtitle
+                            `${project.subtitle.length > 15
+                              ? project.subtitle.slice(0, 15) + "..."
+                              : project.subtitle
                             }`}
                         </span>
                       </p>
@@ -405,7 +397,7 @@ export default function KaraScroll() {
               {/* Gallery Link Card - appears after each project set */}
               <div>
                 <Link href="/gallery">
-                  <div className="aspect-[16/8] rounded-sm overflow-hidden pointer-events-none bg-gradient-to-br from-primary/20 via-primary/10 to-transparent flex items-center justify-center border border-foreground/10">
+                  <div className="aspect-[16/8] rounded-sm overflow-hidden pointer-events-none bg-gradient-to-br from-primary/20 via-primary/10 to-transparent flex items-center justify-center border border-foreground/10 md:hidden">
                     <div className="text-center">
                       <p className="text-[8vw] md:text-[2vw] font-medium text-foreground/80">
                         →

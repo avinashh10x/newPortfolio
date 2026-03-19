@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   },
 
   description:
-    "Hi, I'm Avi (Avinash Kumar), a Creative Developer based in Mumbai & Punjab. Expert in React, Next.js, GSAP animations, and interactive web experiences.",
+    "Hi, I'm Avi , a Creative Developer based in Mumbai & Punjab. Expert in React, Next.js, GSAP animations, and interactive web experiences.",
 
   keywords: [
     "Avi",
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     "interactive web designer india",
   ],
 
-  authors: [{ name: "Avi (Avinash Kumar)", url: "https://byavi.in" }],
+  authors: [{ name: "Avi ", url: "https://byavi.in" }],
   creator: "Avi - Creative Developer India",
   publisher: "Avi - Creative Developer",
 
@@ -115,7 +115,7 @@ export default function RootLayout({
   const ldJson = JSON.stringify({
     "@context": "https://schema.org",
     "@type": "Person",
-    name: "Avi (Avinash Kumar)",
+    name: "Avi ",
     alternateName: ["Avinash", "Avinash Kumar", "Avi Developer"],
     description:
       "A Creative Developer specializing in interactive web experiences, React, Next.js, and GSAP animations. Based in Mumbai & Punjab.",

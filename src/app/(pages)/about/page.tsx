@@ -4,7 +4,7 @@ import About2 from "@/components/sections/About2";
 export const metadata: Metadata = {
   title: "About Avi | Creative Developer in Mumbai & Punjab, India",
   description:
-    "Learn about Avi (Avinash Kumar), a Creative Developer specializing in interactive web experiences, React, Next.js, and GSAP animations. Based in Mumbai & Punjab building modern web applications.",
+    "Learn about Avi , a Creative Developer specializing in interactive web experiences, React, Next.js, and GSAP animations. Based in Mumbai & Punjab building modern web applications.",
   keywords: [
     "About Avi Developer",
     "Avinash Kumar Developer",

@@ -138,7 +138,7 @@ const DetailedProjectGallery = ({ Project }: { Project: project }) => {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={src}
-                  alt={`Gallery image ${index + 1}`}
+                  alt={`${Project.title} Gallery image ${index + 1} - Avi  | Creative Developer Portfolio`}
                   className="block w-full h-auto object-cover rounded-lg"
                   style={{
                     transform: "scaleX(0)",
@@ -165,7 +165,7 @@ const DetailedProjectGallery = ({ Project }: { Project: project }) => {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={src}
-                  alt=""
+                  alt={`${Project.title} Gallery image clone ${index + 1} - Avi  | Creative Developer Portfolio`}
                   className="block w-full h-auto object-cover rounded-lg"
                   style={{
                     transform: "scaleX(0)",

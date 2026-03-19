@@ -25,11 +25,9 @@ export default function Preloader() {
   const [name, setName] = useState(names[0]);
   const [index, setIndex] = useState(0);
 
-  if (pathname !== "/" && pathname !== "/home") {
-    return null;
-  }
-
   useEffect(() => {
+    if (pathname !== "/" && pathname !== "/home") return;
+
     // Only run on initial load
     // const storedLoad = sessionStorage.getItem("hasLoaded");
 
@@ -86,7 +84,11 @@ export default function Preloader() {
     return () => {
       tl.kill();
     };
-  }, [index]);
+  }, [index, pathname]);
+
+  if (pathname !== "/" && pathname !== "/home") {
+    return null;
+  }
 
   if (!isLoading && typeof window !== 'undefined' && sessionStorage.getItem("hasLoaded")) {
     return null;

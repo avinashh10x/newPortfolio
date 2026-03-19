@@ -170,7 +170,7 @@ function TechCard({ item, index }: { item: TechItem; index: number }) {
       <div className="relative z-10 flex h-10 w-10 items-center justify-center rounded-xl bg-foreground/[0.05] transition-colors duration-300 group-hover:bg-foreground/[0.08]">
         <img
           src={item.icon}
-          alt={item.name}
+          alt={`${item.name} icon - Avi  | Creative Developer Portfolio`}
           className="h-6 w-6 transition-transform duration-300 group-hover:scale-110"
         />
       </div>
@@ -188,7 +188,7 @@ function TechCard({ item, index }: { item: TechItem; index: number }) {
           backgroundColor: `${item.color}12`,
         }}
       >
-           {item.name}
+        {item.name}
       </span>
     </div>
   );

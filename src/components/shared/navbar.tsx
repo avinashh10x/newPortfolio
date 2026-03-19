@@ -83,7 +83,7 @@ const CONTACT_LINKS: MenuLink[] = [
   {
     name: "Mail",
     icon: <MailIcon size={22} />,
-    href: "mailto:thissideavinash@gmail.com",
+    href: "mailto:Avinashbuilds@gmail.com",
   },
 ];
 
@@ -296,13 +296,13 @@ function Navbar() {
               const renderedLink =
                 link.name === "Theme"
                   ? {
-                      ...link,
-                      icon: isDark ? (
-                        <MoonIcon size={20} />
-                      ) : (
-                        <SunIcon size={20} />
-                      ),
-                    }
+                    ...link,
+                    icon: isDark ? (
+                      <MoonIcon size={20} />
+                    ) : (
+                      <SunIcon size={20} />
+                    ),
+                  }
                   : link;
 
               return (
@@ -342,13 +342,13 @@ function Navbar() {
               const renderedLink =
                 link.name === "Theme"
                   ? {
-                      ...link,
-                      icon: isDark ? (
-                        <SunIcon size={22} />
-                      ) : (
-                        <MoonIcon size={22} />
-                      ),
-                    }
+                    ...link,
+                    icon: isDark ? (
+                      <SunIcon size={22} />
+                    ) : (
+                      <MoonIcon size={22} />
+                    ),
+                  }
                   : link;
 
               return (

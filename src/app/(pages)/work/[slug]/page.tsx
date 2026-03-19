@@ -25,6 +25,8 @@ export async function generateMetadata({ params }: Props) {
   };
 }
 
+import ProjectNavigation from "../_component/ProjectNavigation";
+
 export default async function ProjectPage({ params }: Props) {
   const { slug } = await params;
   const project = PROJECTS.find((p) => p.slug === slug);
@@ -34,15 +36,8 @@ export default async function ProjectPage({ params }: Props) {
   }
 
   return (
-    <main className="min-h-screen bg-background text-foreground ">
-        <div
-        className="pointer-events-none fixed inset-0 z-0 opacity-90 dark:opacity-45"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle, var(--primary) 0.5px, transparent 0.5px)",
-          backgroundSize: "10px 10px",
-        }}
-      />
+    <main className="min-h-screen bg-background text-foreground">
+     
       <DetailedHeader project={project} />
 
       {/* Video Section */}
@@ -69,7 +64,7 @@ export default async function ProjectPage({ params }: Props) {
           <div className="relative w-full h-auto rounded-lg overflow-hidden border border-foreground/10 bg-foreground/5 shadow-2xl shadow-purple-900/10">
             <Image
               src={project.image[0]}
-              alt={project.title}
+              alt={`${project.title} - Avi  | Creative Developer Portfolio`}
               width={1920}
               height={1080}
               className="object-cover"
@@ -81,8 +76,11 @@ export default async function ProjectPage({ params }: Props) {
       {/* Content Grid */}
       <DetailedContent project={project} />
 
+      {/* Project Navigation */}
+      <ProjectNavigation currentProject={project} />
+
       {/* Horizontal Scroll Gallery */}
-      <DetailedProjectGallery Project={project} />
+      {/* <DetailedProjectGallery Project={project} /> */}
     </main>
   );
 }

@@ -49,11 +49,13 @@ export default function AboutIntro() {
           <p className={`font-sans text-[16px] sm:text-[18px] md:text-[22px] leading-[1.65] font-medium tracking-[-0.01em] transition-colors duration-500 ${isAnyHovered ? 'text-foreground/20' : 'text-foreground/60'}`}>
             23yo CSE Graduate ('25) building full-stack products for the web.
             Currently working on <ClickableText text="Plingo" id="plingo" hoveredId={hoveredLink} onSetHover={setHoveredLink} href="https://plingo.byavi.in" />, an all-in-one social media scheduler, and{" "}
-            <ClickableText text="Tingy" id="tingy" hoveredId={hoveredLink} onSetHover={setHoveredLink} href="https://tingy.byavi.in" />, an image compression tool that reduces file sizes by up to 80%.
-            I enjoy designing scalable systems and turning ideas into real, shipped products.
-            You can follow my work on <ClickableText text="X" id="x" hoveredId={hoveredLink} onSetHover={setHoveredLink} href="https://twitter.com/avinashh10x" /> or explore the code on{" "}
-            <ClickableText text="GitHub" id="github" hoveredId={hoveredLink} onSetHover={setHoveredLink} href="https://github.com/avinashh10x" /> — and if you'd like to collaborate, feel free to reach out via{" "}
-            <ClickableText text="Email" id="email" hoveredId={hoveredLink} onSetHover={setHoveredLink} href="mailto:thissideavinash@gmail.com" />.
+            <ClickableText text="Tingy" id="tingy" hoveredId={hoveredLink} onSetHover={setHoveredLink} href="https://tingy.byavi.in" />, an image compression tool reducing file sizes by up to 80%.
+            I design scalable systems and turn ideas into shipped products.
+            Follow my work on <ClickableText text="X" id="x" hoveredId={hoveredLink} onSetHover={setHoveredLink} href="https://twitter.com/avinashh10x" /> or explore the code on{" "}
+            <ClickableText text="GitHub" id="github" hoveredId={hoveredLink} onSetHover={setHoveredLink} href="https://github.com/avinashh10x" /> — and if you'd like to collaborate, reach out via{" "}
+            <ClickableText text="Email" id="email" hoveredId={hoveredLink} onSetHover={setHoveredLink} href="mailto:Avinashbuilds@gmail.com" />.
+            {" "}
+            Or get a quick overview through my <ClickableText text="resume" id="resume" hoveredId={hoveredLink} onSetHover={setHoveredLink} href="/aviResume.pdf" />.
           </p>
         </div>
 
@@ -62,25 +64,25 @@ export default function AboutIntro() {
   );
 }
 
-const ClickableText = ({ 
-  text, 
-  href, 
-  id, 
-  hoveredId, 
-  onSetHover 
-}: { 
-  text: string, 
-  href: string, 
-  id: string, 
-  hoveredId: string | null, 
-  onSetHover: (id: string | null) => void 
+const ClickableText = ({
+  text,
+  href,
+  id,
+  hoveredId,
+  onSetHover
+}: {
+  text: string,
+  href: string,
+  id: string,
+  hoveredId: string | null,
+  onSetHover: (id: string | null) => void
 }) => {
   const isHovered = hoveredId === id;
   const isOthersHovered = hoveredId !== null && !isHovered;
 
   return (
-    <Link 
-      href={href} 
+    <Link
+      href={href}
       onMouseEnter={() => onSetHover(id)}
       onMouseLeave={() => onSetHover(null)}
       className={`relative z-20 font-semibold underline decoration-foreground/20 underline-offset-4 hover:decoration-primary transition-all duration-300 inline-block

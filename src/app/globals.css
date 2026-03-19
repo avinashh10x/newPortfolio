@@ -35,14 +35,14 @@
   --radius: 0.625rem;
   --background: #f9f8f6;
   --foreground: #000000;
-  --primary: #bb8ded;
+  --primary: #000000;
   --primary-foreground: #f9f8f6;
 }
 
 .dark {
   --background: #010101;
   --foreground: #f9f8f6;
-  --primary: #bb8ded;
+  --primary: #fff;
   --primary-foreground: #010101;
 }
 
@@ -56,7 +56,7 @@
 }
 
 ::selection {
-  background-color: #bb8ded;
+  background-color: #78b3ffe6;
   color: var(--color-primary-foreground);
 }
 
