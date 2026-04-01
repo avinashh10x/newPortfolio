@@ -71,7 +71,7 @@ const Hero3 = () => {
             delay: 0.1 * delayMultiplier,
             ease: [0.21, 0.47, 0.32, 0.98],
           }}
-          className={`font-erode text-[3.5rem] sm:text-[4.5rem] md:text-[5.5rem] lg:text-[6rem] font-extrabold tracking-[-0.05em] leading-[0.9] mb-5 drop-shadow-sm transition-colors duration-500 ${
+          className={`font-erode text-[3.5rem] max-[350px]:text-[3.4rem]  sm:text-[4.5rem] md:text-[5.5rem] lg:text-[6rem] font-extrabold tracking-[-0.05em] leading-[0.9] mb-5 max-[350px]:-mb-1 drop-shadow-sm transition-colors duration-500 ${
             isAnyHovered ? "text-foreground/20" : "text-foreground"
           }`}
         >
