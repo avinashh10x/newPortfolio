@@ -10,14 +10,9 @@ import {
 } from "framer-motion";
 import {
   BriefcaseBusinessIcon,
-  ClipboardIcon,
-  ClipboardMinusIcon,
   LightbulbIcon,
-  Paperclip,
-  PaperclipIcon,
 } from "lucide-react";
 import SoundLink from "./SoundLink";
-import { GithubIcon } from "../GithubIcon";
 import { usePathname } from "next/navigation";
 import { TwitterIcon } from "../TwitterIcon";
 import { HouseIcon } from "../HouseIcon";
@@ -26,7 +21,6 @@ import { MoonIcon } from "../MoonIcon";
 import { SunIcon } from "../SunIcon";
 import { LinkedInIcon } from "../LinkedinIcon";
 import { useTheme } from "next-themes";
-import Link from "next/link";
 
 type MenuLink = {
   name: string;
@@ -87,6 +81,8 @@ const CONTACT_LINKS: MenuLink[] = [
   },
 ];
 
+const HOME_INTRO_EVENT = "home-intro-visibility";
+
 function DockItem({
   link,
   mouseX,
@@ -121,10 +117,6 @@ function DockItem({
     damping: 12,
   });
 
-  const isExternal =
-    link.href === "#" ||
-    link.href.startsWith("http") ||
-    link.href.startsWith("mailto");
   const isMailto = link.href.startsWith("mailto");
 
   const content = (
@@ -192,9 +184,8 @@ function DockItem({
             e.preventDefault();
             onThemeClick();
           }
-
         }}
-        className=" group w-full h-full flex items-center justify-center rounded-full bg-transparent hover:bg-foreground/5 transition-colors duration-300 relative"
+        className="group w-full h-full flex items-center justify-center rounded-full bg-transparent hover:bg-foreground/5 transition-colors duration-300 relative"
       >
         {content}
       </SoundLink>
@@ -212,10 +203,6 @@ function MobileNavItem({
 }) {
   const path = usePathname();
 
-  const isExternal =
-    link.href === "#" ||
-    link.href.startsWith("http") ||
-    link.href.startsWith("mailto");
   const isMailto = link.href.startsWith("mailto");
 
   const hrefPath =
@@ -256,11 +243,17 @@ function MobileNavItem({
 }
 
 function Navbar() {
-  const mouseX = useMotionValue(Infinity);
-  const [isMobile, setIsMobile] = useState(false);
-  const { resolvedTheme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
   const path = usePathname();
+  const mouseX = useMotionValue(Infinity);
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window === "undefined") {
+      return false;
+    }
+
+    return window.innerWidth < 768;
+  });
+  const { resolvedTheme, setTheme } = useTheme();
+  const [introVisible, setIntroVisible] = useState(() => path !== "/");
 
   const isActive = (hrefPath: string) => {
     return hrefPath
@@ -271,121 +264,186 @@ function Navbar() {
   };
 
   useEffect(() => {
-    setMounted(true);
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    checkMobile();
+
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
+
+  useEffect(() => {
+    if (path !== "/") {
+      return;
+    }
+
+    const frameId = window.requestAnimationFrame(() => {
+      setIntroVisible(false);
+    });
+
+    const handleIntroVisibility = (event: Event) => {
+      const customEvent = event as CustomEvent<{ visible?: boolean }>;
+      setIntroVisible(Boolean(customEvent.detail?.visible));
+    };
+
+    window.addEventListener(HOME_INTRO_EVENT, handleIntroVisibility as EventListener);
+
+    return () => {
+      window.cancelAnimationFrame(frameId);
+      window.removeEventListener(
+        HOME_INTRO_EVENT,
+        handleIntroVisibility as EventListener
+      );
+    };
+  }, [path]);
 
   const toggleTheme = () => {
     setTheme(resolvedTheme === "dark" ? "light" : "dark");
   };
 
-  const isDark = mounted ? resolvedTheme === "dark" : true;
+  const isDark = resolvedTheme !== "light";
+  const showNavbar = path !== "/" || introVisible;
+  const navAnimation = {
+    hidden: {
+      opacity: 0,
+      y: 24,
+      scaleX: 0.72,
+      scaleY: 0.8,
+      filter: "blur(8px)",
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scaleX: 1,
+      scaleY: 1,
+      filter: "blur(0px)",
+    },
+  };
 
   return (
     <div className="w-full flex justify-center items-end pb-5 md:pb-8 fixed bottom-0 z-50">
-      {isMobile ? (
-        // Mobile: Simple nav without dock animations
-        <nav className="bg-background/80 backdrop-blur-xl rounded-full px-[10px] py-[10px] border border-foreground/10 shadow-lg mx-4">
-          <ul className="flex gap-2 h-10 items-center">
-            {DETAIL_LINKS.map((link) => {
-              const renderedLink =
-                link.name === "Theme"
-                  ? {
-                    ...link,
-                    icon: isDark ? (
-                      <MoonIcon size={20} />
-                    ) : (
-                      <SunIcon size={20} />
-                    ),
-                  }
-                  : link;
+      <AnimatePresence>
+        {showNavbar && (
+          isMobile ? (
+            <motion.nav
+              key="mobile-navbar"
+              variants={navAnimation}
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+              transition={{
+                duration: 0.62,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+              style={{ transformOrigin: "center bottom" }}
+              className="mx-4 rounded-full border border-foreground/10 bg-background/80 px-[10px] py-[10px] shadow-lg backdrop-blur-xl"
+            >
+              <ul className="flex gap-2 h-10 items-center">
+                {DETAIL_LINKS.map((link) => {
+                  const renderedLink =
+                    link.name === "Theme"
+                      ? {
+                        ...link,
+                        icon: isDark ? (
+                          <MoonIcon size={20} />
+                        ) : (
+                          <SunIcon size={20} />
+                        ),
+                      }
+                      : link;
 
-              return (
-                <MobileNavItem
-                  key={renderedLink.name}
-                  link={renderedLink}
-                  onThemeClick={toggleTheme}
-                />
-              );
-            })}
-            <span className="w-px h-5 bg-foreground/10 my-auto mx-1" />
-            {THEME_LINK.map((link) => (
-              <MobileNavItem
-                key={link.name}
-                link={{
-                  ...link,
-                  icon: isDark ? <MoonIcon size={20} /> : <SunIcon size={20} />,
-                }}
-                onThemeClick={toggleTheme}
-              />
-            ))}
-            <span className="w-px h-5 bg-foreground/10 my-auto mx-1" />
-            {CONTACT_LINKS.map((link) => (
-              <MobileNavItem key={link.name} link={link} />
-            ))}
-          </ul>
-        </nav>
-      ) : (
-        // Desktop: iOS dock-style animation
-        <motion.nav
-          onMouseMove={(e) => mouseX.set(e.pageX)}
-          onMouseLeave={() => mouseX.set(Infinity)}
-          className="bg-background/80 backdrop-blur-2xl rounded-full px-3 py-2 border border-foreground/10 shadow-xl"
-        >
-          <ul className="flex gap-1 h-11 items-end">
-            {DETAIL_LINKS.map((link) => {
-              const renderedLink =
-                link.name === "Theme"
-                  ? {
-                    ...link,
-                    icon: isDark ? (
-                      <SunIcon size={22} />
-                    ) : (
-                      <MoonIcon size={22} />
-                    ),
-                  }
-                  : link;
+                  return (
+                    <MobileNavItem
+                      key={renderedLink.name}
+                      link={renderedLink}
+                      onThemeClick={toggleTheme}
+                    />
+                  );
+                })}
+                <span className="w-px h-5 bg-foreground/10 my-auto mx-1" />
+                {THEME_LINK.map((link) => (
+                  <MobileNavItem
+                    key={link.name}
+                    link={{
+                      ...link,
+                      icon: isDark ? <MoonIcon size={20} /> : <SunIcon size={20} />,
+                    }}
+                    onThemeClick={toggleTheme}
+                  />
+                ))}
+                <span className="w-px h-5 bg-foreground/10 my-auto mx-1" />
+                {CONTACT_LINKS.map((link) => (
+                  <MobileNavItem key={link.name} link={link} />
+                ))}
+              </ul>
+            </motion.nav>
+          ) : (
+            <motion.nav
+              key="desktop-navbar"
+              variants={navAnimation}
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+              transition={{
+                duration: 0.68,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+              style={{ transformOrigin: "center bottom" }}
+              onMouseMove={(e) => mouseX.set(e.pageX)}
+              onMouseLeave={() => mouseX.set(Infinity)}
+              className="rounded-full border border-foreground/10 bg-background/80 px-3 py-2 shadow-xl backdrop-blur-2xl"
+            >
+              <ul className="flex gap-1 h-11 items-end">
+                {DETAIL_LINKS.map((link) => {
+                  const renderedLink =
+                    link.name === "Theme"
+                      ? {
+                        ...link,
+                        icon: isDark ? (
+                          <SunIcon size={22} />
+                        ) : (
+                          <MoonIcon size={22} />
+                        ),
+                      }
+                      : link;
 
-              return (
-                <DockItem
-                  key={renderedLink.name}
-                  link={renderedLink}
-                  mouseX={mouseX}
-                  onThemeClick={toggleTheme}
-                  isActive={isActive(link.href)}
-                />
-              );
-            })}
-            <motion.span className="w-[1px] h-6 bg-foreground/10 my-auto mx-2" />
-            {THEME_LINK.map((link) => (
-              <DockItem
-                key={link.name}
-                link={{
-                  ...link,
-                  icon: isDark ? <MoonIcon size={22} /> : <SunIcon size={22} />,
-                }}
-                mouseX={mouseX}
-                isActive={isActive(link.href)}
-                onThemeClick={toggleTheme}
-              />
-            ))}
-            <motion.span className="w-[1px] h-6 bg-foreground/10 my-auto mx-2" />
-            {CONTACT_LINKS.map((link) => (
-              <DockItem
-                key={link.name}
-                link={link}
-                mouseX={mouseX}
-                isActive={isActive(link.href)}
-              />
-            ))}
-          </ul>
-        </motion.nav>
-      )}
+                  return (
+                    <DockItem
+                      key={renderedLink.name}
+                      link={renderedLink}
+                      mouseX={mouseX}
+                      onThemeClick={toggleTheme}
+                      isActive={isActive(link.href)}
+                    />
+                  );
+                })}
+                <motion.span className="w-[1px] h-6 bg-foreground/10 my-auto mx-2" />
+                {THEME_LINK.map((link) => (
+                  <DockItem
+                    key={link.name}
+                    link={{
+                      ...link,
+                      icon: isDark ? <MoonIcon size={22} /> : <SunIcon size={22} />,
+                    }}
+                    mouseX={mouseX}
+                    isActive={isActive(link.href)}
+                    onThemeClick={toggleTheme}
+                  />
+                ))}
+                <motion.span className="w-[1px] h-6 bg-foreground/10 my-auto mx-2" />
+                {CONTACT_LINKS.map((link) => (
+                  <DockItem
+                    key={link.name}
+                    link={link}
+                    mouseX={mouseX}
+                    isActive={isActive(link.href)}
+                  />
+                ))}
+              </ul>
+            </motion.nav>
+          )
+        )}
+      </AnimatePresence>
     </div>
   );
 }

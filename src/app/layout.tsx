@@ -3,8 +3,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/shared/navbar";
 import { ThemeProvider } from "@/components/theme-provider";
-import Preloader2 from "@/components/shared/Preloader2";
-import Preloader from "@/components/shared/Preloader";
 
 
 const geistSans = Geist({
@@ -192,7 +190,6 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Preloader />
           {children}
           <Navbar />
 
