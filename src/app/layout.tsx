@@ -147,7 +147,7 @@ export default function RootLayout({
     sameAs: [
       "https://twitter.com/avinash10x",
       "https://github.com/avinashh10x",
-      "https://www.linkedin.com/in/avinash-kumar-%F0%9F%8C%9F-519616249/",
+      "https://www.linkedin.com/in/avinash10x/",
     ],
   });
 

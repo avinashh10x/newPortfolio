@@ -65,7 +65,7 @@ const CONTACT_LINKS: MenuLink[] = [
   {
     name: "LinkedIn",
     icon: <LinkedInIcon size={22} />,
-    href: "https://www.linkedin.com/in/avinash-kumar-%F0%9F%8C%9F-519616249/",
+    href: "https://www.linkedin.com/in/avinash10x/",
     target: "_blank",
   },
 
