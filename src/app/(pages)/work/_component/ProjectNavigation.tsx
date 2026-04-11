@@ -21,7 +21,7 @@ const ProjectNavigation: React.FC<ProjectNavigationProps> = ({ currentProject, p
     currentIndex < uniqueProjects.length - 1 ? uniqueProjects[currentIndex + 1] : null;
 
   return (
-    <section className="w-full max-w-7xl mx-auto px-4 md:px-8 py-20 border-t border-foreground/10">
+    <section className="w-full max-w-7xl mx-auto px-4 md:px-8 py-20 border-t border-foreground/10 mb-10 ">
       <div className="flex items-center justify-between">
         {/* Previous */}
         {prevProject ? (

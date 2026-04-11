@@ -22,31 +22,29 @@ function DetailedHeader({ project }: { project: project }) {
         <ArrowLeft className="size-4 group-hover:-translate-x-1 transition-transform duration-300" />
         Back
       </motion.button>
-      <div className="flex justify-between items-end gap-6 py-10">
+
+      <div className="py-6 sm:py-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="flex flex-col gap-2 w-full "
+          className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-6 sm:gap-12 w-full"
         >
-          <div className="flex justify-between w-[100%] items-center">
-
+          {/* Text Content */}
+          <div className="flex flex-col gap-3 sm:gap-4 max-w-3xl">
             <h1 className="font-erode text-[2.5rem] md:text-[4.5rem] tracking-[-0.05em] leading-[1.1] text-foreground drop-shadow-sm">
-              {project.title}
+              {project.title} 
             </h1>
-            <ProjectLinks className="sm:hidden" project={project} />
-          </div>
-
-          <div className="flex gap-2 w-full justify-between items-center">
             {project.subtitle && (
-              <h2 className="font-sans text-xl md:text-2xl text-foreground/50 max-w-2xl  font-normal tracking-[-0.01em]">
+              <h2 className="font-sans text-lg sm:text-xl md:text-2xl text-foreground/50 font-normal tracking-[-0.01em]">
                 {project.subtitle}
               </h2>
             )}
-            <ProjectLinks className="max-sm:hidden" project={project} />
           </div>
-        </motion.div>
 
+          {/* Action Links */}
+          <ProjectLinks className="w-full sm:w-auto" project={project} />
+        </motion.div>
       </div>
     </div>
   );
@@ -54,37 +52,34 @@ function DetailedHeader({ project }: { project: project }) {
 
 export default DetailedHeader;
 
-
 const ProjectLinks = ({ project, className }: { project: project, className?: string }) => {
   return (
-    <>
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-        className={`flex flex-wrap gap-4 mt-4 h-fit ${className}`}
-      >
-        {project.link && (
-          <Link
-            href={project.link}
-            target="_blank"
-            className="group flex items-center gap-2 px-4 py-2 bg-foreground h-full text-primary-foreground rounded-full font-sans font-medium md:text-md text-xs hover:bg-primary duration-300 transition-colors"
-          >
-            <span className="max-sm:hidden">Visit Live Site</span>
-            <ArrowUpRight className="size-4 group-hover:rotate-0 rotate-45 transition-transform duration-300" />
-          </Link>
-        )}
-        {project.github && project.github !== "#" && (
-          <Link
-            href={project.github}
-            target="_blank"
-            className="group flex items-center gap-2 h-full px-4 py-2 border border-primary/30 text-foreground rounded-full font-sans font-medium md:text-md text-xs hover:bg-primary/20 transition-colors"
-          >
-            <Github className="size-4 group-hover:rotate-10 rotate-0 transition-transform duration-300" />
-            <span className="max-sm:hidden">Source Code</span>
-          </Link>
-        )}
-      </motion.div>
-    </>
-  )
-}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.2 }}
+      className={`flex flex-row justify-stretch sm:justify-end gap-3 h-fit ${className || ""}`}
+    >
+      {project.github && project.github !== "#" && (
+        <Link
+          href={project.github}
+          target="_blank"
+          className="group flex-1 sm:flex-none flex justify-center items-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 border border-primary/30 text-foreground rounded-full font-sans font-medium text-[13px] sm:text-sm hover:bg-primary/10 transition-all duration-300 active:scale-95"
+        >
+          <Github className="size-4 group-hover:-rotate-6 transition-transform duration-300" />
+          <span>Source Code</span>
+        </Link>
+      )}
+      {project.link && (
+        <Link
+          href={project.link}
+          target="_blank"
+          className="group flex-1 sm:flex-none flex justify-center items-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 bg-foreground text-background rounded-full font-sans font-medium text-[13px] sm:text-sm hover:bg-foreground/90 transition-all duration-300 shadow-[0_8px_20px_-8px_rgba(0,0,0,0.3)] active:scale-95"
+        >
+          <span>Visit Live Site</span>
+          <ArrowUpRight className="size-4 group-hover:rotate-45 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300" />
+        </Link>
+      )}
+    </motion.div>
+  );
+};
