@@ -221,7 +221,7 @@ function MobileNavItem({
     </span>
   );
 
-  const className = `group w-9 h-9 flex items-center justify-center rounded-full bg-transparent hover:bg-foreground/5 transition-colors duration-300 relative ${isActive ? "ring-1 ring-foreground/20" : ""}`;
+  const className = `group w-9 h-9 max-[410px]:w-8 max-[410px]:h-8 flex items-center justify-center rounded-full bg-transparent hover:bg-foreground/5 transition-colors duration-300 relative ${isActive ? "ring-1 ring-foreground/20" : ""}`;
 
   return (
     <li className="flex-shrink-0">
@@ -246,13 +246,8 @@ function MobileNavItem({
 function Navbar() {
   const path = usePathname();
   const mouseX = useMotionValue(Infinity);
-  const [isMobile, setIsMobile] = useState(() => {
-    if (typeof window === "undefined") {
-      return false;
-    }
-
-    return window.innerWidth < 768;
-  });
+  const [isMobile, setIsMobile] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const { resolvedTheme, setTheme } = useTheme();
   const [isAdmin, setIsAdmin] = useState(false);
 
@@ -278,10 +273,11 @@ function Navbar() {
   };
 
   useEffect(() => {
+    setMounted(true);
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-
+    checkMobile(); // Check immediately on mount
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
@@ -312,9 +308,17 @@ function Navbar() {
   };
 
   return (
-    <div className="w-full flex justify-center items-end pb-5 md:pb-8 fixed bottom-0 z-50">
-      <AnimatePresence>
-        {showNavbar && (
+    <div className="w-full flex justify-center items-end pb-5 md:pb-8 fixed bottom-0 z-50 pointer-events-none">
+      <div 
+        className="absolute bottom-0 left-0 right-0 h-32 -z-10 backdrop-blur-md pointer-events-none md:hidden"
+        style={{
+          maskImage: 'linear-gradient(to top, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%)',
+          WebkitMaskImage: 'linear-gradient(to top, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%)'
+        }}
+      />
+      <div className="pointer-events-auto flex items-end">
+        <AnimatePresence>
+        {showNavbar && mounted && (
           isMobile ? (
             <motion.nav
               key="mobile-navbar"
@@ -327,9 +331,9 @@ function Navbar() {
                 ease: [0.22, 1, 0.36, 1],
               }}
               style={{ transformOrigin: "center bottom" }}
-              className="mx-4 rounded-full border border-foreground/10 bg-background/80 px-[10px] py-[10px] shadow-lg backdrop-blur-xl"
+              className="mx-4 max-[410px]:mx-2 rounded-full border border-foreground/10 bg-background/80 px-[10px] py-[10px] max-[410px]:px-1.5 max-[410px]:py-1.5 shadow-lg backdrop-blur-xl"
             >
-              <ul className="flex gap-2 h-10 items-center">
+              <ul className="flex gap-2 max-[410px]:gap-1 h-10 max-[410px]:h-8 items-center">
                 {DETAIL_LINKS.map((link) => {
                   const renderedLink =
                     link.name === "Theme"
@@ -458,7 +462,8 @@ function Navbar() {
             </motion.nav>
           )
         )}
-      </AnimatePresence>
+        </AnimatePresence>
+      </div>
     </div>
   );
 }

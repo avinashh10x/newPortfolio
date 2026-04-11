@@ -94,7 +94,7 @@ export default function InfiniteMediaGrid({ projects }: { projects: project[] })
           <div
             key={i}
             aria-hidden={i !== 0}
-            className="grid w-max  grid-cols-3 md:grid-cols-4 gap-[6vw] md:gap-[5vw] p-[3vw] md:p-[2vw]"
+            className="grid w-max grid-cols-2 md:grid-cols-4 gap-[6vw] md:gap-[5vw] p-[3vw] md:p-[2vw]"
           >
             {projects.map((project, idx) => (
               <ProjectCard key={idx} project={project} />
@@ -128,7 +128,7 @@ function ProjectCard({ project }: { project: project }) {
     <div
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className="w-[30vw] md:w-[20vw] aspect-video select-none rounded-md overflow-hidden relative group bg-foreground/5 border border-foreground/5 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:shadow-primary/10"
+      className="w-[44vw] md:w-[20vw] aspect-video select-none rounded-md overflow-hidden relative group bg-foreground/5 border border-foreground/5 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:shadow-primary/10"
     >
       <Link href={`/work/${project.slug}`} className="block w-full h-full">
         {/* Static Image */}
