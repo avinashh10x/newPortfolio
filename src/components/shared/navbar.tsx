@@ -11,6 +11,7 @@ import {
 import {
   BriefcaseBusinessIcon,
   LightbulbIcon,
+  Settings2,
 } from "lucide-react";
 import SoundLink from "./SoundLink";
 import { usePathname } from "next/navigation";
@@ -253,6 +254,19 @@ function Navbar() {
     return window.innerWidth < 768;
   });
   const { resolvedTheme, setTheme } = useTheme();
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    const checkAuthStatus = () => {
+      const hasCookie = document.cookie.includes("admin_session=authenticated");
+      const hasLocal = typeof window !== "undefined" && localStorage.getItem("adminAuth") === "true";
+      setIsAdmin(hasCookie || hasLocal);
+    };
+    checkAuthStatus();
+    // Re-check periodically in case they log in/out in another tab
+    const interval = setInterval(checkAuthStatus, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
 
   const isActive = (hrefPath: string) => {
@@ -348,6 +362,17 @@ function Navbar() {
                     onThemeClick={toggleTheme}
                   />
                 ))}
+                {isAdmin && (
+                  <MobileNavItem
+                    key="Admin"
+                    link={{
+                      name: "Admin CMS",
+                      icon: <Settings2 size={20} />,
+                      href: "/admin",
+                      target: "_self",
+                    }}
+                  />
+                )}
                 <span className="w-px h-5 bg-foreground/10 my-auto mx-1" />
                 {CONTACT_LINKS.map((link) => (
                   <MobileNavItem key={link.name} link={link} />
@@ -407,6 +432,19 @@ function Navbar() {
                     onThemeClick={toggleTheme}
                   />
                 ))}
+                {isAdmin && (
+                  <DockItem
+                    key="Admin"
+                    link={{
+                      name: "Admin CMS",
+                      icon: <Settings2 size={22} />,
+                      href: "/admin",
+                      target: "_self",
+                    }}
+                    mouseX={mouseX}
+                    isActive={isActive("/admin")}
+                  />
+                )}
                 <motion.span className="w-[1px] h-6 bg-foreground/10 my-auto mx-2" />
                 {CONTACT_LINKS.map((link) => (
                   <DockItem

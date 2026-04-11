@@ -1,16 +1,17 @@
 "use client";
 
 import React from "react";
-import { PROJECTS, project } from "@/data/projects";
+import type { project } from "@/data/projects";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
 interface ProjectNavigationProps {
   currentProject: project;
+  projects: project[];
 }
 
-const ProjectNavigation: React.FC<ProjectNavigationProps> = ({ currentProject }) => {
-  const uniqueProjects = PROJECTS.filter(
+const ProjectNavigation: React.FC<ProjectNavigationProps> = ({ currentProject, projects }) => {
+  const uniqueProjects = projects.filter(
     (p, index, self) => index === self.findIndex((t) => t.slug === p.slug)
   );
 

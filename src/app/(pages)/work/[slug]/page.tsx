@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { PROJECTS } from "@/data/projects";
+import { getProjects } from "@/data/projects";
 import DetailedHeader from "../_component/detailedHeader";
 import Image from "next/image";
 import DetailedContent from "../_component/detailedContent";
@@ -11,7 +11,8 @@ type Props = {
 
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
-  const project = PROJECTS.find((p) => p.slug === slug);
+  const projects = await getProjects();
+  const project = projects.find((p) => p.slug === slug);
 
   if (!project) {
     return {
@@ -29,7 +30,8 @@ import ProjectNavigation from "../_component/ProjectNavigation";
 
 export default async function ProjectPage({ params }: Props) {
   const { slug } = await params;
-  const project = PROJECTS.find((p) => p.slug === slug);
+  const projects = await getProjects();
+  const project = projects.find((p) => p.slug === slug);
 
   if (!project) {
     notFound();
@@ -77,7 +79,7 @@ export default async function ProjectPage({ params }: Props) {
       <DetailedContent project={project} />
 
       {/* Project Navigation */}
-      <ProjectNavigation currentProject={project} />
+      <ProjectNavigation currentProject={project} projects={projects} />
 
       {/* Horizontal Scroll Gallery */}
       {/* <DetailedProjectGallery Project={project} /> */}

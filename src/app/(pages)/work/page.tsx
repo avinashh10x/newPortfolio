@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import KaraScroll from "@/components/sections/karaScroll";
+import { getProjects } from "@/data/projects";
 
 export const metadata: Metadata = {
   title: "Work & Projects | Avi - Creative Developer in India",
@@ -36,10 +37,11 @@ export const metadata: Metadata = {
   },
 };
 
-function WorkPage() {
+async function WorkPage() {
+  const projects = await getProjects();
   return (
     <div>
-      <KaraScroll />
+      <KaraScroll projects={projects} />
     </div>
   );
 }

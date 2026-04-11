@@ -3,12 +3,12 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { Observer } from "gsap/all";
-import { PROJECTS } from "@/data/projects";
+import type { project } from "@/data/projects";
 import Link from "next/link";
 
 gsap.registerPlugin(Observer);
 
-export default function InfiniteMediaGrid() {
+export default function InfiniteMediaGrid({ projects }: { projects: project[] }) {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -94,9 +94,9 @@ export default function InfiniteMediaGrid() {
           <div
             key={i}
             aria-hidden={i !== 0}
-            className="grid w-max  grid-cols-3 md:grid-cols-5 gap-[6vw] md:gap-[5vw] p-[3vw] md:p-[2vw]"
+            className="grid w-max  grid-cols-3 md:grid-cols-4 gap-[6vw] md:gap-[5vw] p-[3vw] md:p-[2vw]"
           >
-            {PROJECTS.map((project, idx) => (
+            {projects.map((project, idx) => (
               <ProjectCard key={idx} project={project} />
             ))}
           </div>
@@ -106,14 +106,14 @@ export default function InfiniteMediaGrid() {
   );
 }
 
-function ProjectCard({ project }: { project: (typeof PROJECTS)[0] }) {
+function ProjectCard({ project }: { project: project }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isHovered, setIsHovered] = useState(false);
 
   const handleMouseEnter = () => {
     setIsHovered(true);
     if (videoRef.current) {
-      videoRef.current.play().catch(() => {});
+      videoRef.current.play().catch(() => { });
     }
   };
 
@@ -137,9 +137,8 @@ function ProjectCard({ project }: { project: (typeof PROJECTS)[0] }) {
           alt={project.title}
           loading="lazy"
           decoding="async"
-          className={`w-full h-full object-cover block transition-opacity duration-500 ${
-            isHovered && project.video?.[0] ? "opacity-0" : "opacity-100"
-          }`}
+          className={`w-full h-full object-cover block transition-opacity duration-500 ${isHovered && project.video?.[0] ? "opacity-0" : "opacity-100"
+            }`}
           draggable={false}
         />
 
@@ -153,12 +152,11 @@ function ProjectCard({ project }: { project: (typeof PROJECTS)[0] }) {
             loop
             muted
             playsInline
-            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 pointer-events-none ${
-              isHovered ? "opacity-100" : "opacity-0"
-            }`}
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 pointer-events-none ${isHovered ? "opacity-100" : "opacity-0"
+              }`}
           />
         )}
-        
+
         {/* Subtle overlay for better contrast if needed */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
       </Link>

@@ -1,12 +1,14 @@
 import { MetadataRoute } from "next";
-import { PROJECTS } from "@/data/projects";
+import { getProjects } from "@/data/projects";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://byavi.in";
   const lastModified = new Date();
 
+  const projects = await getProjects();
+
   // Create sitemap entries for dynamic project routes
-  const projectEntries: MetadataRoute.Sitemap = PROJECTS.filter((p) => p.slug).map((project) => ({
+  const projectEntries: MetadataRoute.Sitemap = projects.filter((p) => p.slug).map((project) => ({
     url: `${baseUrl}/work/${project.slug}`,
     lastModified,
     changeFrequency: "weekly" as const,

@@ -7,11 +7,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, useInView } from "motion/react";
 import { BriefcaseBusinessIcon } from "lucide-react";
-import { PROJECTS } from "@/data/projects";
+import type { project } from "@/data/projects";
 import ScrollUpHint from "@/components/shared/ScrollUpHint";
 import SoundLink from "../shared/SoundLink";
 
-export default function KaraScroll() {
+export default function KaraScroll({ projects }: { projects: project[] }) {
   const contentRef = useRef<HTMLDivElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const numberRef = useRef<HTMLParagraphElement | null>(null);
@@ -121,7 +121,7 @@ export default function KaraScroll() {
     };
   }, []);
 
-  const featuredProjects = PROJECTS.slice(0, 5);
+  const featuredProjects = projects.filter(p => p.isFeatured);
 
   return (
     <section className="relative flex items-center gap-6 bg-background text-foreground md:h-screen md:overflow-hidden md:px-[6vw]">
@@ -130,7 +130,7 @@ export default function KaraScroll() {
       <div className="w-full px-5 py-28 md:hidden">
         <div className="mb-10 flex items-center gap-4">
           <p className="font-erode text-[2.6rem] font-semibold leading-none tracking-[-0.05em] text-primary">
-            Work
+            Featured Work
           </p>
           <motion.span
             initial={{ scaleX: 0, originX: 0 }}
@@ -285,7 +285,9 @@ export default function KaraScroll() {
 
       <div className="hidden flex-1 space-y-10 px-10 tracking-[-0.05em] md:block">
         <div className="flex items-center justify-between gap-5 px-2 font-erode text-[4vw] font-semibold leading-[1.1] tracking-[-0.05em]">
-          <p className="text-primary drop-shadow-sm">Work</p>
+          <p className="text-primary drop-shadow-sm text-nowrap">
+            Featured Work
+          </p>
           <motion.span
             initial={{ scaleX: 0, originX: 0 }}
             whileInView={{ scaleX: 1 }}
@@ -390,7 +392,7 @@ export default function KaraScroll() {
         >
           {[0, 1].map((setIndex) => (
             <div key={setIndex} className="flex flex-col gap-6">
-              {PROJECTS.map((project, i) => (
+              {projects.map((project, i) => (
                 <div key={`${setIndex}-${i}`}>
                   <Link href={project.link} target="_blank">
                     <div className="w-full overflow-hidden rounded-sm">
@@ -407,7 +409,7 @@ export default function KaraScroll() {
                 </div>
               ))}
 
-              <div>
+              {/* <div>
                 <Link href="/gallery">
                   <div className="pointer-events-none flex aspect-[16/8] items-center justify-center overflow-hidden rounded-sm border border-foreground/10 bg-gradient-to-br from-primary/20 via-primary/10 to-transparent">
                     <div className="text-center">
@@ -420,7 +422,7 @@ export default function KaraScroll() {
                     </div>
                   </div>
                 </Link>
-              </div>
+              </div> */}
             </div>
           ))}
         </div>

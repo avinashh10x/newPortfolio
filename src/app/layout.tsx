@@ -184,6 +184,7 @@ export default function RootLayout({
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased font-poppins`}
+        suppressHydrationWarning
       >
         <ThemeProvider
           attribute="class"

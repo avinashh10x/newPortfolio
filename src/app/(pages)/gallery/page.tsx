@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import InfiniteMediaGrid from "@/components/sections/InfiniteMediaGrid";
+import { getProjects } from "@/data/projects";
 
 export const metadata: Metadata = {
   title: "Gallery | Avi - Creative Developer in India",
@@ -44,10 +45,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default function GalleryPage() {
+export default async function GalleryPage() {
+  const projects = await getProjects();
   return (
     <div>
-      <InfiniteMediaGrid />
+      <InfiniteMediaGrid projects={projects} />
     </div>
   );
 }

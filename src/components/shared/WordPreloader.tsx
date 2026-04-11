@@ -16,19 +16,21 @@ const hellos = [
 const FIRST_WORD_HOLD = 800;  // ms — first "Hello" stays longer
 const WORD_DISPLAY_DURATION = 120; // ms per subsequent word
 
+function isHomePath(path: string) {
+  return path === "/" || path === "/home";
+}
+
 export default function WordPreloader() {
   const pathname = usePathname();
+
+  // Determine initial phase synchronously — if not home, start as "done"
+  // so the preloader never renders even for a single frame
+  const [phase, setPhase] = useState<"fadein" | "words" | "reveal" | "done">(
+    () => (isHomePath(pathname) ? "fadein" : "done")
+  );
   const [index, setIndex] = useState(0);
-  const [phase, setPhase] = useState<"fadein" | "words" | "reveal" | "done">("fadein");
   const wrapperRef = useRef<HTMLDivElement>(null);
   const wordRef = useRef<HTMLSpanElement>(null);
-
-  // Only show on home page
-  useEffect(() => {
-    if (pathname !== "/" && pathname !== "/home") {
-      setPhase("done");
-    }
-  }, [pathname]);
 
   // Phase 1: Fade in the first "Hello" and hold it
   useEffect(() => {
@@ -102,6 +104,7 @@ export default function WordPreloader() {
     }
   }, [phase, runReveal]);
 
+  // Never render anything on non-home routes
   if (phase === "done") return null;
 
   return (

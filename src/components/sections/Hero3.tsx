@@ -20,26 +20,22 @@ const Hero3 = () => {
             delay: 0.1,
             ease: [0.21, 0.47, 0.32, 0.98],
           }}
-          className={`flex items-center gap-2 mb-6 bg-foreground/3 py-1 px-3 rounded-md border border-foreground/8 transition-all duration-500 ${
-            isAnyHovered ? "opacity-20" : "opacity-100"
-          }`}
+          className={`flex items-center gap-2 mb-6 bg-foreground/3 py-1 px-3 rounded-md border border-foreground/8 transition-all duration-500 ${isAnyHovered ? "opacity-20" : "opacity-100"
+            }`}
         >
           <span className="relative flex h-2 w-2">
             <span
-              className={`animate-ping absolute inline-flex h-full w-full rounded-full transition-colors duration-500 ${
-                isAnyHovered ? "bg-foreground/20" : "bg-foreground opacity-75"
-              }`}
+              className={`animate-ping absolute inline-flex h-full w-full rounded-full transition-colors duration-500 ${isAnyHovered ? "bg-foreground/20" : "bg-foreground opacity-75"
+                }`}
             ></span>
             <span
-              className={`relative inline-flex rounded-full h-2 w-2 transition-colors duration-500 ${
-                isAnyHovered ? "bg-foreground/20" : "bg-foreground"
-              }`}
+              className={`relative inline-flex rounded-full h-2 w-2 transition-colors duration-500 ${isAnyHovered ? "bg-foreground/20" : "bg-foreground"
+                }`}
             ></span>
           </span>
           <span
-            className={`text-[11px] font-sans font-medium tracking-wide transition-colors duration-500 ${
-              isAnyHovered ? "text-foreground/20" : "text-foreground/70"
-            }`}
+            className={`text-[11px] font-sans font-medium tracking-wide transition-colors duration-500 ${isAnyHovered ? "text-foreground/20" : "text-foreground/70"
+              }`}
           >
             Available for work
           </span>
@@ -54,9 +50,8 @@ const Hero3 = () => {
             delay: 0.15,
             ease: [0.21, 0.47, 0.32, 0.98],
           }}
-          className={`flex min-h-[3.2rem] max-[350px]:min-h-[3.1rem] sm:min-h-[4.1rem] md:min-h-[5rem] lg:min-h-[5.4rem] items-center justify-center font-erode text-[3.5rem] max-[350px]:text-[3.4rem] sm:text-[4.5rem] md:text-[5.5rem] lg:text-[6rem] font-extrabold tracking-[-0.05em] leading-[0.9] mb-5 max-[350px]:-mb-1 drop-shadow-sm transition-colors duration-500 ${
-            isAnyHovered ? "text-foreground/20" : "text-foreground"
-          }`}
+          className={`flex min-h-[3.2rem] max-[350px]:min-h-[3.1rem] sm:min-h-[4.1rem] md:min-h-[5rem] lg:min-h-[5.4rem] items-center justify-center font-erode text-[3.5rem] max-[350px]:text-[3.4rem] sm:text-[4.5rem] md:text-[5.5rem] lg:text-[6rem] font-extrabold tracking-[-0.05em] leading-[0.9] mb-5 max-[350px]:-mb-1 drop-shadow-sm transition-colors duration-500 ${isAnyHovered ? "text-foreground/20" : "text-foreground"
+            }`}
         >
           <h1 className="origin-center whitespace-nowrap">Avinash Kumar</h1>
         </motion.div>
@@ -70,14 +65,12 @@ const Hero3 = () => {
             delay: 0.25,
             ease: [0.21, 0.47, 0.32, 0.98],
           }}
-          className={`font-sans text-[16px] sm:text-[18px] md:text-[20px] leading-[1.65] mb-10 max-w-full sm:max-w-[80%] font-normal tracking-[-0.01em] transition-colors duration-500 ${
-            isAnyHovered ? "text-foreground/10" : "text-foreground/50"
-          }`}
+          className={`font-sans text-[16px] sm:text-[18px] md:text-[20px] leading-[1.65] mb-10 max-w-full sm:max-w-[80%] font-normal tracking-[-0.01em] transition-colors duration-500 ${isAnyHovered ? "text-foreground/10" : "text-foreground/50"
+            }`}
         >
           <strong
-            className={`font-semibold transition-colors duration-500 ${
-              isAnyHovered ? "text-foreground/10" : "text-foreground/80"
-            }`}
+            className={`font-semibold transition-colors duration-500 ${isAnyHovered ? "text-foreground/10" : "text-foreground/80"
+              }`}
           >
             Creative Developer
           </strong>{" "}
@@ -100,13 +93,12 @@ const Hero3 = () => {
             href="/about"
             onMouseEnter={() => setHoveredLink("about")}
             onMouseLeave={() => setHoveredLink(null)}
-            className={`font-sans text-[13px] sm:text-sm font-medium py-2.5 sm:py-3 px-5 sm:px-6 rounded-lg transition-all duration-500 shadow-sm hover:shadow-md active:scale-95 ${
-              hoveredLink === "about"
+            className={`font-sans text-[13px] sm:text-sm font-medium py-2.5 sm:py-3 px-5 sm:px-6 rounded-lg transition-all duration-500 shadow-sm hover:shadow-md active:scale-95 ${hoveredLink === "about"
                 ? "bg-foreground text-background"
                 : hoveredLink === "work"
-                ? "bg-foreground/90 text-background/90 opacity-40"
-                : "bg-foreground text-background"
-            }`}
+                  ? "bg-foreground/90 text-background/90 opacity-40"
+                  : "bg-foreground text-background"
+              }`}
           >
             More about me
           </Link>
@@ -115,13 +107,12 @@ const Hero3 = () => {
             href="/work"
             onMouseEnter={() => setHoveredLink("work")}
             onMouseLeave={() => setHoveredLink(null)}
-            className={`bg-background font-sans text-[13px] sm:text-sm font-medium py-2.5 sm:py-3 px-5 sm:px-6 rounded-lg transition-all duration-500 shadow-sm hover:shadow-md active:scale-95 border ${
-              hoveredLink === "work"
+            className={`bg-background font-sans text-[13px] sm:text-sm font-medium py-2.5 sm:py-3 px-5 sm:px-6 rounded-lg transition-all duration-500 shadow-sm hover:shadow-md active:scale-95 border ${hoveredLink === "work"
                 ? "border-foreground/30 text-foreground"
                 : hoveredLink === "about"
-                ? "border-foreground/10 text-foreground/90 opacity-50"
-                : "border-foreground/15 text-foreground"
-            }`}
+                  ? "border-foreground/10 text-foreground/90 opacity-50"
+                  : "border-foreground/15 text-foreground"
+              }`}
           >
             View work
           </Link>
