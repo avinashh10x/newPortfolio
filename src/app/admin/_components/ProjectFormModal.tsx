@@ -30,7 +30,7 @@ export default function ProjectFormModal({
   const [tagInput, setTagInput] = useState("");
   const [uploadingState, setUploadingState] = useState<Record<string, boolean>>({});
 
-  const updateField = (field: keyof Project, value: string | string[]) => {
+  const updateField = <K extends keyof Project>(field: K, value: Project[K]) => {
     setForm((prev) => ({ ...prev, [field]: value }));
   };
 
