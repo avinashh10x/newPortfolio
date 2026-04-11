@@ -81,7 +81,7 @@ const CONTACT_LINKS: MenuLink[] = [
   },
 ];
 
-const HOME_INTRO_EVENT = "home-intro-visibility";
+
 
 function DockItem({
   link,
@@ -253,7 +253,7 @@ function Navbar() {
     return window.innerWidth < 768;
   });
   const { resolvedTheme, setTheme } = useTheme();
-  const [introVisible, setIntroVisible] = useState(() => path !== "/");
+
 
   const isActive = (hrefPath: string) => {
     return hrefPath
@@ -272,37 +272,14 @@ function Navbar() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  useEffect(() => {
-    if (path !== "/") {
-      return;
-    }
 
-    const frameId = window.requestAnimationFrame(() => {
-      setIntroVisible(false);
-    });
-
-    const handleIntroVisibility = (event: Event) => {
-      const customEvent = event as CustomEvent<{ visible?: boolean }>;
-      setIntroVisible(Boolean(customEvent.detail?.visible));
-    };
-
-    window.addEventListener(HOME_INTRO_EVENT, handleIntroVisibility as EventListener);
-
-    return () => {
-      window.cancelAnimationFrame(frameId);
-      window.removeEventListener(
-        HOME_INTRO_EVENT,
-        handleIntroVisibility as EventListener
-      );
-    };
-  }, [path]);
 
   const toggleTheme = () => {
     setTheme(resolvedTheme === "dark" ? "light" : "dark");
   };
 
   const isDark = resolvedTheme !== "light";
-  const showNavbar = path !== "/" || introVisible;
+  const showNavbar = true;
   const navAnimation = {
     hidden: {
       opacity: 0,
