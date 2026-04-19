@@ -124,11 +124,11 @@ export default function KaraScroll({ projects }: { projects: project[] }) {
   const featuredProjects = projects.filter(p => p.isFeatured);
 
   return (
-    <section className="relative flex items-center gap-6 bg-background text-foreground md:h-screen md:overflow-hidden md:px-[6vw]">
+    <section className="relative flex h-[100svh] items-center gap-6 overflow-hidden bg-background text-foreground md:h-screen md:px-[6vw]">
       <ScrollUpHint />
 
-      <div className="w-full px-5 py-28 md:hidden">
-        <div className="mb-10 flex items-center gap-4">
+      <div className="flex h-full w-full flex-col px-5 pb-1 pt-24 md:hidden">
+        <div className="mb-6 flex shrink-0 items-center gap-4">
           <p className="font-erode text-[2.6rem] font-semibold leading-none tracking-[-0.05em] text-primary">
             Featured Work
           </p>
@@ -139,56 +139,125 @@ export default function KaraScroll({ projects }: { projects: project[] }) {
             transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
             className="h-px flex-1 bg-foreground/20"
           />
-          <BriefcaseBusinessIcon className="size-5 text-primary" />
+          <BriefcaseBusinessIcon className="size-7 sm:size-5  text-primary" /> 
         </div>
 
-        <div className="flex flex-col">
-          {featuredProjects.map((project, i) => (
+        <div className="relative min-h-0 flex-1 overflow-hidden">
+          <div className="pointer-events-none absolute inset-x-0 -top-4 z-10 h-10 bg-gradient-to-b from-background/95 via-background/55 to-transparent backdrop-blur-[2px]" />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-16 bg-gradient-to-t from-background/95 via-background/55 to-transparent backdrop-blur-[2px]" />
+
+          <div className="scrollbar-none flex h-full flex-col overflow-y-auto overscroll-contain pb-24 pt-8 pr-1">
+            {featuredProjects.map((project, i) => (
+              <SoundLink
+                key={project.slug ?? project.title}
+                href={`/work/${project.slug}`}
+                className="group flex items-center gap-3 border-b border-foreground/10 py-4 font-sans"
+              >
+                {/* <motion.span
+                  initial={{ y: 18, opacity: 0, filter: "blur(4px)" }}
+                  whileInView={{ y: 0, opacity: 1, filter: "blur(0px)" }}
+                  viewport={{ once: true }}
+                  transition={{
+                    duration: 0.45,
+                    ease: "easeOut",
+                    delay: i * 0.06,
+                  }}
+                  className="min-w-[2.5rem] text-[0.72rem] tracking-[0.18em] text-foreground/35"
+                >
+                  {(i + 1).toString().padStart(2, "0")}
+                </motion.span> */}
+
+                <div className="min-w-0 flex-1">
+                  <motion.p
+                    initial={{ y: 18, opacity: 0, filter: "blur(4px)" }}
+                    whileInView={{ y: 0, opacity: 1, filter: "blur(0px)" }}
+                    viewport={{ once: true }}
+                    transition={{
+                      duration: 0.45,
+                      ease: "easeOut",
+                      delay: 0.04 + i * 0.06,
+                    }}
+                    className="projectTxt text-[1.1rem] font-medium tracking-[-0.03em] text-foreground"
+                  >
+                    {project.title}
+                  </motion.p>
+                  <motion.p
+                    initial={{ y: 18, opacity: 0, filter: "blur(4px)" }}
+                    whileInView={{ y: 0, opacity: 1, filter: "blur(0px)" }}
+                    viewport={{ once: true }}
+                    transition={{
+                      duration: 0.45,
+                      ease: "easeOut",
+                      delay: 0.08 + i * 0.06,
+                    }}
+                    className="mt-1 pr-2 text-[0.88rem] leading-relaxed tracking-[-0.01em] text-foreground/55"
+                  >
+                    {project.subtitle}
+                  </motion.p>
+                </div>
+
+                <div className="flex items-center gap-3 self-stretch">
+                  <motion.span
+                    initial={{ scaleY: 0, originY: 0 }}
+                    whileInView={{ scaleY: 1 }}
+                    viewport={{ once: true }}
+                    transition={{
+                      duration: 0.7,
+                      ease: [0.22, 1, 0.36, 1],
+                      delay: 0.1 + i * 0.06,
+                    }}
+                    className="w-px flex-1 bg-foreground/10"
+                  />
+                  <motion.span
+                    initial={{ y: 18, opacity: 0, filter: "blur(4px)" }}
+                    whileInView={{ y: 0, opacity: 1, filter: "blur(0px)" }}
+                    viewport={{ once: true }}
+                    transition={{
+                      duration: 0.45,
+                      ease: "easeOut",
+                      delay: 0.12 + i * 0.06,
+                    }}
+                    className="text-[0.78rem] text-foreground/45"
+                  >
+                    {project.time}
+                  </motion.span>
+                </div>
+              </SoundLink>
+            ))}
+
             <SoundLink
-              key={project.slug ?? project.title}
-              href={`/work/${project.slug}`}
-              className="group flex items-center gap-3 border-b border-foreground/10 py-4 font-sans"
+              href="/gallery"
+              target="_blank"
+              className="group flex items-center gap-3 border-foreground/10 py-4 font-sans"
             >
-              <motion.span
+              {/* <motion.span
                 initial={{ y: 18, opacity: 0, filter: "blur(4px)" }}
                 whileInView={{ y: 0, opacity: 1, filter: "blur(0px)" }}
                 viewport={{ once: true }}
-                transition={{
-                  duration: 0.45,
-                  ease: "easeOut",
-                  delay: i * 0.06,
-                }}
+                transition={{ duration: 0.45, ease: "easeOut", delay: 0.25 }}
                 className="min-w-[2.5rem] text-[0.72rem] tracking-[0.18em] text-foreground/35"
               >
-                {(i + 1).toString().padStart(2, "0")}
-              </motion.span>
+                00
+              </motion.span> */}
 
               <div className="min-w-0 flex-1">
                 <motion.p
                   initial={{ y: 18, opacity: 0, filter: "blur(4px)" }}
                   whileInView={{ y: 0, opacity: 1, filter: "blur(0px)" }}
                   viewport={{ once: true }}
-                  transition={{
-                    duration: 0.45,
-                    ease: "easeOut",
-                    delay: 0.04 + i * 0.06,
-                  }}
-                  className="projectTxt text-[1.1rem] font-medium tracking-[-0.03em] text-foreground"
+                  transition={{ duration: 0.45, ease: "easeOut", delay: 0.29 }}
+                  className="text-[1.1rem] font-medium tracking-[-0.03em] text-foreground"
                 >
-                  {project.title}
+                  See All
                 </motion.p>
                 <motion.p
                   initial={{ y: 18, opacity: 0, filter: "blur(4px)" }}
                   whileInView={{ y: 0, opacity: 1, filter: "blur(0px)" }}
                   viewport={{ once: true }}
-                  transition={{
-                    duration: 0.45,
-                    ease: "easeOut",
-                    delay: 0.08 + i * 0.06,
-                  }}
+                  transition={{ duration: 0.45, ease: "easeOut", delay: 0.33 }}
                   className="mt-1 pr-2 text-[0.88rem] leading-relaxed tracking-[-0.01em] text-foreground/55"
                 >
-                  {project.subtitle}
+                  Explore the archive and browse the full project collection.
                 </motion.p>
               </div>
 
@@ -200,7 +269,7 @@ export default function KaraScroll({ projects }: { projects: project[] }) {
                   transition={{
                     duration: 0.7,
                     ease: [0.22, 1, 0.36, 1],
-                    delay: 0.1 + i * 0.06,
+                    delay: 0.37,
                   }}
                   className="w-px flex-1 bg-foreground/10"
                 />
@@ -208,78 +277,14 @@ export default function KaraScroll({ projects }: { projects: project[] }) {
                   initial={{ y: 18, opacity: 0, filter: "blur(4px)" }}
                   whileInView={{ y: 0, opacity: 1, filter: "blur(0px)" }}
                   viewport={{ once: true }}
-                  transition={{
-                    duration: 0.45,
-                    ease: "easeOut",
-                    delay: 0.12 + i * 0.06,
-                  }}
+                  transition={{ duration: 0.45, ease: "easeOut", delay: 0.41 }}
                   className="text-[0.78rem] text-foreground/45"
                 >
-                  {project.time}
+                  {currentTime}
                 </motion.span>
               </div>
             </SoundLink>
-          ))}
-
-          <SoundLink
-            href="/gallery"
-            target="_blank"
-            className="group flex items-center gap-3 border-b border-foreground/10 py-4 font-sans"
-          >
-            <motion.span
-              initial={{ y: 18, opacity: 0, filter: "blur(4px)" }}
-              whileInView={{ y: 0, opacity: 1, filter: "blur(0px)" }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.45, ease: "easeOut", delay: 0.25 }}
-              className="min-w-[2.5rem] text-[0.72rem] tracking-[0.18em] text-foreground/35"
-            >
-              00
-            </motion.span>
-
-            <div className="min-w-0 flex-1">
-              <motion.p
-                initial={{ y: 18, opacity: 0, filter: "blur(4px)" }}
-                whileInView={{ y: 0, opacity: 1, filter: "blur(0px)" }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.45, ease: "easeOut", delay: 0.29 }}
-                className="text-[1.1rem] font-medium tracking-[-0.03em] text-foreground"
-              >
-                See All
-              </motion.p>
-              <motion.p
-                initial={{ y: 18, opacity: 0, filter: "blur(4px)" }}
-                whileInView={{ y: 0, opacity: 1, filter: "blur(0px)" }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.45, ease: "easeOut", delay: 0.33 }}
-                className="mt-1 pr-2 text-[0.88rem] leading-relaxed tracking-[-0.01em] text-foreground/55"
-              >
-                Explore the archive and browse the full project collection.
-              </motion.p>
-            </div>
-
-            <div className="flex items-center gap-3 self-stretch">
-              <motion.span
-                initial={{ scaleY: 0, originY: 0 }}
-                whileInView={{ scaleY: 1 }}
-                viewport={{ once: true }}
-                transition={{
-                  duration: 0.7,
-                  ease: [0.22, 1, 0.36, 1],
-                  delay: 0.37,
-                }}
-                className="w-px flex-1 bg-foreground/10"
-              />
-              <motion.span
-                initial={{ y: 18, opacity: 0, filter: "blur(4px)" }}
-                whileInView={{ y: 0, opacity: 1, filter: "blur(0px)" }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.45, ease: "easeOut", delay: 0.41 }}
-                className="text-[0.78rem] text-foreground/45"
-              >
-                {currentTime}
-              </motion.span>
-            </div>
-          </SoundLink>
+          </div>
         </div>
       </div>
 
