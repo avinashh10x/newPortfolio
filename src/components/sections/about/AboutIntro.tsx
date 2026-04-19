@@ -57,14 +57,18 @@ export default function AboutIntro() {
         <div data-anim="about" className="w-full max-w-[92vw] sm:max-w-[680px] md:max-w-[85%] mx-auto mt-6">
           <p className={`about-intro-copy font-sans text-[16px] sm:text-[18px] md:text-[22px] leading-[1.75] sm:leading-[1.7] md:leading-[1.65] font-medium tracking-[-0.01em] text-justify sm:text-center [text-wrap:pretty] [text-align-last:center] sm:[text-align-last:center] transition-colors duration-500 ${isAnyHovered ? 'text-foreground/20' : 'text-foreground/60'}`}>
             23yo CSE Graduate (&apos;25) building products with real traction.
-            Currently - <ClickableText text="DZINR" id="dzinr" hoveredId={hoveredLink} onSetHover={setHoveredLink} href="https://dzinr.byavi.in" />, a Branding Studio platform handles 10K+ monthly visitors, and{" "}
+            Currently - <ClickableText text="DZINR" id="dzinr" hoveredId={hoveredLink} onSetHover={setHoveredLink} href="https://www.dzinr.in/" />, a Branding Studio platform handles 10K+ monthly visitors, and{" "}
             <ClickableText text="Tingy" id="tingy" hoveredId={hoveredLink} onSetHover={setHoveredLink} href="https://tingy.byavi.in" />, an intelligent image compression tool reducing file sizes by up to 99% with near-zero quality loss.
             I ship fast, solve real user problems, and turn ideas into scalable products.
-            Explore my <ClickableText text="work" id="work" hoveredId={hoveredLink} onSetHover={setHoveredLink} href="/work" />, follow along on{" "}
-            <ClickableText text="X" id="x" hoveredId={hoveredLink} onSetHover={setHoveredLink} href="https://twitter.com/avinashh10x" />, check the code on{" "}
-            <ClickableText text="GitHub" id="github" hoveredId={hoveredLink} onSetHover={setHoveredLink} href="https://github.com/avinashh10x" />, reach out via{" "}
-            <ClickableText text="Email" id="email" hoveredId={hoveredLink} onSetHover={setHoveredLink} href="mailto:Avinashbuilds@gmail.com" />, or get a quick overview through my{" "}
-            <ClickableText text="resume" id="resume" hoveredId={hoveredLink} onSetHover={setHoveredLink} href="/aviResume.docx" />.
+            Explore my work and follow along on{" "}
+            <ClickableText text="X" id="x" hoveredId={hoveredLink} onSetHover={setHoveredLink} href="https://x.com/avinash10x" />, or explore my {" "}
+            <ClickableText text="GitHub" id="github" hoveredId={hoveredLink} onSetHover={setHoveredLink} href="https://github.com/avinashh10x" />
+            
+            {/* , reach out via{" "}
+            <ClickableText text="Email" id="email" hoveredId={hoveredLink} onSetHover={setHoveredLink} href="mailto:Avinashbuilds@gmail.com" /> */}
+            
+            {/* , or get a quick overview through my{" "}
+            <ClickableText text="resume" id="resume" hoveredId={hoveredLink} onSetHover={setHoveredLink} href="/aviResume.docx" />. */}
           </p>
         </div>
 
