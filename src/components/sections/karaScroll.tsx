@@ -360,7 +360,7 @@ export default function KaraScroll({ projects }: { projects: project[] }) {
             <p className="projectTxt">
               <span className="font-sans text-foreground">See all </span>
               <span className="font-sans font-normal lowercase tracking-[-0.01em] text-foreground/50">
-                archive projects by clicking here
+                archive stuff by clicking here
               </span>
             </p>
             <motion.span
