@@ -2,6 +2,9 @@ import { Metadata } from "next";
 import KaraScroll from "@/components/sections/karaScroll";
 import { getProjects } from "@/data/projects";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export const metadata: Metadata = {
   title: "Work & Projects | Avi - Creative Developer in India",
   description:

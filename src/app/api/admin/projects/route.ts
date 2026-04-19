@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import dbConnect from "@/lib/mongoose";
 import { Project } from "@/models/project.model";
 
@@ -62,6 +63,14 @@ export async function PUT(request: NextRequest) {
     if (projectsWithOrder.length > 0) {
       await Project.insertMany(projectsWithOrder);
     }
+
+    revalidatePath("/work");
+    revalidatePath("/gallery");
+    projectsWithOrder.forEach((project) => {
+      if (project.slug) {
+        revalidatePath(`/work/${project.slug}`);
+      }
+    });
 
     return NextResponse.json({ success: true });
   } catch (error) {

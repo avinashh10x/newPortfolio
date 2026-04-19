@@ -2,6 +2,9 @@ import { Metadata } from "next";
 import InfiniteMediaGrid from "@/components/sections/InfiniteMediaGrid";
 import { getProjects } from "@/data/projects";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export const metadata: Metadata = {
   title: "Gallery | Avi - Creative Developer in India",
   description:

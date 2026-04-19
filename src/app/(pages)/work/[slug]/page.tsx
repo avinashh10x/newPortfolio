@@ -1,9 +1,10 @@
 import { notFound } from "next/navigation";
 import { getProjects } from "@/data/projects";
 import DetailedHeader from "../_component/detailedHeader";
-import Image from "next/image";
 import DetailedContent from "../_component/detailedContent";
-import DetailedProjectGallery from "../_component/detailedProjectgallery";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 type Props = {
   params: Promise<{ slug: string }>;
