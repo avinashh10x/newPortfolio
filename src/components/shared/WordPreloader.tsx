@@ -11,6 +11,8 @@ const hellos = [
   "హలో",            // Telugu
   "Ciao",            // Italian
   "नमस्ते",          // Hindi
+  "Hello",           // English (first — fades in, holds)
+
 ];
 
 const FIRST_WORD_HOLD = 800;  // ms — first "Hello" stays longer
