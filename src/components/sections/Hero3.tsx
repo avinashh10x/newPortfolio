@@ -4,6 +4,15 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
+const MotionLink = motion(Link);
+
+const spring = {
+  type: "spring" as const,
+  stiffness: 420,
+  damping: 28,
+  mass: 0.5,
+};
+
 const Hero3 = () => {
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
   const isAnyHovered = hoveredLink !== null;
@@ -87,49 +96,52 @@ const Hero3 = () => {
             delay: 0.35,
             ease: "easeOut",
           }}
-          className="flex items-center gap-3 md:gap-4 z-20"
+          className="flex items-center justify-center gap-3 md:gap-4 z-20"
         >
-          <Link
+          <MotionLink
             href="/about"
             onMouseEnter={() => setHoveredLink("about")}
             onMouseLeave={() => setHoveredLink(null)}
-            className={`font-sans text-[13px] sm:text-sm font-medium py-2.5 sm:py-3 px-5 sm:px-6 rounded-lg transition-all duration-500 shadow-sm hover:shadow-md active:scale-95 ${hoveredLink === "about"
+            className={`inline-block font-sans text-[13px] sm:text-sm font-medium py-2.5 sm:py-3 px-5 sm:px-6 rounded-lg transition-colors duration-500 shadow-sm hover:shadow-md ${hoveredLink === "about"
                 ? "bg-foreground text-background"
                 : hoveredLink === "work"
                   ? "bg-foreground/90 text-background/90 opacity-40"
                   : "bg-foreground text-background"
               }`}
+            style={{ transformOrigin: "left center" }}
+            animate={{
+              scaleX:
+                hoveredLink === "about" ? 1.045 : hoveredLink === "work" ? 0.985 : 1,
+            }}
+            transition={spring}
           >
             More about me
-          </Link>
+          </MotionLink>
 
-          <Link
+          <MotionLink
             href="/work"
             onMouseEnter={() => setHoveredLink("work")}
             onMouseLeave={() => setHoveredLink(null)}
-            className={`bg-background font-sans text-[13px] sm:text-sm font-medium py-2.5 sm:py-3 px-5 sm:px-6 rounded-lg transition-all duration-500 shadow-sm hover:shadow-md active:scale-95 border ${hoveredLink === "work"
+            className={`inline-block bg-background font-sans text-[13px] sm:text-sm font-medium py-2.5 sm:py-3 px-5 sm:px-6 rounded-lg transition-colors duration-500 shadow-sm hover:shadow-md border ${hoveredLink === "work"
                 ? "border-foreground/30 text-foreground"
                 : hoveredLink === "about"
                   ? "border-foreground/10 text-foreground/90 opacity-50"
                   : "border-foreground/15 text-foreground"
               }`}
+            style={{ transformOrigin: "right center" }}
+            animate={{
+              scaleX:
+                hoveredLink === "work" ? 1.045 : hoveredLink === "about" ? 0.985 : 1,
+            }}
+            transition={spring}
           >
             View work
-          </Link>
+          </MotionLink>
         </motion.div>
       </div>
 
       {/* Bottom line */}
-      <motion.div
-        initial={{ opacity: 0, scaleX: 0 }}
-        animate={{ opacity: 1, scaleX: 1 }}
-        transition={{
-          duration: 1,
-          delay: 0.4,
-          ease: "easeOut",
-        }}
-        className="absolute bottom-20 w-[60%] max-w-[400px] h-[1px] bg-gradient-to-r from-transparent via-foreground/10 to-transparent"
-      />
+     
     </div>
   );
 };

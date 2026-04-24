@@ -98,7 +98,7 @@ const ClickableText = ({
       href={href}
       onMouseEnter={() => onSetHover(id)}
       onMouseLeave={() => onSetHover(null)}
-      className={`relative z-20 font-semibold underline decoration-foreground/20 underline-offset-4 hover:decoration-primary transition-all duration-300 inline-block
+      className={`relative z-20 font-semibold decoration-foreground/20 hover:decoration-primary transition-all duration-300 inline-block
         ${isHovered ? 'text-primary  !opacity-100' : ''}
         ${isOthersHovered ? 'text-foreground/20 !opacity-100' : 'text-foreground/90 '}
       `}
