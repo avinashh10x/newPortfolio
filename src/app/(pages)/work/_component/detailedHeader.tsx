@@ -32,7 +32,7 @@ function DetailedHeader({ project }: { project: project }) {
         >
           {/* Text Content */}
           <div className="flex flex-col gap-3 sm:gap-4 max-w-3xl">
-            <h1 className="font-erode text-[2.5rem] md:text-[4.5rem] tracking-[-0.05em] leading-[1.1] text-foreground drop-shadow-sm">
+            <h1 className="font-heading text-[2.5rem] md:text-[4.5rem] tracking-[-0.05em] leading-[1.1] text-foreground drop-shadow-sm">
               {project.title} 
             </h1>
             {project.subtitle && (

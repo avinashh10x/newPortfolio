@@ -3,16 +3,84 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Local fonts (public/) — body: Switzer, headlines: Gambarino Regular */
+@font-face {
+  font-family: "Gambarino";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src:
+    url("/font/Gambarino/Fonts/WEB/fonts/Gambarino-Regular.woff2")
+      format("woff2"),
+    url("/font/Gambarino/Fonts/WEB/fonts/Gambarino-Regular.woff")
+      format("woff");
+}
+
+/* Single Switzer file; map common weights to the same face for UI consistency */
+@font-face {
+  font-family: "Switzer";
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src:
+    url("/font/Switzer/Fonts/WEB/fonts/Switzer-Light.woff2") format("woff2"),
+    url("/font/Switzer/Fonts/WEB/fonts/Switzer-Light.woff") format("woff");
+}
+@font-face {
+  font-family: "Switzer";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src:
+    url("/font/Switzer/Fonts/WEB/fonts/Switzer-Light.woff2") format("woff2"),
+    url("/font/Switzer/Fonts/WEB/fonts/Switzer-Light.woff") format("woff");
+}
+@font-face {
+  font-family: "Switzer";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src:
+    url("/font/Switzer/Fonts/WEB/fonts/Switzer-Light.woff2") format("woff2"),
+    url("/font/Switzer/Fonts/WEB/fonts/Switzer-Light.woff") format("woff");
+}
+@font-face {
+  font-family: "Switzer";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src:
+    url("/font/Switzer/Fonts/WEB/fonts/Switzer-Light.woff2") format("woff2"),
+    url("/font/Switzer/Fonts/WEB/fonts/Switzer-Light.woff") format("woff");
+}
+@font-face {
+  font-family: "Switzer";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src:
+    url("/font/Switzer/Fonts/WEB/fonts/Switzer-Light.woff2") format("woff2"),
+    url("/font/Switzer/Fonts/WEB/fonts/Switzer-Light.woff") format("woff");
+}
+
+/** Headlines (h1–h6, big titles) — Gambarino Regular */
+@utility font-heading {
+  font-family: var(--font-heading), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 400;
+}
+
+/** Body / UI copy — same as `font-sans` (Switzer) */
+@utility font-poppins {
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
 @utility font-recia {
-  font-family: "Recia", sans-serif;
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
 }
 
 @utility font-erode {
-  font-family: "Erode", serif;
-}
-
-@utility font-poppins {
-  font-family: "Poppins", sans-serif;
+  font-family: var(--font-heading), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 400;
 }
 
 @theme inline {
@@ -20,7 +88,8 @@
   --color-foreground: var(--foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: "Switzer", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Gambarino", ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -52,7 +121,31 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans antialiased;
+    font-weight: 400;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading), ui-sans-serif, system-ui, sans-serif;
+    font-weight: 400;
+  }
+}
+
+/* View Transitions (theme): root group + disable default crossfade; clip is driven in JS */
+@supports (view-transition-name: none) {
+  html {
+    view-transition-name: root;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
   }
 }
 

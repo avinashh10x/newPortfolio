@@ -1,11 +1,12 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+
+import React, { useEffect, useRef, useState, type RefObject } from "react";
 import {
   motion,
   useMotionValue,
   useSpring,
   useTransform,
-  MotionValue,
+  type MotionValue,
   AnimatePresence,
 } from "framer-motion";
 import {
@@ -13,459 +14,438 @@ import {
   LightbulbIcon,
   Settings2,
 } from "lucide-react";
-import SoundLink from "./SoundLink";
 import { usePathname } from "next/navigation";
+import { useTheme } from "next-themes";
+import { useViewTransitionThemeToggle } from "@/hooks/useViewTransitionThemeToggle";
+import SoundLink from "./SoundLink";
 import { TwitterIcon } from "../TwitterIcon";
 import { HouseIcon } from "../HouseIcon";
 import { MailIcon } from "../MailIcon";
 import { MoonIcon } from "../MoonIcon";
 import { SunIcon } from "../SunIcon";
 import { LinkedInIcon } from "../LinkedinIcon";
-import { useTheme } from "next-themes";
 
-type MenuLink = {
-  name: string;
-  href: string;
-  icon: React.ReactNode;
-  target?: string;
-};
+// --- Types & nav config
 
-const THEME_LINK: MenuLink[] = [
-  { name: "Theme", icon: <MoonIcon size={22} />, href: "#", target: "_self" },
-];
+type MenuLink =
+  | { name: string; asButton: true; icon: React.ReactNode }
+  | {
+      name: string;
+      href: string;
+      icon: React.ReactNode;
+      target?: string;
+    };
 
 const DETAIL_LINKS: MenuLink[] = [
-  {
-    name: "Home",
-    icon: <HouseIcon size={22} />,
-    href: "/",
-    target: "_self",
-  },
+  { name: "Home", href: "/", icon: <HouseIcon size={22} />, target: "_self" },
   {
     name: "About",
-    icon: <LightbulbIcon size={22} strokeWidth={1.5} />,
     href: "/about",
+    icon: <LightbulbIcon size={22} strokeWidth={1.5} />,
     target: "_self",
   },
   {
     name: "Work",
-    icon: <BriefcaseBusinessIcon size={22} strokeWidth={1.5} />,
     href: "/work",
+    icon: <BriefcaseBusinessIcon size={22} strokeWidth={1.5} />,
     target: "_self",
   },
 ];
 
 const CONTACT_LINKS: MenuLink[] = [
-  // {
-  //   name: "Resume",
-  //   icon: <ClipboardMinusIcon size={22} strokeWidth={1.5} />,
-  //   href: "/aviResume.pdf",
-  //   target: "_blank",
-  // },
   {
     name: "LinkedIn",
-    icon: <LinkedInIcon size={22} />,
     href: "https://www.linkedin.com/in/avinash10x/",
+    icon: <LinkedInIcon size={22} />,
     target: "_blank",
   },
-
   {
     name: "Twitter",
-    icon: <TwitterIcon size={22} />,
     href: "https://twitter.com/avinash10x",
+    icon: <TwitterIcon size={22} />,
     target: "_blank",
   },
   {
     name: "Mail",
-    icon: <MailIcon size={22} />,
     href: "mailto:Avinashbuilds@gmail.com",
+    icon: <MailIcon size={22} />,
   },
 ];
 
+function themeMenuLink(icon: React.ReactNode): MenuLink {
+  return { name: "Theme", asButton: true, icon };
+}
 
+// --- Route highlight: internal Next.js routes only (not mailto, http, theme button)
+
+function internalPathForActive(link: MenuLink): string | null {
+  if ("asButton" in link) return null;
+  const h = link.href;
+  if (h === "#" || h.startsWith("http") || h.startsWith("mailto")) return null;
+  return h;
+}
+
+function isPathActive(pathname: string, route: string | null): boolean {
+  if (!route) return false;
+  if (route === "/") return pathname === "/";
+  return pathname.startsWith(route);
+}
+
+function useMenuLinkActive(link: MenuLink): boolean {
+  const pathname = usePathname();
+  return isPathActive(pathname, internalPathForActive(link));
+}
+
+// --- SoundLink: shared wiring for all nav items
+
+type NavItemButtonProps = {
+  link: MenuLink;
+  className: string;
+  onThemeClick?: () => void;
+  /** For theme: ref on the &lt;button&gt; (view transition origin) */
+  themeButtonRef?: RefObject<HTMLButtonElement | null>;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
+  children: React.ReactNode;
+};
+
+function NavItemButton({
+  link,
+  className,
+  onThemeClick,
+  themeButtonRef,
+  onMouseEnter,
+  onMouseLeave,
+  children,
+}: NavItemButtonProps) {
+  if ("asButton" in link) {
+    return (
+      <SoundLink
+        asButton
+        buttonRef={themeButtonRef}
+        ariaLabel="Toggle color theme"
+        className={className}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+        onClick={onThemeClick}
+      >
+        {children}
+      </SoundLink>
+    );
+  }
+
+  const isMailto = link.href.startsWith("mailto");
+
+  return (
+    <SoundLink
+      href={link.href}
+      className={className}
+      target={isMailto ? undefined : link.target}
+      rel={link.target === "_blank" ? "noopener noreferrer" : undefined}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+    >
+      {children}
+    </SoundLink>
+  );
+}
+
+// --- Mobile item (static sizing, ring when active)
+
+const MOBILE_ITEM_CLASS =
+  "group w-9 h-9 max-[410px]:w-8 max-[410px]:h-8 flex items-center justify-center rounded-full bg-transparent hover:bg-foreground/5 transition-colors duration-300 relative";
+
+const ICON_CLASS =
+  "transition-colors duration-300 flex items-center justify-center [&_svg]:stroke-[1.5px]";
+
+function iconToneClass(active: boolean) {
+  return active
+    ? "text-foreground"
+    : "text-foreground/40 group-hover:text-foreground/80";
+}
+
+function MobileNavItem({
+  link,
+  onThemeClick,
+  themeButtonRef,
+}: {
+  link: MenuLink;
+  onThemeClick?: () => void;
+  themeButtonRef?: RefObject<HTMLButtonElement | null>;
+}) {
+  const active = useMenuLinkActive(link);
+  return (
+    <li className="flex-shrink-0">
+      <NavItemButton
+        link={link}
+        onThemeClick={onThemeClick}
+        themeButtonRef={
+          "asButton" in link ? themeButtonRef : undefined
+        }
+        className={
+          active
+            ? `${MOBILE_ITEM_CLASS} ring-1 ring-foreground/20`
+            : MOBILE_ITEM_CLASS
+        }
+      >
+        <span className={`${ICON_CLASS} ${iconToneClass(active)}`}>
+          {link.icon}
+        </span>
+      </NavItemButton>
+    </li>
+  );
+}
+
+// --- Desktop dock item (magnify + label + active dot)
+
+const DOCK_ITEM_CLASS =
+  "group w-full h-full flex items-center justify-center rounded-full bg-transparent hover:bg-foreground/5 transition-colors duration-300 relative";
 
 function DockItem({
   link,
   mouseX,
   onThemeClick,
-  isActive,
+  themeButtonRef,
 }: {
   link: MenuLink;
   mouseX: MotionValue<number>;
   onThemeClick?: () => void;
-  isActive: boolean;
+  themeButtonRef?: RefObject<HTMLButtonElement | null>;
 }) {
-  const ref = useRef<HTMLLIElement | null>(null);
-  const [isHovered, setIsHovered] = React.useState(false);
-  const path = usePathname();
+  const ref = useRef<HTMLLIElement>(null);
+  const [isHovered, setIsHovered] = useState(false);
+  const active = useMenuLinkActive(link);
 
-  const distance = useTransform(mouseX, (val) => {
-    const bounds = ref.current?.getBoundingClientRect() ?? { x: 0, width: 0 };
-    return val - bounds.x - bounds.width / 2;
+  const distance = useTransform(mouseX, (v) => {
+    const b = ref.current?.getBoundingClientRect() ?? { x: 0, width: 0 };
+    return v - b.x - b.width / 2;
   });
-
-  const widthSync = useTransform(distance, [-150, 0, 150], [40, 80, 40]);
-  const width = useSpring(widthSync, {
-    mass: 0.1,
-    stiffness: 150,
-    damping: 12,
-  });
-
-  const iconScaleSync = useTransform(distance, [-150, 0, 150], [0.8, 1.1, 0.8]);
-  const iconScale = useSpring(iconScaleSync, {
-    mass: 0.1,
-    stiffness: 150,
-    damping: 12,
-  });
-
-  const isMailto = link.href.startsWith("mailto");
-
-  const content = (
-    <>
-      <motion.span
-        style={{ scale: iconScale }}
-        className={`transition-colors duration-300 flex items-center justify-center [&_svg]:stroke-[1.5px] ${isActive ? "text-foreground" : "text-foreground/40 group-hover:text-foreground/80"}`}
-      >
-        {link.icon}
-      </motion.span>
-
-      <AnimatePresence>
-        {isHovered && (
-          <motion.span
-            initial={{ opacity: 0, y: 6, scale: 0.96 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 6, scale: 0.96 }}
-            transition={{ duration: 0.18, ease: "easeOut" }}
-            className="pointer-events-none absolute -top-9 px-2 py-1 text-[10px] rounded-sm bg-foreground/90 text-background whitespace-nowrap shadow-md font-medium"
-          >
-            {link.name}
-          </motion.span>
-        )}
-      </AnimatePresence>
-
-      <AnimatePresence>
-        {(() => {
-          const hrefPath =
-            link.href === "#" || link.href.startsWith("http")
-              ? null
-              : link.href;
-
-          const isActive = hrefPath
-            ? hrefPath === "/"
-              ? path === "/"
-              : path.startsWith(hrefPath)
-            : false;
-
-          return (
-            isActive && (
-              <motion.span
-                initial={{ opacity: 1, y: 6, scale: 0.96 }}
-                animate={{ opacity: 1, y: -5, scale: 1 }}
-                exit={{ opacity: 1, y: 6, scale: 0.96 }}
-                transition={{ duration: 0.18, ease: "easeOut" }}
-                className="pointer-events-none absolute -bottom-2 text-foreground text-[10px] rounded-full bg-foreground h-1 w-1 "
-              ></motion.span>
-            )
-          );
-        })()}
-      </AnimatePresence>
-    </>
+  const width = useSpring(
+    useTransform(distance, [-150, 0, 150], [40, 80, 40]),
+    { mass: 0.1, stiffness: 150, damping: 12 }
+  );
+  const iconScale = useSpring(
+    useTransform(distance, [-150, 0, 150], [0.8, 1.1, 0.8]),
+    { mass: 0.1, stiffness: 150, damping: 12 }
   );
 
   return (
     <motion.li ref={ref} style={{ width }} className="aspect-square">
-      <SoundLink
-        href={link.href}
-        target={isMailto ? undefined : link.target}
-        rel={link.target === "_blank" ? "noopener noreferrer" : undefined}
+      <NavItemButton
+        link={link}
+        onThemeClick={onThemeClick}
+        themeButtonRef={
+          "asButton" in link ? themeButtonRef : undefined
+        }
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        onClick={(e) => {
-          if (link.name === "Theme" && onThemeClick) {
-            e.preventDefault();
-            onThemeClick();
-          }
-        }}
-        className="group w-full h-full flex items-center justify-center rounded-full bg-transparent hover:bg-foreground/5 transition-colors duration-300 relative"
+        className={DOCK_ITEM_CLASS}
       >
-        {content}
-      </SoundLink>
+        <motion.span
+          style={{ scale: iconScale }}
+          className={`${ICON_CLASS} ${iconToneClass(active)}`}
+        >
+          {link.icon}
+        </motion.span>
+
+        <AnimatePresence>
+          {isHovered && (
+            <motion.span
+              initial={{ opacity: 0, y: 6, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 6, scale: 0.96 }}
+              transition={{ duration: 0.18, ease: "easeOut" }}
+              className="pointer-events-none absolute -top-9 px-2 py-1 text-[10px] rounded-sm bg-foreground/90 text-background whitespace-nowrap shadow-md font-medium"
+            >
+              {link.name}
+            </motion.span>
+          )}
+        </AnimatePresence>
+
+        <AnimatePresence>
+          {active && (
+            <motion.span
+              initial={{ opacity: 1, y: 6, scale: 0.96 }}
+              animate={{ opacity: 1, y: -5, scale: 1 }}
+              exit={{ opacity: 1, y: 6, scale: 0.96 }}
+              transition={{ duration: 0.18, ease: "easeOut" }}
+              className="pointer-events-none absolute -bottom-2 h-1 w-1 rounded-full bg-foreground text-[10px]"
+            />
+          )}
+        </AnimatePresence>
+      </NavItemButton>
     </motion.li>
   );
 }
 
-// Simple mobile nav item without animations
-function MobileNavItem({
-  link,
-  onThemeClick,
-}: {
-  link: MenuLink;
-  onThemeClick?: () => void;
-}) {
-  const path = usePathname();
+// --- Layout chrome
 
-  const isMailto = link.href.startsWith("mailto");
+const NAV_MOTION = {
+  hidden: {
+    opacity: 0,
+    y: 24,
+    scaleX: 0.72,
+    scaleY: 0.8,
+    filter: "blur(8px)",
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scaleX: 1,
+    scaleY: 1,
+    filter: "blur(0px)",
+  },
+} as const;
 
-  const hrefPath =
-    link.href === "#" || link.href.startsWith("http") ? null : link.href;
-
-  const isActive = hrefPath
-    ? hrefPath === "/"
-      ? path === "/"
-      : path.startsWith(hrefPath)
-    : false;
-
-  const content = (
-    <span className={`transition-colors duration-300 flex items-center justify-center [&_svg]:stroke-[1.5px] ${isActive ? "text-foreground" : "text-foreground/40 group-hover:text-foreground/80"}`}>
-      {link.icon}
-    </span>
-  );
-
-  const className = `group w-9 h-9 max-[410px]:w-8 max-[410px]:h-8 flex items-center justify-center rounded-full bg-transparent hover:bg-foreground/5 transition-colors duration-300 relative ${isActive ? "ring-1 ring-foreground/20" : ""}`;
-
-  return (
-    <li className="flex-shrink-0">
-      <SoundLink
-        href={link.href}
-        target={isMailto ? undefined : link.target}
-        rel={link.target === "_blank" ? "noopener noreferrer" : undefined}
-        onClick={(e) => {
-          if (link.name === "Theme" && onThemeClick) {
-            e.preventDefault();
-            onThemeClick();
-          }
-        }}
-        className={className}
-      >
-        {content}
-      </SoundLink>
-    </li>
-  );
+function useViewportBelowWidth(maxWidth: number) {
+  const [narrow, setNarrow] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia(`(max-width: ${maxWidth - 1}px)`);
+    const update = () => setNarrow(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, [maxWidth]);
+  return narrow;
 }
 
-function Navbar() {
-  const path = usePathname();
-  const mouseX = useMotionValue(Infinity);
-  const [isMobile, setIsMobile] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  const { resolvedTheme, setTheme } = useTheme();
-  const [isAdmin, setIsAdmin] = useState(false);
-
+function useAdminVisible() {
+  const [on, setOn] = useState(false);
   useEffect(() => {
-    const checkAuthStatus = () => {
-      const hasCookie = document.cookie.includes("admin_session=authenticated");
-      const hasLocal = typeof window !== "undefined" && localStorage.getItem("adminAuth") === "true";
-      setIsAdmin(hasCookie || hasLocal);
+    const check = () => {
+      const cookie = document.cookie.includes("admin_session=authenticated");
+      const local = localStorage.getItem("adminAuth") === "true";
+      setOn(cookie || local);
     };
-    checkAuthStatus();
-    // Re-check periodically in case they log in/out in another tab
-    const interval = setInterval(checkAuthStatus, 5000);
-    return () => clearInterval(interval);
+    check();
+    const t = setInterval(check, 5000);
+    return () => clearInterval(t);
   }, []);
+  return on;
+}
 
+// ---
 
-  const isActive = (hrefPath: string) => {
-    return hrefPath
-      ? hrefPath === "/"
-        ? path === "/"
-        : path.startsWith(hrefPath)
-      : false;
-  };
+export default function Navbar() {
+  const mouseX = useMotionValue(Infinity);
+  const isMobile = useViewportBelowWidth(768);
+  const [mounted, setMounted] = useState(false);
+  const { resolvedTheme } = useTheme();
+  const isAdmin = useAdminVisible();
+  const isDark = resolvedTheme !== "light";
+  const themeButtonRef = useRef<HTMLButtonElement | null>(null);
+  // Speed: change `THEME_TOGGLE_TRANSITION_MS` in `@/hooks/useViewTransitionThemeToggle`, or pass `{ duration: 600 }` here.
+  const toggleTheme = useViewTransitionThemeToggle(themeButtonRef);
 
   useEffect(() => {
     setMounted(true);
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    checkMobile(); // Check immediately on mount
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-
-
-  const toggleTheme = () => {
-    setTheme(resolvedTheme === "dark" ? "light" : "dark");
-  };
-
-  const isDark = resolvedTheme !== "light";
-  const showNavbar = true;
-  const navAnimation = {
-    hidden: {
-      opacity: 0,
-      y: 24,
-      scaleX: 0.72,
-      scaleY: 0.8,
-      filter: "blur(8px)",
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scaleX: 1,
-      scaleY: 1,
-      filter: "blur(0px)",
-    },
-  };
+  const mobileThemeIcon = isDark ? <MoonIcon size={20} /> : <SunIcon size={20} />;
+  const desktopThemeIcon = isDark ? <MoonIcon size={22} /> : <SunIcon size={22} />;
 
   return (
-    <div className="w-full flex justify-center items-end pb-5 md:pb-8 fixed bottom-0 z-50 pointer-events-none">
-      <div 
-        className="absolute bottom-0 left-0 right-0 h-32 -z-10 backdrop-blur-md pointer-events-none md:hidden"
+    <div className="pointer-events-none fixed bottom-0 z-50 flex w-full items-end justify-center pb-5 md:pb-8">
+      <div
+        className="pointer-events-none absolute bottom-0 left-0 right-0 -z-10 h-32 backdrop-blur-md md:hidden"
         style={{
-          maskImage: 'linear-gradient(to top, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%)',
-          WebkitMaskImage: 'linear-gradient(to top, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%)'
+          maskImage:
+            "linear-gradient(to top, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%)",
+          WebkitMaskImage:
+            "linear-gradient(to top, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%)",
         }}
       />
       <div className="pointer-events-auto flex items-end">
         <AnimatePresence>
-        {showNavbar && mounted && (
-          isMobile ? (
+          {mounted &&
+            (isMobile ? (
             <motion.nav
               key="mobile-navbar"
-              variants={navAnimation}
+              variants={NAV_MOTION}
               initial="hidden"
               animate="visible"
               exit="hidden"
-              transition={{
-                duration: 0.62,
-                ease: [0.22, 1, 0.36, 1],
-              }}
+              transition={{ duration: 0.62, ease: [0.22, 1, 0.36, 1] }}
               style={{ transformOrigin: "center bottom" }}
-              className="mx-4 max-[410px]:mx-2 rounded-full border border-foreground/10 bg-background/80 px-[10px] py-[10px] max-[410px]:px-1.5 max-[410px]:py-1.5 shadow-lg backdrop-blur-xl"
+              className="mx-4 max-[410px]:mx-2 rounded-full border border-foreground/10 bg-background/80 px-[10px] py-[10px] shadow-lg backdrop-blur-xl max-[410px]:px-1.5 max-[410px]:py-1.5"
             >
-              <ul className="flex gap-2 max-[410px]:gap-1 h-10 max-[410px]:h-8 items-center">
-                {DETAIL_LINKS.map((link) => {
-                  const renderedLink =
-                    link.name === "Theme"
-                      ? {
-                        ...link,
-                        icon: isDark ? (
-                          <MoonIcon size={20} />
-                        ) : (
-                          <SunIcon size={20} />
-                        ),
-                      }
-                      : link;
-
-                  return (
-                    <MobileNavItem
-                      key={renderedLink.name}
-                      link={renderedLink}
-                      onThemeClick={toggleTheme}
-                    />
-                  );
-                })}
-                <span className="w-px h-5 bg-foreground/10 my-auto mx-1" />
-                {THEME_LINK.map((link) => (
-                  <MobileNavItem
-                    key={link.name}
-                    link={{
-                      ...link,
-                      icon: isDark ? <MoonIcon size={20} /> : <SunIcon size={20} />,
-                    }}
-                    onThemeClick={toggleTheme}
-                  />
+              <ul className="flex h-10 max-[410px]:h-8 items-center gap-2 max-[410px]:gap-1">
+                {DETAIL_LINKS.map((link) => (
+                  <MobileNavItem key={link.name} link={link} />
                 ))}
+                <span className="mx-1 my-auto h-5 w-px bg-foreground/10" />
+                <MobileNavItem
+                  link={themeMenuLink(mobileThemeIcon)}
+                  onThemeClick={toggleTheme}
+                  themeButtonRef={themeButtonRef}
+                />
                 {isAdmin && (
                   <MobileNavItem
-                    key="Admin"
+                    key="admin"
                     link={{
                       name: "Admin CMS",
-                      icon: <Settings2 size={20} />,
                       href: "/admin",
+                      icon: <Settings2 size={20} />,
                       target: "_self",
                     }}
                   />
                 )}
-                <span className="w-px h-5 bg-foreground/10 my-auto mx-1" />
+                <span className="mx-1 my-auto h-5 w-px bg-foreground/10" />
                 {CONTACT_LINKS.map((link) => (
                   <MobileNavItem key={link.name} link={link} />
                 ))}
               </ul>
             </motion.nav>
-          ) : (
+            ) : (
             <motion.nav
               key="desktop-navbar"
-              variants={navAnimation}
+              variants={NAV_MOTION}
               initial="hidden"
               animate="visible"
               exit="hidden"
-              transition={{
-                duration: 0.68,
-                ease: [0.22, 1, 0.36, 1],
-              }}
+              transition={{ duration: 0.68, ease: [0.22, 1, 0.36, 1] }}
               style={{ transformOrigin: "center bottom" }}
               onMouseMove={(e) => mouseX.set(e.pageX)}
               onMouseLeave={() => mouseX.set(Infinity)}
               className="rounded-full border border-foreground/10 bg-background/80 px-3 py-2 shadow-xl backdrop-blur-2xl"
             >
-              <ul className="flex gap-1 h-11 items-end">
-                {DETAIL_LINKS.map((link) => {
-                  const renderedLink =
-                    link.name === "Theme"
-                      ? {
-                        ...link,
-                        icon: isDark ? (
-                          <SunIcon size={22} />
-                        ) : (
-                          <MoonIcon size={22} />
-                        ),
-                      }
-                      : link;
-
-                  return (
-                    <DockItem
-                      key={renderedLink.name}
-                      link={renderedLink}
-                      mouseX={mouseX}
-                      onThemeClick={toggleTheme}
-                      isActive={isActive(link.href)}
-                    />
-                  );
-                })}
-                <motion.span className="w-[1px] h-6 bg-foreground/10 my-auto mx-2" />
-                {THEME_LINK.map((link) => (
-                  <DockItem
-                    key={link.name}
-                    link={{
-                      ...link,
-                      icon: isDark ? <MoonIcon size={22} /> : <SunIcon size={22} />,
-                    }}
-                    mouseX={mouseX}
-                    isActive={isActive(link.href)}
-                    onThemeClick={toggleTheme}
-                  />
-                ))}
-                {isAdmin && (
-                  <DockItem
-                    key="Admin"
-                    link={{
-                      name: "Admin CMS",
-                      icon: <Settings2 size={22} />,
-                      href: "/admin",
-                      target: "_self",
-                    }}
-                    mouseX={mouseX}
-                    isActive={isActive("/admin")}
-                  />
-                )}
-                <motion.span className="w-[1px] h-6 bg-foreground/10 my-auto mx-2" />
-                {CONTACT_LINKS.map((link) => (
+              <ul className="flex h-11 items-end gap-1">
+                {DETAIL_LINKS.map((link) => (
                   <DockItem
                     key={link.name}
                     link={link}
                     mouseX={mouseX}
-                    isActive={isActive(link.href)}
                   />
+                ))}
+                <motion.span className="mx-2 my-auto h-6 w-[1px] bg-foreground/10" />
+                <DockItem
+                  key="theme"
+                  link={themeMenuLink(desktopThemeIcon)}
+                  mouseX={mouseX}
+                  onThemeClick={toggleTheme}
+                  themeButtonRef={themeButtonRef}
+                />
+                {isAdmin && (
+                  <DockItem
+                    key="admin"
+                    link={{
+                      name: "Admin CMS",
+                      href: "/admin",
+                      icon: <Settings2 size={22} />,
+                      target: "_self",
+                    }}
+                    mouseX={mouseX}
+                  />
+                )}
+                <motion.span className="mx-2 my-auto h-6 w-[1px] bg-foreground/10" />
+                {CONTACT_LINKS.map((link) => (
+                  <DockItem key={link.name} link={link} mouseX={mouseX} />
                 ))}
               </ul>
             </motion.nav>
-          )
-        )}
+            ))}
         </AnimatePresence>
       </div>
     </div>
   );
 }
-
-export default Navbar;

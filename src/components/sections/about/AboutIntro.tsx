@@ -47,7 +47,7 @@ export default function AboutIntro() {
 
         {/* Section Header */}
         {/* <div data-anim="about">
-          <h2 className="font-erode text-[3rem] sm:text-[4.5rem] md:text-[5.5rem] font-[800] tracking-[-0.05em] sm:tracking-[-0.06em] leading-[0.9] text-foreground drop-shadow-sm">
+          <h2 className="font-heading text-[3rem] sm:text-[4.5rem] md:text-[5.5rem] font-normal tracking-[-0.05em] sm:tracking-[-0.06em] leading-[0.9] text-foreground drop-shadow-sm">
             I don&apos;t write code.<br />
             <span className="text-primary/90">I ship products.</span>
           </h2>

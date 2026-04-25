@@ -46,7 +46,7 @@ export default function DetailedContent({ project }: { project: project }) {
         {/* Left Column: Description & Metadata */}
         <div className="lg:col-span-1 flex flex-col gap-8 order-2 lg:order-1">
           <div className="space-y-4">
-            <h3 className="font-sans text-xl font-[800] text-foreground/90 tracking-[-0.03em] uppercase text-[12px]">
+            <h3 className="font-heading text-xl font-normal text-foreground/90 tracking-[-0.03em] uppercase text-[12px]">
               Overview
             </h3>
             <p className="font-sans text-foreground/50 leading-[1.65] text-lg font-normal tracking-[-0.01em]">
@@ -57,7 +57,7 @@ export default function DetailedContent({ project }: { project: project }) {
           <div className="h-px bg-primary/20 w-full" />
 
           <div className="space-y-4">
-            <h3 className="font-sans text-xl font-[800] text-foreground/90 tracking-[-0.03em] uppercase text-[12px]">
+            <h3 className="font-heading text-xl font-normal text-foreground/90 tracking-[-0.03em] uppercase text-[12px]">
               Tech Stack
             </h3>
             <div className="flex flex-wrap gap-2">
@@ -81,7 +81,7 @@ export default function DetailedContent({ project }: { project: project }) {
                 The Process
               </h3>
               <div
-                className="prose prose-invert prose-lg max-w-none font-sans text-foreground/50 leading-[1.65] font-normal tracking-[-0.01em] prose-headings:font-sans prose-headings:font-[800] prose-headings:text-foreground/90 prose-headings:tracking-[-0.03em] prose-a:text-primary hover:prose-a:text-primary/80"
+                className="prose prose-invert prose-lg max-w-none font-sans text-foreground/50 leading-[1.65] font-normal tracking-[-0.01em] prose-headings:font-heading prose-headings:font-normal prose-headings:text-foreground/90 prose-headings:tracking-[-0.03em] prose-a:text-primary hover:prose-a:text-primary/80"
                 dangerouslySetInnerHTML={{ __html: project.article }}
               />
             </div>

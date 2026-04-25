@@ -4,7 +4,6 @@ import React, { useRef, useCallback } from "react";
 import Link from "next/link";
 
 type SoundLinkProps = {
-  href: string;
   children: React.ReactNode;
   className?: string;
   target?: string;
@@ -12,6 +11,10 @@ type SoundLinkProps = {
   onClick?: (e: React.MouseEvent) => void;
   onMouseEnter?: (e: React.MouseEvent) => void;
   onMouseLeave?: (e: React.MouseEvent) => void;
+  /** When `asButton`, ref to the native `<button>` (e.g. view-transition origin) */
+  buttonRef?: React.Ref<HTMLButtonElement>;
+  /** Passed to the underlying `button` when `asButton` */
+  ariaLabel?: string;
   /** Use Next.js Link for internal routes (default: auto-detect) */
   external?: boolean;
   /** Sound file path for hover */
@@ -20,10 +23,14 @@ type SoundLinkProps = {
   clickSound?: string;
   /** Volume 0-1 */
   volume?: number;
-};
+} & (
+  | { asButton: true; href?: never }
+  | { asButton?: false; href: string }
+);
 
 export default function SoundLink({
   href,
+  asButton,
   children,
   className,
   target,
@@ -31,6 +38,8 @@ export default function SoundLink({
   onClick,
   onMouseEnter,
   onMouseLeave,
+  buttonRef,
+  ariaLabel,
   external,
   hoverSound = "/sfx/tap_05.wav",
   clickSound = "/sfx/tap_03.wav",
@@ -96,10 +105,11 @@ export default function SoundLink({
   );
 
   const isExternal =
-    external ??
-    (href === "#" ||
-      href.startsWith("http") ||
-      href.startsWith("mailto"));
+    !asButton &&
+    (external ??
+      (href === "#" ||
+        href.startsWith("http") ||
+        href.startsWith("mailto")));
 
   const sharedProps = {
     className,
@@ -108,6 +118,22 @@ export default function SoundLink({
     onClick: handleClick,
     "data-sound-link": "true", // marker to exclude from GlobalHoverSound
   };
+
+  if (asButton) {
+    return (
+      <button
+        ref={buttonRef}
+        type="button"
+        aria-label={ariaLabel}
+        {...sharedProps}
+        className={
+          [className, "cursor-pointer"].filter(Boolean).join(" ") || undefined
+        }
+      >
+        {children}
+      </button>
+    );
+  }
 
   if (isExternal) {
     return (

@@ -93,10 +93,10 @@ const DetailedProjectGallery = ({ Project }: { Project: project }) => {
       {/* Header */}
       <div className="px-4 md:px-8 max-w-7xl mx-auto pt-16 pb-6">
         <div className="flex justify-between items-center">
-          <h3 className="font-erode text-2xl md:text-4xl font-semibold text-foreground">
+          <h3 className="font-heading text-2xl md:text-4xl font-semibold text-foreground">
             Project <span className="text-primary">Gallery</span>
           </h3>
-          <div className="flex items-center gap-2 font-poppins ">
+          <div className="flex items-center gap-2 font-sans ">
             <span className="text-sm hidden sm:block">Scroll horizontally</span>
             <svg
               className="w-6 h-6 animate-pulse"

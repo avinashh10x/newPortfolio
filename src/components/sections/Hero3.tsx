@@ -59,7 +59,7 @@ const Hero3 = () => {
             delay: 0.15,
             ease: [0.21, 0.47, 0.32, 0.98],
           }}
-          className={`flex min-h-[3.2rem] max-[350px]:min-h-[3.1rem] sm:min-h-[4.1rem] md:min-h-[5rem] lg:min-h-[5.4rem] items-center justify-center font-erode text-[3.5rem] max-[350px]:text-[3.4rem] sm:text-[4.5rem] md:text-[5.5rem] lg:text-[6rem] font-extrabold tracking-[-0.05em] leading-[0.9] mb-5 max-[350px]:-mb-1 drop-shadow-sm transition-colors duration-500 ${isAnyHovered ? "text-foreground/20" : "text-foreground"
+          className={`flex min-h-[3.2rem] max-[350px]:min-h-[3.1rem] sm:min-h-[4.1rem] md:min-h-[5rem] lg:min-h-[5.4rem] items-center justify-center font-heading text-[3.5rem] max-[350px]:text-[3.4rem] sm:text-[4.5rem] md:text-[5.5rem] lg:text-[6rem] font-normal tracking-[-0.05em] leading-[0.9] mb-5 max-[350px]:-mb-1 drop-shadow-sm transition-colors duration-500 ${isAnyHovered ? "text-foreground/20" : "text-foreground"
             }`}
         >
           <h1 className="origin-center whitespace-nowrap">Avinash Kumar</h1>

@@ -123,11 +123,9 @@ export default function WordPreloader() {
       <div className="flex items-center justify-center w-full h-full">
         <span
           ref={wordRef}
-          className="font-medium text-4xl sm:text-5xl md:text-6xl text-background select-none"
+          className="font-heading text-4xl sm:text-5xl md:text-6xl text-background select-none font-medium"
           style={{
             opacity: phase === "fadein" ? 0 : 1,
-            fontFamily:
-              "'Inter', 'Noto Sans', 'Noto Sans JP', 'Noto Sans KR', 'Noto Sans SC', 'Noto Sans Arabic', 'Noto Sans Devanagari', 'Noto Sans Bengali', 'Noto Sans Gujarati', 'Noto Sans Oriya', 'Noto Sans Gurmukhi', 'Noto Sans Telugu', sans-serif",
           }}
         >
           {hellos[index]}
