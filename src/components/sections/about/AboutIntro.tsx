@@ -68,7 +68,7 @@ export default function AboutIntro() {
             <ClickableText text="Email" id="email" hoveredId={hoveredLink} onSetHover={setHoveredLink} href="mailto:Avinashbuilds@gmail.com" /> */}
             
             {/* , or get a quick overview through my{" "}
-            <ClickableText text="resume" id="resume" hoveredId={hoveredLink} onSetHover={setHoveredLink} href="/aviResume.docx" />. */}
+            <ClickableText text="resume" id="resume" hoveredId={hoveredLink} onSetHover={setHoveredLink} href="/avinash.pdf" />. */}
           </p>
         </div>
 
