@@ -1,7 +1,7 @@
-import { Metadata } from "next";
-import Link from "next/link";
+import { ThemeAware404 } from "./_components/ThemeAware404";
 
-export const metadata: Metadata = {
+// Metadata export - must be in a Server Component context
+export const metadata = {
   title: "Page Not Found | Avi - Creative Developer India",
   description:
     "The page you're looking for doesn't exist. Return to Avi's portfolio - India's Creative Developer in Mumbai & Punjab.",
@@ -12,15 +12,7 @@ export const metadata: Metadata = {
 };
 
 function NotFound() {
-  return (
-    <div className="w-full h-screen flex flex-col items-center justify-center space-y-4">
-      <p className="text-xl font-lg">404</p>
-      <p className="font-extrabold text-3xl">Seems like you are lost</p>
-      <Link href="/" className="text-blue-600 underline">
-        Go back home
-      </Link>
-    </div>
-  );
+  return <ThemeAware404 />;
 }
 
 export default NotFound;
