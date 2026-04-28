@@ -10,7 +10,7 @@ export default function GlobalHoverSound() {
   useEffect(() => {
     // Initialize audio instance
     const audio = new Audio("/sfx/tap_05.wav");
-    audio.volume = 0.4; // Reduced by 10%
+    audio.volume = 0.8; // More audible hover feedback
     audio.load();
     audioRef.current = audio;
 

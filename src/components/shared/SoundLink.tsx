@@ -43,7 +43,7 @@ export default function SoundLink({
   external,
   hoverSound = "/sfx/tap_05.wav",
   clickSound = "/sfx/tap_03.wav",
-  volume = 0.4,
+  volume = 0.8,
 }: SoundLinkProps) {
   const hoverAudioRef = useRef<HTMLAudioElement | null>(null);
   const clickAudioRef = useRef<HTMLAudioElement | null>(null);
@@ -56,6 +56,8 @@ export default function SoundLink({
         ref.current = new Audio(src);
         ref.current.volume = volume;
         ref.current.load();
+      } else {
+        ref.current.volume = volume;
       }
       return ref.current;
     },
