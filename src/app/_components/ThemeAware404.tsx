@@ -38,7 +38,7 @@ export function ThemeAware404() {
             mixBlendMode: blendMode,
             display: "block",
           }}
-          className="h-full w-auto  absolute"
+          className="h-full w-auto  absolute ml-6"
         />
 
         {/* Text block — sits naturally below the cat */}
