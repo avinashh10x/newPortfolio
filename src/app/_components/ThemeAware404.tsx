@@ -11,6 +11,14 @@ export function ThemeAware404() {
     setMounted(true);
   }, []);
 
+  // Signal to the global Navbar that we're on the 404 page so it can hide itself.
+  useEffect(() => {
+    document.documentElement.setAttribute("data-page", "404");
+    return () => {
+      document.documentElement.removeAttribute("data-page");
+    };
+  }, []);
+
   const isDark = mounted && resolvedTheme !== "light";
   const background = isDark ? "#111" : "#f5f5f5";
   const textPrimary = isDark ? "#f0f0f0" : "#111111";

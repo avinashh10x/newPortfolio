@@ -4,7 +4,7 @@ import { useTheme } from "next-themes";
 import { useCallback, type RefObject } from "react";
 
 
-export const THEME_TOGGLE_TRANSITION_MS = 400;
+export const THEME_TOGGLE_TRANSITION_MS = 550;
 
 type UseViewTransitionThemeToggleOptions = {
   duration?: number;
@@ -55,9 +55,13 @@ export function useViewTransitionThemeToggle(
     });
 
     const runClipAnimation = () => {
+
+      
       // Always animate `::view-transition-new(root)`: the incoming theme expands from
       // the button. Animating `::view-transition-old(root)` for light→dark is often a
       // no-op or flashes because the old snapshot is handled differently by the engine.
+
+
       document.documentElement.animate(
         { clipPath: expandClip },
         {

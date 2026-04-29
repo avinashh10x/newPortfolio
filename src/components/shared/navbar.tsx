@@ -324,6 +324,26 @@ function useAdminVisible() {
   return on;
 }
 
+// Tracks the `data-page` attribute on <html> so the navbar can hide on 404.
+function useIsNotFoundPage() {
+  const [isNotFound, setIsNotFound] = useState(false);
+  useEffect(() => {
+    const update = () => {
+      setIsNotFound(
+        document.documentElement.getAttribute("data-page") === "404"
+      );
+    };
+    update();
+    const observer = new MutationObserver(update);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-page"],
+    });
+    return () => observer.disconnect();
+  }, []);
+  return isNotFound;
+}
+
 // ---
 
 export default function Navbar() {
@@ -332,6 +352,7 @@ export default function Navbar() {
   const [mounted, setMounted] = useState(false);
   const { resolvedTheme } = useTheme();
   const isAdmin = useAdminVisible();
+  const isNotFound = useIsNotFoundPage();
   const isDark = resolvedTheme !== "light";
   const themeButtonRef = useRef<HTMLButtonElement | null>(null);
   // Speed: change `THEME_TOGGLE_TRANSITION_MS` in `@/hooks/useViewTransitionThemeToggle`, or pass `{ duration: 600 }` here.
@@ -357,7 +378,7 @@ export default function Navbar() {
       />
       <div className="pointer-events-auto flex items-end">
         <AnimatePresence>
-          {mounted &&
+          {mounted && !isNotFound &&
             (isMobile ? (
             <motion.nav
               key="mobile-navbar"
