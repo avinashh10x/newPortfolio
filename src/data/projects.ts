@@ -1,3 +1,4 @@
+import { unstable_cache } from "next/cache";
 import dbConnect from "@/lib/mongoose";
 import { Project as MongoProject } from "@/models/project.model";
 
@@ -22,7 +23,7 @@ export const PROJECTS: project[] = [
     "slug": "freepay",
     "subtitle": "Bitcoin payment links built for freelancers and global creators.",
     "description": "A crypto payment link platform that enables freelancers to create shareable payment pages and receive Bitcoin or stablecoin payments instantly with a frictionless checkout experience.",
-    "article": "<h3>Overview</h3> FreePay is a modern payment-link platform built to solve one of the biggest problems freelancers face: getting paid quickly and globally without banking friction, delays, or excessive fees. It transforms crypto payments into a familiar experience—create a link, share it, and get paid. <br/> <h3>Tech Stack</h3> Next.js TypeScript Node.js Tailwind CSS Starkzap SDK Starknet Vercel <br/> <h3>The Process</h3> The idea behind FreePay came from a simple pain point many freelancers experience—international payments are often slow, expensive, and unnecessarily complex. Traditional platforms introduce high fees, waiting periods, and regional limitations. FreePay was designed as a faster alternative powered by blockchain rails. <br/>\n\nThe product experience was intentionally kept simple. Users can generate a custom payment link in seconds, define the payment amount, and share it directly with clients. No confusing wallet flows, no technical jargon, and no unnecessary setup barriers.\n\n<br/>\n\nUsing Starkzap SDK, the platform integrates Bitcoin and token payment capabilities through Starknet while maintaining a smooth user experience. The objective was to hide blockchain complexity and make crypto feel as easy as sending an invoice link.\n\n<br/>\n\nThe interface was designed with freelancers and creators in mind—clean layouts, fast loading pages, mobile responsiveness, and trust-focused UI decisions. Every screen was built to reduce hesitation for both the sender and the payer.\n\n<br/>\n\nFreePay demonstrates how Web3 infrastructure can be turned into a practical real-world product. Instead of building for speculation, the platform focuses on utility: helping independent professionals get paid faster across borders.\n\n<br/> <h3>Result</h3> A production-ready hackathon project that showcases fintech product thinking, modern frontend engineering, blockchain integrations, and user-first execution.",
+    "article": "<h3>Overview</h3> FreePay is a modern payment-link platform built to solve one of the biggest problems freelancers face: getting paid quickly and globally without banking friction, delays, or excessive fees. It transforms crypto payments into a familiar experience—create a link, share it, and get paid. <br/> <h3>Tech Stack</h3> Next.js TypeScript Node.js Tailwind CSS Starkzap SDK Starknet Vercel <br/> <h3>The Process</h3> The idea behind FreePay came from a simple pain point many freelancers experience—international payments are often slow, expensive, and unnecessarily complex. Traditional platforms introduce high fees, waiting periods, and regional limitations. FreePay was designed as a faster alternative powered by blockchain rails. <br/>\\n\\nThe product experience was intentionally kept simple. Users can generate a custom payment link in seconds, define the payment amount, and share it directly with clients. No confusing wallet flows, no technical jargon, and no unnecessary setup barriers.\\n\\n<br/>\\n\\nUsing Starkzap SDK, the platform integrates Bitcoin and token payment capabilities through Starknet while maintaining a smooth user experience. The objective was to hide blockchain complexity and make crypto feel as easy as sending an invoice link.\\n\\n<br/>\\n\\nThe interface was designed with freelancers and creators in mind—clean layouts, fast loading pages, mobile responsiveness, and trust-focused UI decisions. Every screen was built to reduce hesitation for both the sender and the payer.\\n\\n<br/>\\n\\nFreePay demonstrates how Web3 infrastructure can be turned into a practical real-world product. Instead of building for speculation, the platform focuses on utility: helping independent professionals get paid faster across borders.\\n\\n<br/> <h3>Result</h3> A production-ready hackathon project that showcases fintech product thinking, modern frontend engineering, blockchain integrations, and user-first execution.",
     "image": [
       "https://res.cloudinary.com/dsr8rjhoc/image/upload/q_auto/f_auto/v1775917013/117shots_so_vaiqd1.png"
     ],
@@ -46,7 +47,11 @@ export const PROJECTS: project[] = [
   }
 ];
 
-export async function getProjects(): Promise<project[]> {
+/**
+ * Internal fetch that hits MongoDB (or falls back to static data).
+ * This is wrapped with unstable_cache below.
+ */
+async function _fetchProjects(): Promise<project[]> {
   try {
     if (!process.env.MONGODB_URI) {
       console.warn("MONGODB_URI is missing, falling back to static local projects.");
@@ -76,3 +81,32 @@ export async function getProjects(): Promise<project[]> {
   }
 }
 
+/**
+ * Cached version of getProjects — revalidates every 60 seconds.
+ * After the first request, subsequent visitors get an instant cached response.
+ */
+export const getProjects = unstable_cache(
+  _fetchProjects,
+  ["projects-list"],
+  { revalidate: 60, tags: ["projects"] }
+);
+
+/**
+ * Helper to fetch a single project by slug without re-fetching the entire list
+ * from the DB on each call (uses the same cached list).
+ */
+export async function getProjectBySlug(slug: string): Promise<project | undefined> {
+  const projects = await getProjects();
+  return projects.find((p) => p.slug === slug);
+}
+
+/**
+ * Returns all project slugs — used by generateStaticParams to pre-render
+ * every project page at build time.
+ */
+export async function getAllProjectSlugs(): Promise<string[]> {
+  const projects = await getProjects();
+  return projects
+    .filter((p) => p.slug)
+    .map((p) => p.slug as string);
+}

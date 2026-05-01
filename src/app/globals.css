@@ -147,6 +147,15 @@
     animation: none;
     mix-blend-mode: normal;
   }
+
+  /* Old snapshot sits behind so the new theme's clip-path circle is visible expanding over it */
+  ::view-transition-old(root) {
+    z-index: 1;
+  }
+
+  ::view-transition-new(root) {
+    z-index: 9999;
+  }
 }
 
 ::selection {

@@ -2,8 +2,8 @@ import { Metadata } from "next";
 import KaraScroll from "@/components/sections/karaScroll";
 import { getProjects } from "@/data/projects";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+// ISR: serve from cache, revalidate in background every 60s
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "Work & Projects | Avi - Creative Developer in India",
@@ -45,6 +45,7 @@ async function WorkPage() {
   return (
     <div>
       <KaraScroll projects={projects} />
+      
     </div>
   );
 }
