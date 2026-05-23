@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import About2 from "@/components/sections/About2";
+import { ogImageOpenGraph, ogImageTwitter } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "About Avi | Creative Developer in Mumbai & Punjab, India",
@@ -23,11 +24,14 @@ export const metadata: Metadata = {
       "Meet Avi - A top-tier Creative Developer in Mumbai & Punjab, India. Expert in React, Next.js, GSAP, and interactive web technologies.",
     url: "https://byavi.in/about",
     type: "profile",
+    images: [...ogImageOpenGraph],
   },
   twitter: {
+    card: "summary_large_image",
     title: "About Avi | Creative Developer in India",
     description:
       "Discover Avi's journey as a Creative Developer. Expert in React, Next.js, GSAP animations & interactive web development.",
+    images: [...ogImageTwitter],
   },
   alternates: {
     canonical: "https://byavi.in/about",

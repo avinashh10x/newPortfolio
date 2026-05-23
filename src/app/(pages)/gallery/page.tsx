@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import InfiniteMediaGrid from "@/components/sections/InfiniteMediaGrid";
 import { getProjects } from "@/data/projects";
+import { ogImageOpenGraph, ogImageTwitter } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -27,21 +28,14 @@ export const metadata: Metadata = {
       "Explore Avi's creative gallery - showcasing design, UI/UX, and visual experiments by a top Creative Developer.",
     url: "https://byavi.in/gallery",
     type: "website",
-    images: [
-      {
-        url: "https://byavi.in/og.png",
-        width: 1200,
-        height: 630,
-        alt: "Avi's Creative Gallery - Creative Developer India",
-      },
-    ],
+    images: [...ogImageOpenGraph],
   },
   twitter: {
     card: "summary_large_image",
     title: "Gallery | Avi - Creative Developer",
     description:
       "Browse creative work and design projects by a Creative Developer. Based in Mumbai & Punjab.",
-    images: ["https://byavi.in/og.png"],
+    images: [...ogImageTwitter],
   },
   alternates: {
     canonical: "https://byavi.in/gallery",

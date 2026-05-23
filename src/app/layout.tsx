@@ -5,6 +5,11 @@ import "./globals.css";
 import Navbar from "@/components/shared/navbar";
 import WordPreloader from "@/components/shared/WordPreloader";
 import { ThemeProvider } from "@/components/theme-provider";
+import {
+  ogImageAbsoluteUrl,
+  ogImageOpenGraph,
+  ogImageTwitter,
+} from "@/lib/seo";
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -55,14 +60,7 @@ export const metadata: Metadata = {
     siteName: "Avi - Creative Developer Portfolio",
     locale: "en_IN",
     type: "website",
-    images: [
-      {
-        url: "https://byavi.in/og.png",
-        width: 1200,
-        height: 630,
-        alt: "Avi - Creative Developer in India | Mumbai & Punjab",
-      },
-    ],
+    images: [...ogImageOpenGraph],
   },
 
   twitter: {
@@ -71,7 +69,7 @@ export const metadata: Metadata = {
     description:
       "Creative Developer in Mumbai & Punjab. Expert in React, Next.js, GSAP animations & interactive web experiences.",
     creator: "@avinash10x",
-    images: ["https://byavi.in/og.png"],
+    images: [...ogImageTwitter],
   },
 
   robots: {
@@ -115,7 +113,7 @@ export default function RootLayout({
     description:
       "A Creative Developer specializing in interactive web experiences, React, Next.js, and GSAP animations. Based in Mumbai & Punjab.",
     url: "https://byavi.in",
-    image: "https://byavi.in/og.png",
+    image: ogImageAbsoluteUrl,
     jobTitle: "Creative Developer",
     worksFor: {
       "@type": "Organization",

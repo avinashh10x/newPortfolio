@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getProjects, getProjectBySlug, getAllProjectSlugs } from "@/data/projects";
+import { ogImageOpenGraph, ogImageTwitter } from "@/lib/seo";
 import DetailedHeader from "../_component/detailedHeader";
 import DetailedContent from "../_component/detailedContent";
 import ProjectNavigation from "../_component/ProjectNavigation";
@@ -37,7 +38,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? project.description.slice(0, 157) + "..."
       : project.description;
   const url = `https://byavi.in/work/${project.slug}`;
-  const imageUrl = project.image?.[0];
 
   return {
     title,
@@ -54,23 +54,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description,
       url,
       type: "article",
-      ...(imageUrl && {
-        images: [
-          {
-            url: imageUrl,
-            width: 1200,
-            height: 630,
-            alt: `${project.title} - Avi | Creative Developer Portfolio`,
-          },
-        ],
-      }),
+      images: [...ogImageOpenGraph],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
       creator: "@avinash10x",
-      ...(imageUrl && { images: [imageUrl] }),
+      images: [...ogImageTwitter],
     },
     alternates: {
       canonical: url,

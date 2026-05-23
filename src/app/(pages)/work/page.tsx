@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import KaraScroll from "@/components/sections/karaScroll";
 import { getProjects } from "@/data/projects";
+import { ogImageOpenGraph, ogImageTwitter } from "@/lib/seo";
 
 // ISR: serve from cache, revalidate in background every 60s
 export const revalidate = 60;
@@ -29,11 +30,14 @@ export const metadata: Metadata = {
       "Browse Avi's impressive portfolio of React, Next.js & GSAP projects. See why Avi is a top Creative Developer in India.",
     url: "https://byavi.in/work",
     type: "website",
+    images: [...ogImageOpenGraph],
   },
   twitter: {
+    card: "summary_large_image",
     title: "Work & Projects by Avi | Creative Developer in India",
     description:
       "Explore projects by India's Creative Developer. React, Next.js, GSAP expert based in Mumbai & Punjab.",
+    images: [...ogImageTwitter],
   },
   alternates: {
     canonical: "https://byavi.in/work",
