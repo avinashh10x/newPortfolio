@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/shared/navbar";
@@ -167,7 +168,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <WordPreloader />
+          <Suspense fallback={null}>
+            <WordPreloader />
+          </Suspense>
           {children}
           <Navbar />
 

@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef, useCallback } from "react";
 import gsap from "gsap";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 
 const hellos = [
   "Hello",           // English (first — fades in, holds)
@@ -22,17 +22,33 @@ function isHomePath(path: string) {
   return path === "/" || path === "/home";
 }
 
+function isPreloadDisabled(searchParams: URLSearchParams) {
+  return searchParams.get("preLoad") === "false";
+}
+
+function shouldShowPreloader(pathname: string, searchParams: URLSearchParams) {
+  return isHomePath(pathname) && !isPreloadDisabled(searchParams);
+}
+
 export default function WordPreloader() {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const showPreloader = shouldShowPreloader(pathname, searchParams);
 
-  // Determine initial phase synchronously — if not home, start as "done"
+  // Determine initial phase synchronously — if not home (or preLoad=false), start as "done"
   // so the preloader never renders even for a single frame
   const [phase, setPhase] = useState<"fadein" | "words" | "reveal" | "done">(
-    () => (isHomePath(pathname) ? "fadein" : "done")
+    () => (showPreloader ? "fadein" : "done")
   );
   const [index, setIndex] = useState(0);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const wordRef = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    if (!showPreloader) {
+      setPhase("done");
+    }
+  }, [showPreloader]);
 
   // Phase 1: Fade in the first "Hello" and hold it
   useEffect(() => {
