@@ -31,6 +31,15 @@ export default function AboutIntro() {
       gsap.set(el, { opacity: 1 });
       gsap.set(splitText.lines, { y: 24, opacity: 0, filter: "blur(5px)" });
 
+      // Each split line is its own single-line block, so the inherited
+      // `text-align: justify` has nothing to stretch and falls back to the
+      // centered last-line rule. Force every line but the last to justify so
+      // the animating text matches the final (reverted) layout — no snap.
+      const lines = splitText.lines as HTMLElement[];
+      lines.forEach((line, i) => {
+        line.style.textAlignLast = i === lines.length - 1 ? "center" : "justify";
+      });
+
       gsap.to(splitText.lines, {
         y: 0,
         opacity: 1,
@@ -67,7 +76,7 @@ export default function AboutIntro() {
           <p
             ref={copyRef}
             style={{ opacity: 0 }}
-            className={`about-intro-copy font-sans text-[16px] sm:text-[18px] md:text-[22px] leading-[1.75] sm:leading-[1.7] md:leading-[1.65] font-medium tracking-[-0.01em] text-justify sm:text-center [text-wrap:pretty] [text-align-last:center] sm:[text-align-last:center] transition-colors duration-500  ${isAnyHovered ? "text-foreground/20" : "text-foreground/60"}`}
+            className={`about-intro-copy font-sans text-[16px] sm:text-[18px] md:text-[22px] leading-[1.75] sm:leading-[1.7] md:leading-[1.65] font-medium tracking-[-0.01em] text-justify [text-wrap:pretty] [text-align-last:center] transition-colors duration-500  ${isAnyHovered ? "text-foreground/20" : "text-foreground/60"}`}
           >
             22yo CSE Graduate (&apos;25) building products with real traction.
             Currently contributing at{" "}
@@ -106,10 +115,6 @@ export default function AboutIntro() {
               onSetHover={setHoveredLink}
               href="https://github.com/avinashh10x"
             />
-            {/* , reach out via{" "}
-            <ClickableText text="Email" id="email" hoveredId={hoveredLink} onSetHover={setHoveredLink} href="mailto:Avinashbuilds@gmail.com" /> */}
-            {/* , or get a quick overview through my{" "}
-            <ClickableText text="resume" id="resume" hoveredId={hoveredLink} onSetHover={setHoveredLink} href="/avinash.pdf" />. */}
           </p>
         </div>
       </div>

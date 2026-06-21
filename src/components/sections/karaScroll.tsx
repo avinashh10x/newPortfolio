@@ -131,7 +131,7 @@ export default function KaraScroll({ projects }: { projects: project[] }) {
 
       <div className="flex h-full w-full flex-col px-5 pb-1 pt-24 md:hidden">
         <div className="mb-6 flex shrink-0 items-center gap-4">
-          <p className="font-heading text-[2.6rem] font-semibold leading-none tracking-[-0.01em] text-primary">
+          <p className="font-heading text-[2.6rem] font-medium leading-none tracking-[-0.01em] text-primary">
             Featured Work
           </p>
           <motion.span
@@ -291,7 +291,7 @@ export default function KaraScroll({ projects }: { projects: project[] }) {
       </div>
 
       <div className="hidden flex-1 space-y-10 px-10 tracking-[-0.02em] md:block">
-        <div className="flex items-center justify-between gap-5 px-2 font-heading text-[4vw] font-semibold leading-[1.1] !tracking-[-0.01em]">
+        <div className="flex items-center justify-between gap-5 px-2 font-heading text-[4vw] font-medium leading-[1.1] !tracking-[-0.01em]">
           <p className="text-primary drop-shadow-sm text-nowrap  ">
             Featured Work
           </p>
