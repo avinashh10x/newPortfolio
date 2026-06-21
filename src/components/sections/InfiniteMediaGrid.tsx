@@ -8,10 +8,40 @@ import Link from "next/link";
 
 gsap.registerPlugin(Observer);
 
-export default function InfiniteMediaGrid({ projects }: { projects: project[] }) {
+export default function InfiniteMediaGrid({
+  projects,
+}: {
+  projects: project[];
+}) {
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const [cols, setCols] = useState<number>(4);
+  const [normalized, setNormalized] = useState<project[]>(projects);
 
   useEffect(() => {
+    // Ensure grid rows are fully filled by cloning items when needed
+    const updateColsAndNormalize = () => {
+      const w = window.innerWidth;
+      const newCols = w >= 768 ? 4 : 2; // match Tailwind md breakpoint and grid-cols
+      setCols(newCols);
+
+      if (projects.length === 0) return setNormalized([]);
+
+      const remainder = projects.length % newCols;
+      if (remainder === 0) {
+        setNormalized(projects);
+        return;
+      }
+
+      const need = newCols - remainder;
+      const clones: project[] = [];
+      for (let i = 0; i < need; i++) {
+        clones.push(projects[i % projects.length]);
+      }
+      setNormalized([...projects, ...clones]);
+    };
+
+    updateColsAndNormalize();
+    window.addEventListener("resize", updateColsAndNormalize);
     const container = containerRef.current;
     if (!container) return;
 
@@ -82,7 +112,7 @@ export default function InfiniteMediaGrid({ projects }: { projects: project[] })
       observer.kill();
       ctx.revert();
     };
-  }, []);
+  }, [projects]);
 
   return (
     <section className="h-screen w-full overflow-hidden bg-background text-foreground">
@@ -96,8 +126,11 @@ export default function InfiniteMediaGrid({ projects }: { projects: project[] })
             aria-hidden={i !== 0}
             className="grid w-max grid-cols-2 md:grid-cols-4 gap-[6vw] md:gap-[5vw] p-[3vw] md:p-[2vw]"
           >
-            {projects.map((project, idx) => (
-              <ProjectCard key={idx} project={project} />
+            {normalized.map((project, idx) => (
+              <ProjectCard
+                key={`${idx}-${project.slug ?? idx}`}
+                project={project}
+              />
             ))}
           </div>
         ))}
@@ -113,7 +146,7 @@ function ProjectCard({ project }: { project: project }) {
   const handleMouseEnter = () => {
     setIsHovered(true);
     if (videoRef.current) {
-      videoRef.current.play().catch(() => { });
+      videoRef.current.play().catch(() => {});
     }
   };
 
@@ -137,8 +170,9 @@ function ProjectCard({ project }: { project: project }) {
           alt={project.title}
           loading="lazy"
           decoding="async"
-          className={`w-full h-full object-cover block transition-opacity duration-500 ${isHovered && project.video?.[0] ? "opacity-0" : "opacity-100"
-            }`}
+          className={`w-full h-full object-cover block transition-opacity duration-500 ${
+            isHovered && project.video?.[0] ? "opacity-0" : "opacity-100"
+          }`}
           draggable={false}
         />
 
@@ -152,8 +186,9 @@ function ProjectCard({ project }: { project: project }) {
             loop
             muted
             playsInline
-            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 pointer-events-none ${isHovered ? "opacity-100" : "opacity-0"
-              }`}
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 pointer-events-none ${
+              isHovered ? "opacity-100" : "opacity-0"
+            }`}
           />
         )}
 

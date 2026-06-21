@@ -25,16 +25,25 @@ export default function ProjectFormModal({
       time: "",
       tag: [],
       isFeatured: false,
-    }
+    },
   );
   const [tagInput, setTagInput] = useState("");
-  const [uploadingState, setUploadingState] = useState<Record<string, boolean>>({});
+  const [uploadingState, setUploadingState] = useState<Record<string, boolean>>(
+    {},
+  );
 
-  const updateField = <K extends keyof Project>(field: K, value: Project[K]) => {
+  const updateField = <K extends keyof Project>(
+    field: K,
+    value: Project[K],
+  ) => {
     setForm((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>, type: "image" | "video", index: number) => {
+  const handleUpload = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+    type: "image" | "video",
+    index: number,
+  ) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -54,7 +63,7 @@ export default function ProjectFormModal({
 
       if (!res.ok) throw new Error("Upload failed");
       const data = await res.json();
-      
+
       if (data.url) {
         if (type === "image") {
           updateImage(index, data.url);
@@ -106,14 +115,26 @@ export default function ProjectFormModal({
     }));
   };
 
+  const parseTagInput = (input: string) =>
+    input
+      .split(",")
+      .map((item) => item.trim())
+      .filter((item) => item.length > 0);
+
   const addTag = () => {
-    if (tagInput.trim() && !(form.tag || []).includes(tagInput.trim())) {
+    const parsed = parseTagInput(tagInput);
+    if (parsed.length === 0) return;
+
+    const existing = form.tag || [];
+    const unique = parsed.filter((item) => !existing.includes(item));
+
+    if (unique.length > 0) {
       setForm((prev) => ({
         ...prev,
-        tag: [...(prev.tag || []), tagInput.trim()],
+        tag: [...existing, ...unique],
       }));
-      setTagInput("");
     }
+    setTagInput("");
   };
 
   const removeTag = (tag: string) => {
@@ -125,9 +146,15 @@ export default function ProjectFormModal({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const pendingTags = parseTagInput(tagInput);
+    const mergedTags = Array.from(
+      new Set([...(form.tag || []), ...pendingTags]),
+    );
+
     // Clean up empty strings
     const cleaned: Project = {
       ...form,
+      tag: mergedTags,
       image: form.image.filter((img) => img.trim() !== ""),
       video: (form.video || []).filter((v) => v.trim() !== ""),
     };
@@ -165,8 +192,18 @@ export default function ProjectFormModal({
               onClick={onClose}
               className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-foreground/[0.06] text-foreground/40 hover:text-foreground transition-colors"
             >
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
           </div>
@@ -299,7 +336,9 @@ export default function ProjectFormModal({
                     type="checkbox"
                     id="isFeatured"
                     checked={form.isFeatured || false}
-                    onChange={(e) => updateField("isFeatured", !!e.target.checked)}
+                    onChange={(e) =>
+                      updateField("isFeatured", !!e.target.checked)
+                    }
                     className="peer sr-only"
                   />
                   <label
@@ -308,16 +347,19 @@ export default function ProjectFormModal({
                   ></label>
                   <div className="absolute left-[2px] top-[2px] h-5 w-5 rounded-full bg-foreground transition-transform peer-checked:translate-x-full pointer-events-none"></div>
                 </div>
-                <label htmlFor="isFeatured" className="text-sm font-medium text-foreground/80 cursor-pointer select-none">
+                <label
+                  htmlFor="isFeatured"
+                  className="text-sm font-medium text-foreground/80 cursor-pointer select-none"
+                >
                   Featured Project
                 </label>
               </div>
             </div>
 
-            {/* Tags */}
+            {/* Tech Stack */}
             <div>
               <label className="block text-xs font-medium text-foreground/50 mb-1.5 uppercase tracking-wider">
-                Tags
+                Tech Stack
               </label>
               <div className="flex flex-wrap gap-2 mb-2">
                 {(form.tag || []).map((tag) => (
@@ -347,7 +389,7 @@ export default function ProjectFormModal({
                     }
                   }}
                   className="flex-1 px-3 py-2 bg-foreground/[0.04] border border-foreground/[0.08] rounded-lg text-foreground text-sm placeholder:text-foreground/20 focus:outline-none focus:border-violet-500/50 transition-colors"
-                  placeholder="Add tag and press Enter"
+                  placeholder="Add multiple stack items with commas"
                 />
                 <button
                   type="button"
@@ -382,12 +424,12 @@ export default function ProjectFormModal({
                       className="flex-1 px-3 py-2 bg-foreground/[0.04] border border-foreground/[0.08] rounded-lg text-foreground text-sm placeholder:text-foreground/20 focus:outline-none focus:border-violet-500/50 transition-colors"
                       placeholder="Image URL or upload..."
                     />
-                    
+
                     <div className="relative">
-                      <input 
-                        type="file" 
-                        accept="image/*" 
-                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed" 
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed"
                         disabled={uploadingState[`image-${i}`]}
                         onChange={(e) => handleUpload(e, "image", i)}
                         title="Upload Image to Cloudinary"
@@ -398,13 +440,38 @@ export default function ProjectFormModal({
                         className="w-9 h-9 flex items-center justify-center rounded-lg bg-violet-500/10 border border-violet-500/20 text-violet-400 hover:bg-violet-500/20 transition-colors disabled:opacity-50"
                       >
                         {uploadingState[`image-${i}`] ? (
-                          <svg className="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                          <svg
+                            className="w-4 h-4 animate-spin"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                          >
+                            <circle
+                              className="opacity-25"
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              stroke="currentColor"
+                              strokeWidth="4"
+                            />
+                            <path
+                              className="opacity-75"
+                              fill="currentColor"
+                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                            />
                           </svg>
                         ) : (
-                          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                          <svg
+                            className="w-4 h-4"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
+                            />
                           </svg>
                         )}
                       </button>
@@ -416,8 +483,18 @@ export default function ProjectFormModal({
                         onClick={() => removeImage(i)}
                         className="w-9 h-9 flex items-center justify-center rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 hover:bg-red-500/20 transition-colors flex-shrink-0"
                       >
-                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={2}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                          />
                         </svg>
                       </button>
                     )}
@@ -451,10 +528,10 @@ export default function ProjectFormModal({
                     />
 
                     <div className="relative">
-                      <input 
-                        type="file" 
-                        accept="video/*" 
-                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed" 
+                      <input
+                        type="file"
+                        accept="video/*"
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed"
                         disabled={uploadingState[`video-${i}`]}
                         onChange={(e) => handleUpload(e, "video", i)}
                         title="Upload Video to Cloudinary"
@@ -465,13 +542,38 @@ export default function ProjectFormModal({
                         className="w-9 h-9 flex items-center justify-center rounded-lg bg-violet-500/10 border border-violet-500/20 text-violet-400 hover:bg-violet-500/20 transition-colors disabled:opacity-50 flex-shrink-0"
                       >
                         {uploadingState[`video-${i}`] ? (
-                          <svg className="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                          <svg
+                            className="w-4 h-4 animate-spin"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                          >
+                            <circle
+                              className="opacity-25"
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              stroke="currentColor"
+                              strokeWidth="4"
+                            />
+                            <path
+                              className="opacity-75"
+                              fill="currentColor"
+                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                            />
                           </svg>
                         ) : (
-                          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                          <svg
+                            className="w-4 h-4"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
+                            />
                           </svg>
                         )}
                       </button>
@@ -482,14 +584,26 @@ export default function ProjectFormModal({
                       onClick={() => removeVideo(i)}
                       className="w-9 h-9 flex items-center justify-center rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 hover:bg-red-500/20 transition-colors flex-shrink-0"
                     >
-                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                        />
                       </svg>
                     </button>
                   </div>
                 ))}
                 {(form.video || []).length === 0 && (
-                  <p className="text-xs text-foreground/20 italic">No videos added</p>
+                  <p className="text-xs text-foreground/20 italic">
+                    No videos added
+                  </p>
                 )}
               </div>
             </div>
@@ -516,5 +630,3 @@ export default function ProjectFormModal({
     </div>
   );
 }
-
-
