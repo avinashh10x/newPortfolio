@@ -21,7 +21,9 @@ export default function KaraScroll({ projects }: { projects: project[] }) {
 
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.matchMedia("(max-width: 768px)").matches);
+      // Disable the image-scroll ticker below the lg breakpoint (<1024px),
+      // where the image column is hidden and tablets show the list only.
+      setIsMobile(window.matchMedia("(max-width: 1023px)").matches);
     };
 
     checkMobile();
@@ -129,7 +131,7 @@ export default function KaraScroll({ projects }: { projects: project[] }) {
 
       <div className="flex h-full w-full flex-col px-5 pb-1 pt-24 md:hidden">
         <div className="mb-6 flex shrink-0 items-center gap-4">
-          <p className="font-heading text-[2.6rem] font-semibold leading-none tracking-[-0.05em] text-primary">
+          <p className="font-heading text-[2.6rem] font-semibold leading-none tracking-[-0.01em] text-primary">
             Featured Work
           </p>
           <motion.span
@@ -139,7 +141,7 @@ export default function KaraScroll({ projects }: { projects: project[] }) {
             transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
             className="h-px flex-1 bg-foreground/20"
           />
-          <BriefcaseBusinessIcon className="size-7 sm:size-5  text-primary" /> 
+          <BriefcaseBusinessIcon className="size-10 sm:size-7  text-primary" /> 
         </div>
 
         <div className="relative min-h-0 flex-1 overflow-hidden">
@@ -288,9 +290,9 @@ export default function KaraScroll({ projects }: { projects: project[] }) {
         </div>
       </div>
 
-      <div className="hidden flex-1 space-y-10 px-10 tracking-[-0.05em] md:block">
-        <div className="flex items-center justify-between gap-5 px-2 font-heading text-[4vw] font-semibold leading-[1.1] tracking-[-0.05em]">
-          <p className="text-primary drop-shadow-sm text-nowrap">
+      <div className="hidden flex-1 space-y-10 px-10 tracking-[-0.02em] md:block">
+        <div className="flex items-center justify-between gap-5 px-2 font-heading text-[4vw] font-semibold leading-[1.1] !tracking-[-0.01em]">
+          <p className="text-primary drop-shadow-sm text-nowrap  ">
             Featured Work
           </p>
           <motion.span
@@ -389,7 +391,7 @@ export default function KaraScroll({ projects }: { projects: project[] }) {
 
       <div
         ref={containerRef}
-        className="hidden h-screen w-[30vw] origin-center overflow-hidden scrollbar-none md:block"
+        className="hidden h-screen w-[30vw] origin-center overflow-hidden scrollbar-none lg:block"
       >
         <div
           ref={contentRef}

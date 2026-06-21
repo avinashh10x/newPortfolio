@@ -69,7 +69,7 @@ export default function AboutIntro() {
             style={{ opacity: 0 }}
             className={`about-intro-copy font-sans text-[16px] sm:text-[18px] md:text-[22px] leading-[1.75] sm:leading-[1.7] md:leading-[1.65] font-medium tracking-[-0.01em] text-justify sm:text-center [text-wrap:pretty] [text-align-last:center] sm:[text-align-last:center] transition-colors duration-500  ${isAnyHovered ? "text-foreground/20" : "text-foreground/60"}`}
           >
-            23yo CSE Graduate (&apos;25) building products with real traction.
+            22yo CSE Graduate (&apos;25) building products with real traction.
             Currently contributing at{" "}
             <ClickableText
               text="DZINR"
