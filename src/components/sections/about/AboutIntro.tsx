@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
@@ -13,7 +13,6 @@ if (typeof window !== "undefined") {
 export default function AboutIntro() {
   const ref = useRef<HTMLDivElement>(null);
   const copyRef = useRef<HTMLParagraphElement>(null);
-  const [hoveredLink, setHoveredLink] = useState<string | null>(null);
 
   useLayoutEffect(() => {
     if (!ref.current || !copyRef.current) return;
@@ -60,8 +59,6 @@ export default function AboutIntro() {
     };
   }, []);
 
-  const isAnyHovered = hoveredLink !== null;
-
   return (
     <section
       ref={ref}
@@ -73,48 +70,30 @@ export default function AboutIntro() {
           data-anim="about"
           className="w-full max-w-[92vw] sm:max-w-[680px] md:max-w-[85%] mx-auto mt-6"
         >
+          {/*
+            Hover fade is pure CSS via `:has()` so it works directly on the real
+            <a> elements — it stays correct even while GSAP SplitText restructures
+            the DOM (which would otherwise drop React hover handlers on the links).
+            • `has-[a:hover]:text-foreground/20` fades the body copy when any link is hovered.
+            • each link fades to /20 only when a *different* link is hovered (see ClickableText).
+          */}
           <p
             ref={copyRef}
             style={{ opacity: 0 }}
-            className={`about-intro-copy font-sans text-[16px] sm:text-[18px] md:text-[22px] leading-[1.75] sm:leading-[1.7] md:leading-[1.65] font-medium tracking-[-0.01em] text-justify [text-wrap:pretty] [text-align-last:center] transition-colors duration-500  ${isAnyHovered ? "text-foreground/20" : "text-foreground/60"}`}
+            className="about-intro-copy font-sans text-[16px] sm:text-[18px] md:text-[22px] leading-[1.75] sm:leading-[1.7] md:leading-[1.65] font-medium tracking-[-0.01em] text-justify [text-wrap:pretty] [text-align-last:center] transition-colors duration-500 text-foreground/60 has-[a:hover]:text-foreground/20"
           >
             22yo CSE Graduate (&apos;25) building products with real traction.
             Currently contributing at{" "}
-            <ClickableText
-              text="DZINR"
-              id="dzinr"
-              hoveredId={hoveredLink}
-              onSetHover={setHoveredLink}
-              href="https://dzinrstudio.com/"
-            />
-            , a Branding Studio platform serving 10K+ monthly visitors, while
+            <ClickableText text="DZINR" href="https://dzinrstudio.com/" />, a
+            Branding Studio platform serving 10K+ monthly visitors, while
             independently building{" "}
-            <ClickableText
-              text="Gridme"
-              id="gridme"
-              hoveredId={hoveredLink}
-              onSetHover={setHoveredLink}
-              href="https://gridme.in"
-            />
-            , a precision layout engine for Adobe Illustrator that helps
-            designers generate production-ready grids in seconds. I ship fast,
-            solve real user problems, and turn ideas into scalable products.
-            Explore my work and follow along on{" "}
-            <ClickableText
-              text="X"
-              id="x"
-              hoveredId={hoveredLink}
-              onSetHover={setHoveredLink}
-              href="https://x.com/avinash10x"
-            />
-            , or explore my{" "}
-            <ClickableText
-              text="GitHub"
-              id="github"
-              hoveredId={hoveredLink}
-              onSetHover={setHoveredLink}
-              href="https://github.com/avinashh10x"
-            />
+            <ClickableText text="Gridme" href="https://gridme.in" />, a precision
+            layout engine for Adobe Illustrator that helps designers generate
+            production-ready grids in seconds. I ship fast, solve real user
+            problems, and turn ideas into scalable products. Explore my work and
+            follow along on{" "}
+            <ClickableText text="X" href="https://x.com/avinash10x" />, or explore
+            my <ClickableText text="GitHub" href="https://github.com/avinashh10x" />
           </p>
         </div>
       </div>
@@ -122,31 +101,13 @@ export default function AboutIntro() {
   );
 }
 
-const ClickableText = ({
-  text,
-  href,
-  id,
-  hoveredId,
-  onSetHover,
-}: {
-  text: string;
-  href: string;
-  id: string;
-  hoveredId: string | null;
-  onSetHover: (id: string | null) => void;
-}) => {
-  const isHovered = hoveredId === id;
-  const isOthersHovered = hoveredId !== null && !isHovered;
-
+const ClickableText = ({ text, href }: { text: string; href: string }) => {
   return (
     <Link
       href={href}
-      onMouseEnter={() => onSetHover(id)}
-      onMouseLeave={() => onSetHover(null)}
-      className={`relative z-20 font-semibold decoration-foreground/20 hover:decoration-primary transition-all duration-300 inline-block
-        ${isHovered ? "text-primary  !opacity-100" : ""}
-        ${isOthersHovered ? "text-foreground/20 !opacity-100" : "text-foreground/90 "}
-      `}
+      className="relative z-20 font-semibold decoration-foreground/20 hover:decoration-primary transition-colors duration-300 inline-block
+        text-foreground/90 hover:!text-primary
+        [.about-intro-copy:has(a:hover)_&:not(:hover)]:!text-foreground/20"
     >
       {text}
     </Link>
