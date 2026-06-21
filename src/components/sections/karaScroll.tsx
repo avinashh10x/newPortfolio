@@ -155,6 +155,7 @@ export default function KaraScroll({ projects }: { projects: project[] }) {
                 href={`/work/${project.slug}`}
                 className="group flex items-center gap-3 border-b border-foreground/10 py-4 font-sans"
               >
+              
                 {/* <motion.span
                   initial={{ y: 18, opacity: 0, filter: "blur(4px)" }}
                   whileInView={{ y: 0, opacity: 1, filter: "blur(0px)" }}

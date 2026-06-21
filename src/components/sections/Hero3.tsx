@@ -21,7 +21,7 @@ const Hero3 = () => {
     <div className="relative flex min-h-[100svh] w-full items-center justify-center overflow-hidden bg-background px-4 text-foreground transition-colors duration-300">
       <div className="flex flex-col items-center justify-center text-center w-full max-w-[800px] mx-auto z-10">
         {/* Available for work */}
-        <motion.div
+        {/* <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{
@@ -46,9 +46,9 @@ const Hero3 = () => {
             className={`text-[11px] font-sans font-medium tracking-wide transition-colors duration-500 ${isAnyHovered ? "text-foreground/20" : "text-foreground/70"
               }`}
           >
-            Available for work
+         Hey, I'm
           </span>
-        </motion.div>
+        </motion.div> */}
 
         {/* Name */}
         <motion.div
@@ -74,7 +74,7 @@ const Hero3 = () => {
             delay: 0.25,
             ease: [0.21, 0.47, 0.32, 0.98],
           }}
-          className={`font-sans text-[16px] sm:text-[18px] md:text-[20px] leading-[1.65] mb-10 max-w-full sm:max-w-[80%] font-normal tracking-[-0.01em] transition-colors duration-500 ${isAnyHovered ? "text-foreground/10" : "text-foreground/50"
+          className={`font-sans text-[16px] sm:text-[18px] md:text-[20px] leading-[1.65] mb-10 max-w-full sm:max-w-[75%] font-normal tracking-[-0.01em] transition-colors duration-500 ${isAnyHovered ? "text-foreground/10" : "text-foreground/50"
             }`}
         >
           <strong

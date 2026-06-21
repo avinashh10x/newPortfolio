@@ -11,7 +11,7 @@ function DetailedHeader({ project }: { project: project }) {
   const router = useRouter();
 
   return (
-    <div className="w-full relative pt-16 lg:pt-32 lg:pb-10 px-4 md:px-8 max-w-7xl mx-auto space-y-5">
+    <div className="w-full relative pt-16 lg:pt-32 lg:pb-10 px-4 md:px-8 max-w-6xl mx-auto space-y-5">
       <motion.button
         initial={{ opacity: 0, x: -10 }}
         animate={{ opacity: 1, x: 0 }}
