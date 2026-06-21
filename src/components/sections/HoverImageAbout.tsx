@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import { SplitText } from "gsap/all";
+import { SplitText } from "gsap/SplitText";
 
 export default function HoverImageAbout() {
   const rootRef = useRef<HTMLDivElement | null>(null);

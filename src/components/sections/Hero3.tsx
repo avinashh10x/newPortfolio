@@ -83,7 +83,7 @@ const Hero3 = () => {
           >
             Creative Developer
           </strong>{" "}
-          building fast, immersive products for the web with a focus on
+          building fast, immersive products with a focus on
           performance, interaction, and clean UI/UX.
         </motion.p>
 

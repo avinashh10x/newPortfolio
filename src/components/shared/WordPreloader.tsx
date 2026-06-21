@@ -5,15 +5,17 @@ import gsap from "gsap";
 import { usePathname, useSearchParams } from "next/navigation";
 
 const hellos = [
-  "Hello",           // English (first — fades in, holds)
-  "こんにちは",       // Japanese
-  "હેલો",            // Gujarati
-  "హలో",            // Telugu
-  "Ciao",            // Italian
-  "नमस्ते",          // Hindi
-  "Hello",           // English (first — fades in, holds)
-
+  "Hello",        // English (first — fades in, holds)
+  "こんにちは",      // Japanese
+  "హలో",          // Telugu
+  "안녕하세요",       // Korean
+  "你好",          // Chinese
+  "Привет",       // Russian
+  "Hola",         // Spanish
+  "Ciao",        // Italian
+  "नमस्ते",        // Hindi
 ];
+
 
 const FIRST_WORD_HOLD = 800;  // ms — first "Hello" stays longer
 const WORD_DISPLAY_DURATION = 120; // ms per subsequent word

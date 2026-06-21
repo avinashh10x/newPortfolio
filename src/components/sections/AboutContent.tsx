@@ -3,7 +3,8 @@
 import { heroText, ICON_MAP } from "@/data/profile";
 import Link from "next/link";
 import { useEffect } from "react";
-import gsap, { SplitText } from "gsap/all";
+import gsap from "gsap";
+import { SplitText } from "gsap/SplitText";
 
 function AboutContent() {
   const parts = heroText.split(

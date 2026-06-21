@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
-import { Observer } from "gsap/all";
+import { Observer } from "gsap/Observer";
 import type { project } from "@/data/projects";
 import Link from "next/link";
 
