@@ -10,6 +10,7 @@ import {
   ogImageOpenGraph,
   ogImageTwitter,
 } from "@/lib/seo";
+import { Analytics } from "@vercel/analytics/next";
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -171,7 +172,7 @@ export default function RootLayout({
           </Suspense>
           {children}
           <Navbar />
-
+          <Analytics />
         </ThemeProvider>
       </body>
     </html>
