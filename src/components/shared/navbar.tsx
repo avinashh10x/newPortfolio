@@ -101,7 +101,7 @@ function useMenuLinkActive(link: MenuLink): boolean {
 type NavItemButtonProps = {
   link: MenuLink;
   className: string;
-  onThemeClick?: () => void;
+  onThemeClick?: (e: React.MouseEvent<HTMLElement>) => void;
   /** For theme: ref on the &lt;button&gt; (view transition origin) */
   themeButtonRef?: RefObject<HTMLButtonElement | null>;
   onMouseEnter?: () => void;
@@ -170,7 +170,7 @@ function MobileNavItem({
   themeButtonRef,
 }: {
   link: MenuLink;
-  onThemeClick?: () => void;
+  onThemeClick?: (e: React.MouseEvent<HTMLElement>) => void;
   themeButtonRef?: RefObject<HTMLButtonElement | null>;
 }) {
   const active = useMenuLinkActive(link);
@@ -209,7 +209,7 @@ function DockItem({
 }: {
   link: MenuLink;
   mouseX: MotionValue<number>;
-  onThemeClick?: () => void;
+  onThemeClick?: (e: React.MouseEvent<HTMLElement>) => void;
   themeButtonRef?: RefObject<HTMLButtonElement | null>;
 }) {
   const ref = useRef<HTMLLIElement>(null);

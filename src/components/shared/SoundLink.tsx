@@ -8,7 +8,7 @@ type SoundLinkProps = {
   className?: string;
   target?: string;
   rel?: string;
-  onClick?: (e: React.MouseEvent) => void;
+  onClick?: (e: React.MouseEvent<HTMLElement>) => void;
   onMouseEnter?: (e: React.MouseEvent) => void;
   onMouseLeave?: (e: React.MouseEvent) => void;
   /** When `asButton`, ref to the native `<button>` (e.g. view-transition origin) */
@@ -99,7 +99,7 @@ export default function SoundLink({
   );
 
   const handleClick = useCallback(
-    (e: React.MouseEvent) => {
+    (e: React.MouseEvent<HTMLElement>) => {
       playSound(clickAudioRef, clickSound, hasPlayedClick);
       onClick?.(e);
     },

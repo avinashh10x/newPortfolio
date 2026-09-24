@@ -1,7 +1,7 @@
 "use client";
 
 import { useTheme } from "next-themes";
-import { useCallback, type RefObject } from "react";
+import { useCallback, type MouseEvent, type RefObject } from "react";
 
 
 export const THEME_TOGGLE_TRANSITION_MS = 550;
@@ -17,7 +17,9 @@ export function useViewTransitionThemeToggle(
 ) {
   const { setTheme, resolvedTheme } = useTheme();
 
-  const toggleTheme = useCallback(() => {
+  // Pass the click event so the ripple starts from the button that was actually
+  // clicked. The ref alone can go stale when the navbar swaps mobile/desktop.
+  const toggleTheme = useCallback((event?: MouseEvent<HTMLElement>) => {
     if (typeof window === "undefined") {
       return;
     }
@@ -27,7 +29,7 @@ export function useViewTransitionThemeToggle(
     }
 
     const next = resolvedTheme === "dark" ? "light" : "dark";
-    const el = buttonRef.current;
+    const el = event?.currentTarget ?? buttonRef.current;
     const prefersReduced = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;
